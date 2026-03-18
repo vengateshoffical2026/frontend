@@ -12,7 +12,7 @@ const Home = () => {
           <Header />
           </div>
           {/* ── Main grid: left 60% / right 40% ── */}
-          <section className="mt-4 flex flex-col lg:flex-row lg:items-start lg:justify-center lg:gap-8">
+          <section className="mt-4 flex flex-col sm:flex-row sm:items-start sm:justify-center sm:gap-8">
 
             {/* ══ LEFT COLUMN ══════════════════════════════════════════════ */}
             <div className="flex flex-col gap-6 lg:w-1/2">
@@ -52,7 +52,7 @@ const Home = () => {
               </div>
 
               {/* Latest Contributions bar */}
-              <article className="rounded-2xl bg-[#d5ceb9]/95 px-4 py-4 shadow-[0_8px_24px_rgba(61,37,22,0.14)] sm:px-8 sm:py-7 max-w-[50vw]">
+              <article className="rounded-2xl bg-[#d5ceb9]/95 px-4 py-4 shadow-[0_8px_24px_rgba(61,37,22,0.14)] sm:px-8 sm:py-7 sm:max-w-[50vw]">
                 <h3 className="text-base font-bold text-[#4f1f1f] sm:text-lg lg:text-xl">
                   Latest Contributions
                 </h3>
@@ -104,7 +104,7 @@ const Home = () => {
             <div className="flex flex-col gap-6 lg:w-[38%]">
 
               {/* Featured Inscription */}
-              <article className="rounded-2xl bg-[#d5ceb9]/95 p-4 shadow-[0_8px_24px_rgba(61,37,22,0.16)] sm:p-7 max-w-[30vw]">
+              <article className="rounded-2xl bg-[#d5ceb9]/95 p-4 shadow-[0_8px_24px_rgba(61,37,22,0.16)] sm:p-7 sm:max-w-[30vw]">
                 <h2 className="text-base font-bold text-[#4f1f1f] sm:text-lg lg:text-xl">
                   Features Inscription
                 </h2>
@@ -121,7 +121,7 @@ const Home = () => {
               </article>
 
               {/* Decipher Tools */}
-              <article className="rounded-2xl bg-[#d5ceb9]/95 p-4 shadow-[0_8px_24px_rgba(61,37,22,0.16)] sm:p-7 max-w-[30vw]">
+              <article className="rounded-2xl bg-[#d5ceb9]/95 p-4 shadow-[0_8px_24px_rgba(61,37,22,0.16)] sm:p-7 sm:max-w-[30vw]">
                 <h2 className="text-base font-bold text-[#4f1f1f] sm:text-lg lg:text-xl">
                   Decipher Tools
                 </h2>
@@ -139,7 +139,7 @@ const Home = () => {
               </article>
 
               {/* Community Projects */}
-              <article className="rounded-2xl bg-[#d5ceb9]/95 p-4 shadow-[0_8px_24px_rgba(61,37,22,0.16)] sm:p-7 max-w-[30vw]">
+              <article className="rounded-2xl bg-[#d5ceb9]/95 p-4 shadow-[0_8px_24px_rgba(61,37,22,0.16)] sm:p-7 sm:max-w-[30vw]">
                 <h2 className="text-base font-bold text-[#4f1f1f] sm:text-lg lg:text-xl">
                   Community Projects
                 </h2>

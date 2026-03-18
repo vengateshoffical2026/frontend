@@ -1,34 +1,47 @@
 import { useState } from 'react'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { loginAPI } from '../api/controllers/authcontroller'
+import { toast } from 'react-toastify'
 
 type LoginFormValues = {
-  identifier: string
+  email: string
   password: string
   rememberMe: boolean
 }
 
 const loginSchema = Yup.object({
-  identifier: Yup.string().trim().required('Email or username is required'),
+  email: Yup.string().email('Invalid email address').required('Email is required'),
   password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
   rememberMe: Yup.boolean(),
 })
 
 const Login = () => {
-  const [submitted, setSubmitted] = useState(false)
-
+  const navigate = useNavigate()
   const formik = useFormik<LoginFormValues>({
     initialValues: {
-      identifier: '',
+      email: '',
       password: '',
       rememberMe: false,
     },
     validationSchema: loginSchema,
-    onSubmit: async (_values, { setSubmitting }) => {
-      await new Promise((resolve) => setTimeout(resolve, 500))
-      setSubmitted(true)
-      setSubmitting(false)
+    onSubmit: async (values) => {
+      try {
+        const payload:any = {
+          email: values.email,
+          password: values.password,
+        }
+       const res:any = await loginAPI(payload)
+        console.log('Login successful:', res)
+        toast.success('Logged in successfully!')
+        navigate('/')
+        localStorage.setItem('token', res.token)
+        localStorage.setItem('user', JSON.stringify(res.user))
+      } catch (error:any) {
+        console.error('Login failed:', error)
+        toast.error(error.response?.data?.error || 'Login failed')
+      }
     },
   })
 
@@ -64,26 +77,22 @@ const Login = () => {
 
           <h2 className="mb-7 text-[38px] font-semibold leading-none text-[#5a2222]">Welcome Back</h2>
 
-          {submitted ? (
-            <div className="rounded-md border border-[#2f8678]/40 bg-[#eef8f6] px-4 py-3 text-sm text-[#2f8678]">
-              Logged in successfully.
-            </div>
-          ) : (
+          
             <form className="space-y-4" onSubmit={formik.handleSubmit} noValidate>
               <div>
                 <input
-                  id="identifier"
-                  name="identifier"
-                  type="text"
+                  id="email"
+                  name="email"
+                  type="email"
                   autoComplete="username"
                   placeholder="Email or Username"
-                  className={fieldClass('identifier')}
-                  value={formik.values.identifier}
+                  className={fieldClass('email')}
+                  value={formik.values.email}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
-                {formik.touched.identifier && formik.errors.identifier ? (
-                  <p className="mt-1 text-xs text-red-600">{formik.errors.identifier}</p>
+                {formik.touched.email && formik.errors.email ? (
+                  <p className="mt-1 text-xs text-red-600">{formik.errors.email}</p>
                 ) : null}
               </div>
 
@@ -137,7 +146,7 @@ const Login = () => {
                 </Link>
               </p>
             </form>
-          )}
+          
         </div>
       </section>
     </main>

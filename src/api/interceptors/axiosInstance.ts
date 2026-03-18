@@ -1,15 +1,27 @@
 import axios from 'axios'
 
 const baseURL =
-  import.meta.env.VITE_API_BASE_URL ?? 'https://jsonplaceholder.typicode.com'
+  import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3001/'
 
 const apiClient = axios.create({
   baseURL,
-  timeout: 15000,
+  timeout: 40000,
 })
 
 apiClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem('access_token')
+  // Skip authentication for payment endpoints
+  if (config.url?.includes('/razorpay/')) {
+    const token = localStorage.getItem('token')
+    
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+    config.headers.Accept = 'application/json'
+    config.headers['Content-Type'] = 'application/json'
+    return config
+  }
+
+  const token = localStorage.getItem('token')
 
   config.headers.Accept = 'application/json'
   config.headers['Content-Type'] = 'application/json'

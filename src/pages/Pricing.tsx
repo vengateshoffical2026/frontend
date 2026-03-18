@@ -1,8 +1,74 @@
 import { useState } from 'react'
 import Header from '../components/Header'
+import { useCreateOrder, useVerifyPayment } from '../api/hooks/paymentQuery'
+import { toast } from 'react-toastify'
+
+declare global {
+  interface Window {
+    Razorpay: any
+  }
+}
 
 const Pricing = () => {
   const [selectedProject, setSelectedProject] = useState('Chola Temple Inscription')
+  const { mutateAsync: createOrderMutation, isPending: isCreatingOrder } = useCreateOrder()
+  const { mutateAsync: verifyPaymentMutation, isPending: isVerifyingPayment } = useVerifyPayment()
+  const handleUpgradeClick = async () => {
+    let payload:any = {
+      amount: 300,
+      currency: 'INR',
+      receipt: 'receipt_' + Date.now().toString()
+    }
+    try {
+      const order = await createOrderMutation(payload)
+
+      const options = {
+        key: 'rzp_live_SGteQC3JSxjhtP', // Replace with actual key
+        amount: order?.data?.order?.amount ?? 300000,
+        currency: order?.data?.order?.currency ?? 'INR',
+        order_id: order?.data?.order?.id || null,
+        name: 'Sasanam',
+        description: 'Upgrade to Contributor',
+        handler: async function (response: any) {
+          if (response.razorpay_payment_id) {
+            toast.success('Payment successful!')
+            // Always try to verify, even if signature is missing
+            try {
+              const verificationPayload = {
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_order_id: response.razorpay_order_id || null,
+                razorpay_signature: response.razorpay_signature || null
+              }
+              const res = await verifyPaymentMutation(verificationPayload)
+              console.log('✅ Verification response:', res)
+              if (response.razorpay_signature) {
+                toast.success('Payment verified successfully!')
+              } else {
+                toast.warning('Payment completed but signature missing - manual verification may be needed')
+              }
+            } catch (err) {
+              console.error('❌ Verification error:', err)
+              toast.error('Payment verification failed - please contact support')
+            }
+          } else {
+            toast.error('Payment failed')
+          }
+        },
+        prefill: {
+          name: 'User Name',
+          email: 'user@example.com',
+        },
+        theme: {
+          color: '#2e8578',
+        },
+      }
+      console.log('🚀 Initializing Razorpay with options:', options)
+      const rzp = new window.Razorpay(options)
+      rzp.open()
+    } catch (error) {
+      toast.error('Failed to create order')
+    }
+  }
 
   return (
     <main className="min-h-screen bg-[#e4d3be] bg-cover bg-center" style={{ backgroundImage: 'url(/homebg.png)' }}>
@@ -62,8 +128,12 @@ const Pricing = () => {
                 </li>
               </ul>
 
-              <button className="w-full rounded-lg bg-[#2e8578] py-3 text-base sm:text-lg font-semibold text-white hover:bg-[#256a5e] transition">
-                Upgrade Now
+              <button 
+                className={`w-full rounded-lg bg-[#2e8578] py-3 text-base sm:text-lg font-semibold text-white hover:bg-[#256a5e] transition ${isCreatingOrder ? 'cursor-not-allowed opacity-70' : ''}`}
+                onClick={handleUpgradeClick}
+                disabled={isCreatingOrder}
+              >
+                {isCreatingOrder ? 'Creating Order...' : 'Upgrade Now'}
               </button>
             </div>
 

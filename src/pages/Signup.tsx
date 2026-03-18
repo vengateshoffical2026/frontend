@@ -1,7 +1,15 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
+import {  signupAPI } from "../api/controllers/authcontroller";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
+export interface SignupData {
+  fullName: string
+  email: string
+  password: string
+}
 const validationSchema = Yup.object({
   fullName: Yup.string()
     .min(2, "Name must be at least 2 characters")
@@ -14,15 +22,12 @@ const validationSchema = Yup.object({
     .required("Password is required"),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password")], "Passwords must match")
-    .required("Please confirm your password"),
-  terms: Yup.boolean()
-    .oneOf([true], "You must agree to the Terms & Conditions")
-    .required(),
+    .required("Please confirm your password")
 });
 
 const  SignupForm = () => {
   const [submitted, setSubmitted] = useState(false);
-
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       fullName: "",
@@ -32,11 +37,20 @@ const  SignupForm = () => {
       terms: false,
     },
     validationSchema,
-    onSubmit: (values, { setSubmitting }) => {
-      setTimeout(() => {
-        setSubmitted(true);
-        setSubmitting(false);
-      }, 600);
+    onSubmit: async (values) => {
+      const payload:SignupData = {
+        fullName:values.fullName,
+        email:values.email,
+        password:values.password
+      }
+      try{
+      const res:any = await signupAPI(payload);
+    toast.success("Account created successfully!");
+      navigate("/login");
+      console.log(res)
+      }catch(err:any){
+        toast.error(err.response?.data?.error || "Failed to create account. Please try again.")
+      }
     },
   });
 
