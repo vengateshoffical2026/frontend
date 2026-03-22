@@ -2,21 +2,24 @@
 
 @layer base {
   :root {
-    --font-serif: "EB Garamond", serif;
+    --font-serif: "Cinzel", serif;
     --font-sans: "Anek Tamil", sans-serif;
+    --font-reading: "IBM Plex Serif", serif;
   }
 
   body {
     font-family: var(--font-sans);
     @apply bg-[#f4ecd8] text-[#4A3B32];
+    overflow-x: hidden;
   }
 
-  h1, h2, h3, h4, h5, h6, .font-serif {
+  h1, h2, h3, h4, h5, .font-serif {
     font-family: var(--font-serif);
+    letter-spacing: -0.02em;
   }
 }
 
 @theme {
-  --font-serif: "EB Garamond", serif;
+  --font-serif: "Cinzel", serif;
   --font-sans: "Anek Tamil", sans-serif;
 }
