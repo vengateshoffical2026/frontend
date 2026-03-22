@@ -1,10 +1,22 @@
+import { useScrollReveal } from "../hooks/useScrollReveal";
+
 const Home = () => {
+  const heroReveal = useScrollReveal();
+  const contributionsReveal = useScrollReveal();
+  const featuredReveal = useScrollReveal();
+  const toolsReveal = useScrollReveal();
+  const communityReveal = useScrollReveal();
+
+  const revealClass = (isVisible: boolean) =>
+    `transition-all duration-1000 ease-out ${
+      isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
+    }`;
+
   return (
     <main
-      className="min-h-screen bg-[#FAF9F6]  font-sans selection:bg-[#8B4513]/30 selection:text-[#8B4513]"
-      
+      className="min-h-screen bg-[#f4ecd8] font-sans selection:bg-[#8B4513]/30 selection:text-[#8B4513]"
     >
-      <div className="min-h-screen bg-[#FFFFFF]/70 backdrop-blur-[2px]">
+      <div className="min-h-screen bg-white/30 backdrop-blur-[2px]">
         <div className="mx-auto flex min-h-screen w-full max-w-[1600px] flex-col px-5 sm:px-6 lg:px-8">
           
 
@@ -15,12 +27,15 @@ const Home = () => {
             <div className="flex flex-col gap-8 lg:col-span-7 xl:col-span-8">
               
               {/* Hero card */}
-              <div className="group relative overflow-hidden rounded-3xl bg-[#F5F5DC]/80 p-8 shadow-[0_8px_32px_rgba(61,37,22,0.15)] backdrop-blur-md border border-white/20 sm:p-12 transition-all hover:bg-[#F5F5DC]/90">
+              <div 
+                ref={heroReveal.ref as any}
+                className={`group relative overflow-hidden rounded-3xl bg-[#F5F5DC]/80 p-8 shadow-[0_8px_32px_rgba(61,37,22,0.15)] backdrop-blur-md border border-white/20 sm:p-12 transition-all hover:bg-[#F5F5DC]/90 ${revealClass(heroReveal.isVisible)}`}
+              >
                 <div className="relative flex flex-col gap-8 lg:flex-row lg:items-center">
                   
                   {/* Text side */}
                   <div className="flex flex-col lg:flex-1">
-                    <h1 className="text-4xl font-extrabold tracking-tight text-[#4A3B32] sm:text-5xl xl:text-6xl">
+                    <h1 className="text-4xl font-serif font-black tracking-tight text-[#4A3B32] sm:text-5xl xl:text-6xl leading-tight">
                       Unearth the Secrets<br />
                       of the <span className="text-[#8B4513]">Past</span>
                     </h1>
@@ -30,7 +45,7 @@ const Home = () => {
                     
                     <button
                       type="button"
-                      className="mt-10 inline-flex w-fit items-center justify-center gap-2 rounded-full bg-[#8B4513] px-8 py-3.5 text-sm font-bold text-white shadow-lg transition-all hover:-translate-y-1 hover:bg-[#256a5e] hover:shadow-xl"
+                      className="mt-10 inline-flex w-fit items-center justify-center gap-2 rounded-full bg-[#8B4513] px-8 py-3.5 text-sm font-bold text-white shadow-lg transition-all hover:-translate-y-1 hover:bg-[#a0522d] hover:shadow-xl"
                     >
                       Explore the Archive
                       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
@@ -49,7 +64,10 @@ const Home = () => {
               </div>
 
               {/* Latest Contributions bar */}
-              <article className="rounded-3xl bg-[#F5F5DC]/70 p-6 shadow-[0_4px_20px_rgba(61,37,22,0.1)] backdrop-blur-md border border-white/20 sm:p-8">
+              <article 
+                ref={contributionsReveal.ref as any}
+                className={`rounded-3xl bg-[#F5F5DC]/70 p-6 shadow-[0_4px_20px_rgba(61,37,22,0.1)] backdrop-blur-md border border-white/20 sm:p-8 ${revealClass(contributionsReveal.isVisible)}`}
+              >
                 <div className="flex items-center justify-between mb-6 border-b border-[#c8bba6]/50 pb-4">
                   <h3 className="text-xl font-bold text-[#4A3B32]">Latest Contributions</h3>
                   <span className="flex h-2 w-2 relative">
@@ -101,7 +119,10 @@ const Home = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 lg:col-span-5 xl:col-span-4 gap-6 relative">
               
               {/* Featured Inscription */}
-              <article className="group cursor-pointer rounded-3xl bg-[#F5F5DC]/70 p-6 shadow-[0_4px_20px_rgba(61,37,22,0.1)] backdrop-blur-md border border-white/20 transition-all hover:bg-[#F5F5DC]/90 hover:-translate-y-1 hover:border-white/40 sm:col-span-2 lg:col-span-1">
+              <article 
+                ref={featuredReveal.ref as any}
+                className={`group cursor-pointer rounded-3xl bg-[#F5F5DC]/70 p-6 shadow-[0_4px_20px_rgba(61,37,22,0.1)] backdrop-blur-md border border-white/20 transition-all hover:bg-[#F5F5DC]/90 hover:-translate-y-1 hover:border-white/40 sm:col-span-2 lg:col-span-1 ${revealClass(featuredReveal.isVisible)}`}
+              >
                 <h2 className="text-xs font-black tracking-widest text-[#8B4513] uppercase mb-4">Featured Inscription</h2>
                 <div className="flex gap-5 items-center">
                   <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-2xl border border-white/30">
@@ -115,7 +136,10 @@ const Home = () => {
               </article>
 
               {/* Decipher Tools */}
-              <article className="group cursor-pointer rounded-3xl bg-[#F5F5DC]/70 p-6 shadow-[0_4px_20px_rgba(61,37,22,0.1)] backdrop-blur-md border border-white/20 transition-all hover:bg-[#F5F5DC]/90 hover:-translate-y-1 hover:border-white/40">
+              <article 
+                ref={toolsReveal.ref as any}
+                className={`group cursor-pointer rounded-3xl bg-[#F5F5DC]/70 p-6 shadow-[0_4px_20px_rgba(61,37,22,0.1)] backdrop-blur-md border border-white/20 transition-all hover:bg-[#F5F5DC]/90 hover:-translate-y-1 hover:border-white/40 ${revealClass(toolsReveal.isVisible)}`}
+              >
                 <h2 className="text-xs font-black tracking-widest text-[#8B4513] uppercase mb-4">Decipher Tools</h2>
                 <div className="flex flex-col gap-4">
                   <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-2xl bg-white/40 shadow-inner">
@@ -129,7 +153,10 @@ const Home = () => {
               </article>
 
               {/* Community Projects */}
-              <article className="group cursor-pointer rounded-3xl bg-[#F5F5DC]/70 p-6 shadow-[0_4px_20px_rgba(61,37,22,0.1)] backdrop-blur-md border border-white/20 transition-all hover:bg-[#F5F5DC]/90 hover:-translate-y-1 hover:border-white/40">
+              <article 
+                ref={communityReveal.ref as any}
+                className={`group cursor-pointer rounded-3xl bg-[#F5F5DC]/70 p-6 shadow-[0_4px_20px_rgba(61,37,22,0.1)] backdrop-blur-md border border-white/20 transition-all hover:bg-[#F5F5DC]/90 hover:-translate-y-1 hover:border-white/40 ${revealClass(communityReveal.isVisible)}`}
+              >
                 <h2 className="text-xs font-black tracking-widest text-[#8B4513] uppercase mb-4">Community Projects</h2>
                 <div className="flex flex-col gap-4">
                   <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-2xl bg-white/40 shadow-inner">
@@ -144,13 +171,10 @@ const Home = () => {
 
             </div>
           </section>
-
-          
-        
         </div>
       </div>
     </main>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

@@ -18,10 +18,20 @@ const maskUpi = (upi: string) => {
 const Header = () => {
   const token: string | null = localStorage.getItem('token')
   const [showDonors, setShowDonors] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-    `transition-colors duration-300 font-semibold px-3 py-2 ${isActive ? 'text-[#8B4513]' : 'text-[#a78e7e] hover:text-[#8B4513]'}`
+    `transition-all duration-300 font-semibold px-3 py-2 ${isActive ? 'text-[#8B4513]' : 'text-[#a78e7e] hover:text-[#8B4513]'}`
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -34,32 +44,54 @@ const Header = () => {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-[#f4ecd8]/95 backdrop-blur-md border-b border-[#DDBB99]">
-      <div className="flex h-20 w-full items-center justify-between px-6 sm:px-10 lg:px-16">
+    <header className={`sticky top-0 z-50 w-full transition-all duration-500 font-sans ${
+      isScrolled 
+        ? 'bg-[#f4ecd8]/80 backdrop-blur-xl border-b border-[#DDBB99]/50 shadow-sm' 
+        : 'bg-[#f4ecd8] border-b border-[#DDBB99]'
+    }`}>
+      <div className={`flex w-full items-center justify-between px-6 sm:px-10 lg:px-16 transition-all duration-500 ${
+        isScrolled ? 'h-16' : 'h-24'
+      }`}>
           
         <NavLink
           to="/"
-          className="flex items-center gap-3 hover:opacity-80 transition-opacity"
+          className="flex items-center gap-4 hover:opacity-80 transition-all group"
         >
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#8B4513]/10 text-[#8B4513]">
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
+          <div className={`relative flex items-center justify-center overflow-hidden rounded-xl bg-white/40 ring-1 ring-[#8B4513]/10 transition-all duration-500 ${
+            isScrolled ? 'h-10 w-10 p-1' : 'h-16 w-16 p-2'
+          }`}>
+            <img 
+              src="/logo.jpeg" 
+              alt="Sasanam Logo" 
+              className="h-full w-full object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-110"
+            />
           </div>
-          <span className="text-2xl font-bold text-[#8B4513] tracking-tight" style={{ fontFamily: 'sans-serif' }}>
-            Sasanam
-          </span>
+          <div className="flex flex-col">
+            <span className={`font-serif font-black text-[#8B4513] tracking-tight transition-all duration-500 ${
+              isScrolled ? 'text-xl' : 'text-3xl'
+            }`}>
+              சாசனம்
+            </span>
+            {!isScrolled && (
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[#8B4513]/40 -mt-1 scale-90 origin-left">
+                Sasanam History
+              </span>
+            )}
+          </div>
         </NavLink>
 
-        <nav className="flex items-center gap-x-2 lg:gap-x-6 text-sm font-semibold">
-          <NavLink to="/" className={navLinkClass}>Home</NavLink>
-          <NavLink to="/journal" className={navLinkClass}>Journal</NavLink>
-          <NavLink to="/archive" className={navLinkClass}>Archive</NavLink>
+        {/* Desktop Navigation */}
+        <nav className="hidden lg:flex items-center gap-x-2 lg:gap-x-6 text-sm font-semibold">
+          <NavLink to="/" className={navLinkClass}>முகப்பு</NavLink>
+          <NavLink to="/journal" className={navLinkClass}>இதழ்</NavLink>
+          <NavLink to="/archive" className={navLinkClass}>காப்பகம்</NavLink>
           
-          <div className="relative hidden xl:block" ref={dropdownRef}>
+          <div className="relative" ref={dropdownRef}>
             <button 
               onClick={() => setShowDonors(!showDonors)}
               className={`transition-colors duration-300 font-semibold px-3 py-2 flex items-center gap-1.5 ${showDonors ? 'text-[#8B4513]' : 'text-[#a78e7e] hover:text-[#8B4513]'}`}
             >
-              Top Donors
+              கொடையாளர்கள்
               <svg className={`w-4 h-4 transition-transform ${showDonors ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
             </button>
 
@@ -67,7 +99,7 @@ const Header = () => {
             {showDonors && (
               <div className="absolute right-0 top-full mt-2 w-80 rounded-xl bg-white shadow-xl border border-[#EEDDCC] z-50">
                 <div className="p-4">
-                  <h3 className="text-xs font-bold text-[#a78e7e] mb-3 uppercase tracking-wider border-b border-[#EEDDCC] pb-2">Recent Contributions</h3>
+                  <h3 className="text-xs font-bold text-[#a78e7e] mb-3 uppercase tracking-wider border-b border-[#EEDDCC] pb-2">பங்களிப்புகள்</h3>
                   <div className="flex flex-col gap-1 max-h-[300px] overflow-y-auto custom-scrollbar">
                     {dummyDonors.map((donor) => (
                       <div key={donor.id} className="flex items-center justify-between rounded-lg p-2 hover:bg-[#FAF9F6] transition-colors">
@@ -88,29 +120,64 @@ const Header = () => {
                     ))}
                   </div>
                   <NavLink to="/pricing" className="mt-4 w-full block rounded-lg bg-[#8B4513]/10 py-2.5 text-center text-xs font-bold text-[#8B4513] hover:bg-[#8B4513] hover:text-white transition-colors">
-                    Contribute Now
+                    இப்பொழுதே பங்களிக்கவும்
                   </NavLink>
                 </div>
               </div>
             )}
           </div>
 
-          <NavLink to="/library" className={`hidden xl:inline ${navLinkClass({ isActive: false })}`}>Library</NavLink>
-          <NavLink to="/community" className={`hidden xl:inline ${navLinkClass({ isActive: false })}`}>Community</NavLink>
-          <NavLink to="/pricing" className={`hidden xl:inline ${navLinkClass({ isActive: false })}`}>Pricing</NavLink>
+          <NavLink to="/library" className={`hidden xl:inline ${navLinkClass({ isActive: false })}`}>நூலகம்</NavLink>
+          <NavLink to="/community" className={`hidden xl:inline ${navLinkClass({ isActive: false })}`}>சமூகம்</NavLink>
           
           {!token && (
             <NavLink
               to="/login"
-              className="ml-4 rounded-lg bg-[#8B4513] px-5 py-2 text-sm font-bold text-white transition-opacity hover:opacity-90"
+              className="ml-4 rounded-lg bg-[#8B4513] px-6 py-2.5 text-sm font-bold text-white transition-all shadow-[0_4px_12px_rgba(139,69,19,0.2)] hover:shadow-[0_6px_20px_rgba(139,69,19,0.3)] hover:-translate-y-0.5 active:translate-y-0"
             >
-              Contact Us
+              தொடர்பு கொள்க
             </NavLink>
           )}
+        </nav>
+
+        {/* Mobile Menu Button */}
+        <button 
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="lg:hidden p-2 text-[#8B4513] hover:bg-[#8B4513]/5 rounded-lg transition-colors"
+        >
+          {isMobileMenuOpen ? (
+            <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+          ) : (
+            <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
+          )}
+        </button>
+      </div>
+
+      {/* Mobile Menu Overlay */}
+      <div className={`lg:hidden fixed inset-0 z-40 bg-[#f4ecd8] px-6 pt-24 pb-12 transition-all duration-500 ease-in-out transform ${
+        isMobileMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
+      }`}>
+        <nav className="flex flex-col gap-y-4 text-lg font-bold">
+          <NavLink to="/" onClick={() => setIsMobileMenuOpen(false)} className={navLinkClass}>முகப்பு</NavLink>
+          <NavLink to="/journal" onClick={() => setIsMobileMenuOpen(false)} className={navLinkClass}>இதழ்</NavLink>
+          <NavLink to="/archive" onClick={() => setIsMobileMenuOpen(false)} className={navLinkClass}>காப்பகம்</NavLink>
+          <NavLink to="/library" onClick={() => setIsMobileMenuOpen(false)} className={navLinkClass}>நூலகம்</NavLink>
+          <NavLink to="/community" onClick={() => setIsMobileMenuOpen(false)} className={navLinkClass}>சமூகம்</NavLink>
+          <NavLink to="/pricing" onClick={() => setIsMobileMenuOpen(false)} className={navLinkClass}>கொடை</NavLink>
+          
+          <div className="mt-8 pt-8 border-t border-[#8B4513]/10">
+            <NavLink
+              to="/login"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="w-full inline-block rounded-xl bg-[#8B4513] px-6 py-4 text-center text-white font-black uppercase tracking-widest shadow-xl"
+            >
+              தொடர்பு கொள்க
+            </NavLink>
+          </div>
         </nav>
       </div>
     </header>
   )
 }
 
-export default Header
+export default Header;

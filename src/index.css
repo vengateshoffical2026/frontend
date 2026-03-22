@@ -1,1 +1,22 @@
 @import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-serif: "EB Garamond", serif;
+    --font-sans: "Anek Tamil", sans-serif;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    @apply bg-[#f4ecd8] text-[#4A3B32];
+  }
+
+  h1, h2, h3, h4, h5, h6, .font-serif {
+    font-family: var(--font-serif);
+  }
+}
+
+@theme {
+  --font-serif: "EB Garamond", serif;
+  --font-sans: "Anek Tamil", sans-serif;
+}
