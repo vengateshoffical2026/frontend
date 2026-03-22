@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import { createOrderAPI, verifyPaymentAPI } from '../controllers/payment'
+import { createOrderAPI, verifyPaymentAPI } from '../controllers/subscriptionPayment'
 
 export const useCreateOrder = () => {
   return useMutation({

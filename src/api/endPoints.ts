@@ -1,4 +1,4 @@
-const BaSE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3001'
+const BaSE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3000'
 
 
 export const API_ENDPOINTS = {
@@ -6,8 +6,12 @@ export const API_ENDPOINTS = {
   SIGNUP: `${BaSE_URL}/auth/signup`,
   LOGIN: `${BaSE_URL}/auth/login`,
   },
-  PAYMENT :{
-    CREATE_ORDER: `${BaSE_URL}/razorpay/order`,
-    VERIFY_PAYMENT: `${BaSE_URL}/razorpay/verify`,
-  }
-} 
+  SUBSCRIPTION_PAYMENT :{
+    CREATE_ORDER: `${BaSE_URL}/subscription-payment/order`,
+    VERIFY_PAYMENT: `${BaSE_URL}/subscription-payment/verify`,
+  },
+DONATION_PAYMENT :{
+  CREATE_ORDER: `${BaSE_URL}/donation-payment/order`,
+  VERIFY_PAYMENT: `${BaSE_URL}/donation-payment/verify`,
+},
+}

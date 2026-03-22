@@ -8,11 +8,11 @@ export interface CreateOrderData {
 }
 
 export const createOrderAPI = async (payload: CreateOrderData) => {
-  const response = await apiClient.post(API_ENDPOINTS.PAYMENT.CREATE_ORDER, payload)
+  const response = await apiClient.post(API_ENDPOINTS.SUBSCRIPTION_PAYMENT.CREATE_ORDER, payload)
   return response.data
 }
 
 export const verifyPaymentAPI = async (payload: any) => {
-  const response = await apiClient.post(API_ENDPOINTS.PAYMENT.VERIFY_PAYMENT, payload);
+  const response = await apiClient.post(API_ENDPOINTS.SUBSCRIPTION_PAYMENT.VERIFY_PAYMENT, payload);
   return response.data; 
 }

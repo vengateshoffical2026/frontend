@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import Header from '../components/Header'
-import { useCreateOrder, useVerifyPayment } from '../api/hooks/paymentQuery'
+import { useCreateOrder, useVerifyPayment } from '../api/hooks/subscriptionPaymentQuery'
 import { toast } from 'react-toastify'
+import { useCreateDonationOrder, useVerifyDonationPayment } from '../api/hooks/donationQuery'
 
 declare global {
   interface Window {
@@ -12,10 +13,14 @@ declare global {
 const Pricing = () => {
   const [selectedProject, setSelectedProject] = useState('Chola Temple Inscription')
   const { mutateAsync: createOrderMutation, isPending: isCreatingOrder } = useCreateOrder()
-  const { mutateAsync: verifyPaymentMutation, isPending: isVerifyingPayment } = useVerifyPayment()
+  const { mutateAsync: verifyPaymentMutation, isPending: isVerifyingPayment } = useVerifyPayment();
+  const {mutateAsync: createDonationOrder,isPending: isCreatingDonationOrder} = useCreateDonationOrder();
+  const {mutateAsync: verifyDonationPayment,isPending: isVerifyingDonationPayment} = useVerifyDonationPayment();
+  const [donationAmount,setDonationAmount] = useState<number | undefined>(undefined);
+
   const handleUpgradeClick = async () => {
     let payload:any = {
-      amount: 300,
+      amount: 100,
       currency: 'INR',
       receipt: 'receipt_' + Date.now().toString()
     }
@@ -69,7 +74,66 @@ const Pricing = () => {
       toast.error('Failed to create order')
     }
   }
-
+  const handleDonation = async () => {
+      if(!donationAmount || donationAmount <= 0){ 
+        toast.error('Please enter a valid donation amount')
+        return;
+      }
+      let payload:any = {
+        amount: donationAmount,
+        currency: 'INR',
+        receipt: 'receipt_' + Date.now().toString()
+      }
+      try {
+        const order = await createDonationOrder(payload)
+        console.log('🚀 Donation order created:', order?.data?.order)
+        const options = {
+          key: 'rzp_live_SGteQC3JSxjhtP',
+          amount: order?.data?.order?.amount ?? donationAmount,
+          currency: order?.data?.order?.currency ?? 'INR',
+          order_id: order?.data?.order?.id || null,
+          name: 'Sasanam',
+          description: `Donation for ${selectedProject}`,
+          handler: async function (response: any) {
+            if (response.razorpay_payment_id) {
+              toast.success('Donation successful!')
+              try {
+                const verificationPayload = {
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_order_id: response.razorpay_order_id || null,
+                  razorpay_signature: response.razorpay_signature || null
+                }
+                const res = await verifyDonationPayment(verificationPayload)
+                console.log('✅ Donation verification response:', res)
+                if (response.razorpay_signature) {
+                  toast.success('Donation verified successfully!')
+                } else {
+                  toast.warning('Donation completed but signature missing - manual verification may be needed')
+                }
+              } catch (err) {
+                console.error('❌ Donation verification error:', err)
+                toast.error('Donation verification failed - please contact support')
+              }
+            } else {
+              toast.error('Donation failed')
+            }
+          },
+          prefill: {
+            name: 'User Name',
+            email: 'user@example.com',
+          },
+          theme: {
+            color: '#2e8578',
+          },
+        }
+        console.log('🚀 Initializing Razorpay with options:', options)
+        const rzp = new window.Razorpay(options)
+        rzp.open()
+      } catch (error) {
+        console.error('❌ Donation order creation failed:', error)
+        toast.error('Failed to create donation order')
+      }
+  }
   return (
     <main className="min-h-screen bg-[#e4d3be] bg-cover bg-center" style={{ backgroundImage: 'url(/homebg.png)' }}>
       <div className="min-h-screen bg-[#f1e4d7]/75">
@@ -142,20 +206,6 @@ const Pricing = () => {
               <h3 className="text-2xl sm:text-3xl font-bold text-[#4f1f1f] mb-6">Fund a Specific Projects</h3>
               
               <div className="flex-1 space-y-4 mb-8">
-                <div>
-                  <label className="text-xs sm:text-sm font-semibold text-[#5c2a2a] block mb-2">
-                    Select the Project
-                  </label>
-                  <select 
-                    value={selectedProject}
-                    onChange={(e) => setSelectedProject(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg border border-[#b8a88a] bg-white text-sm text-[#5c2a2a] focus:outline-none focus:ring-2 focus:ring-[#2e8578]"
-                  >
-                    <option>Chola Temple Inscription</option>
-                    <option>Pallava Script Study</option>
-                    <option>Ancient Manuscripts</option>
-                  </select>
-                </div>
 
                 <div>
                   <label className="text-xs sm:text-sm font-semibold text-[#5c2a2a] block mb-2">
@@ -163,19 +213,23 @@ const Pricing = () => {
                   </label>
                   <div className="flex gap-2">
                     <input 
-                      type="text" 
+                      type="number"
+                      min="1"
                       placeholder="₹45000"
                       className="flex-1 px-3 py-2 rounded-lg border border-[#b8a88a] bg-white text-sm text-[#5c2a2a] placeholder:text-[#9f8d79] focus:outline-none focus:ring-2 focus:ring-[#2e8578]"
+                      onChange={(e) => {
+                        const rupees = parseFloat(e.target.value)
+                        setDonationAmount(isNaN(rupees) ? undefined : Math.round(rupees * 100))
+                      }}
                     />
-                    <span className="px-3 py-2 bg-[#e8dcc4] text-[#2e8578] rounded-lg text-xs sm:text-sm font-semibold">
-                      Goan
-                    </span>
                   </div>
                   <p className="text-xs text-[#9f8d79] mt-1">₹45000/100000</p>
                 </div>
               </div>
 
-              <button className="w-full rounded-lg bg-[#2e8578] py-3 text-base sm:text-lg font-semibold text-white hover:bg-[#256a5e] transition">
+              <button className="w-full rounded-lg bg-[#2e8578] py-3 text-base sm:text-lg font-semibold text-white hover:bg-[#256a5e] transition"
+              onClick={()=>{handleDonation()}}
+              >
                 Support Project
               </button>
             </div>
