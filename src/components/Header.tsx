@@ -34,8 +34,8 @@ const Header = () => {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-[#FAF9F6]/90 backdrop-blur-md border-b border-[#EEDDCC]">
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-50 w-full bg-[#f4ecd8]/95 backdrop-blur-md border-b border-[#DDBB99]">
+      <div className="flex h-20 w-full items-center justify-between px-6 sm:px-10 lg:px-16">
           
         <NavLink
           to="/"

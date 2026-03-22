@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 const Footer = () => {
   return (
     <footer className="w-full bg-[#8B4513] text-white pt-16 pb-8">
-      <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
+      <div className="w-full px-6 sm:px-10 lg:px-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-24 mb-16">
           <div className="flex flex-col gap-4">
             <h2 className="text-2xl font-bold tracking-tight text-white mb-2" style={{ fontFamily: 'serif' }}>About Damarika</h2>
