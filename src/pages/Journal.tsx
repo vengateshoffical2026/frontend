@@ -2,19 +2,21 @@ import Header from '../components/Header'
 
 const Journal = () => {
   return (
-    <main className="min-h-screen bg-[#e4d3be] bg-cover bg-center" style={{ backgroundImage: 'url(/homebg.png)' }}>
-      <div className="min-h-screen bg-[#f1e4d7]/75">
-        <div className="mx-auto flex min-h-screen w-full max-w-[1600px] flex-col px-5 pb-0 pt-2 sm:px-6 lg:px-7">
-          <div className="p-5">
-            <Header />
-          </div>
-          <section className="mt-8 flex flex-col items-center justify-center flex-1">
-            <div className="rounded-2xl bg-[#d5ceb9]/95 p-8 shadow-lg text-center max-w-md">
-              <h1 className="text-4xl font-bold text-[#4f1f1f] mb-4">Journal</h1>
-              <p className="text-lg text-[#5c2a2a]">Coming Soon...</p>
+    <main className="min-h-screen bg-[#e4d3be] font-sans text-[#4f1f1f] bg-cover bg-center flex flex-col" style={{ backgroundImage: 'url(/homebg.png)' }}>
+      <div className="fixed inset-0 z-0 bg-[#f1e4d7]/70 backdrop-blur-[2px]"></div>
+      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl flex-col px-5 sm:px-6 lg:px-8">
+        <Header />
+        <section className="mt-8 flex flex-col items-center justify-center flex-1 pb-16">
+          <div className="grid grid-cols-1 place-items-center w-full">
+            <div className="rounded-3xl bg-[#d5ceb9]/80 p-12 shadow-[0_8px_32px_rgba(61,37,22,0.15)] backdrop-blur-xl border border-white/30 text-center max-w-md w-full transition-all duration-300 hover:-translate-y-2 hover:bg-[#d5ceb9]/90 hover:shadow-[0_12px_40px_rgba(61,37,22,0.2)]">
+              <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-[#c5bca5]/50 text-[#7e4747] ring-1 ring-white/50 shadow-inner">
+                <svg className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+              </div>
+              <h1 className="text-4xl font-extrabold tracking-tight text-[#4f1f1f] mb-4 drop-shadow-sm">Journal</h1>
+              <p className="text-lg text-[#5c2a2a] font-semibold">Documenting discoveries.<br/>Coming Soon...</p>
             </div>
-          </section>
-        </div>
+          </div>
+        </section>
       </div>
     </main>
   )

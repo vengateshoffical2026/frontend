@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Header from '../components/Header'
+import Footer from '../components/Footer'
 import { useCreateOrder, useVerifyPayment } from '../api/hooks/subscriptionPaymentQuery'
 import { toast } from 'react-toastify'
 import { useCreateDonationOrder, useVerifyDonationPayment } from '../api/hooks/donationQuery'
@@ -11,15 +12,15 @@ declare global {
 }
 
 const Pricing = () => {
-  const [selectedProject, setSelectedProject] = useState('Chola Temple Inscription')
+  const [selectedProject] = useState('Chola Temple Inscription')
   const { mutateAsync: createOrderMutation, isPending: isCreatingOrder } = useCreateOrder()
-  const { mutateAsync: verifyPaymentMutation, isPending: isVerifyingPayment } = useVerifyPayment();
-  const {mutateAsync: createDonationOrder,isPending: isCreatingDonationOrder} = useCreateDonationOrder();
-  const {mutateAsync: verifyDonationPayment,isPending: isVerifyingDonationPayment} = useVerifyDonationPayment();
-  const [donationAmount,setDonationAmount] = useState<number | undefined>(undefined);
+  const { mutateAsync: verifyPaymentMutation } = useVerifyPayment();
+  const { mutateAsync: createDonationOrder } = useCreateDonationOrder();
+  const { mutateAsync: verifyDonationPayment } = useVerifyDonationPayment();
+  const [donationAmount, setDonationAmount] = useState<number | undefined>(undefined);
 
   const handleUpgradeClick = async () => {
-    let payload:any = {
+    let payload: any = {
       amount: 100,
       currency: 'INR',
       receipt: 'receipt_' + Date.now().toString()
@@ -64,7 +65,7 @@ const Pricing = () => {
           email: 'user@example.com',
         },
         theme: {
-          color: '#2e8578',
+          color: '#b78b61', // vintage accent
         },
       }
       console.log('🚀 Initializing Razorpay with options:', options)
@@ -74,178 +75,178 @@ const Pricing = () => {
       toast.error('Failed to create order')
     }
   }
+
   const handleDonation = async () => {
-      if(!donationAmount || donationAmount <= 0){ 
-        toast.error('Please enter a valid donation amount')
-        return;
-      }
-      let payload:any = {
-        amount: donationAmount,
-        currency: 'INR',
-        receipt: 'receipt_' + Date.now().toString()
-      }
-      try {
-        const order = await createDonationOrder(payload)
-        console.log('🚀 Donation order created:', order?.data?.order)
-        const options = {
-          key: 'rzp_live_SGteQC3JSxjhtP',
-          amount: order?.data?.order?.amount ?? donationAmount,
-          currency: order?.data?.order?.currency ?? 'INR',
-          order_id: order?.data?.order?.id || null,
-          name: 'Sasanam',
-          description: `Donation for ${selectedProject}`,
-          handler: async function (response: any) {
-            if (response.razorpay_payment_id) {
-              toast.success('Donation successful!')
-              try {
-                const verificationPayload = {
-                  razorpay_payment_id: response.razorpay_payment_id,
-                  razorpay_order_id: response.razorpay_order_id || null,
-                  razorpay_signature: response.razorpay_signature || null
-                }
-                const res = await verifyDonationPayment(verificationPayload)
-                console.log('✅ Donation verification response:', res)
-                if (response.razorpay_signature) {
-                  toast.success('Donation verified successfully!')
-                } else {
-                  toast.warning('Donation completed but signature missing - manual verification may be needed')
-                }
-              } catch (err) {
-                console.error('❌ Donation verification error:', err)
-                toast.error('Donation verification failed - please contact support')
+    if (!donationAmount || donationAmount <= 0) {
+      toast.error('Please enter a valid donation amount')
+      return;
+    }
+    let payload: any = {
+      amount: donationAmount,
+      currency: 'INR',
+      receipt: 'receipt_' + Date.now().toString()
+    }
+    try {
+      const order = await createDonationOrder(payload)
+      console.log('🚀 Donation order created:', order?.data?.order)
+      const options = {
+        key: 'rzp_live_SGteQC3JSxjhtP',
+        amount: order?.data?.order?.amount ?? donationAmount,
+        currency: order?.data?.order?.currency ?? 'INR',
+        order_id: order?.data?.order?.id || null,
+        name: 'Sasanam',
+        description: `Donation for ${selectedProject}`,
+        handler: async function (response: any) {
+          if (response.razorpay_payment_id) {
+            toast.success('Donation successful!')
+            try {
+              const verificationPayload = {
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_order_id: response.razorpay_order_id || null,
+                razorpay_signature: response.razorpay_signature || null
               }
-            } else {
-              toast.error('Donation failed')
+              const res = await verifyDonationPayment(verificationPayload)
+              console.log('✅ Donation verification response:', res)
+              if (response.razorpay_signature) {
+                toast.success('Donation verified successfully!')
+              } else {
+                toast.warning('Donation completed but signature missing - manual verification may be needed')
+              }
+            } catch (err) {
+              console.error('❌ Donation verification error:', err)
+              toast.error('Donation verification failed - please contact support')
             }
-          },
-          prefill: {
-            name: 'User Name',
-            email: 'user@example.com',
-          },
-          theme: {
-            color: '#2e8578',
-          },
-        }
-        console.log('🚀 Initializing Razorpay with options:', options)
-        const rzp = new window.Razorpay(options)
-        rzp.open()
-      } catch (error) {
-        console.error('❌ Donation order creation failed:', error)
-        toast.error('Failed to create donation order')
+          } else {
+            toast.error('Donation failed')
+          }
+        },
+        prefill: {
+          name: 'User Name',
+          email: 'user@example.com',
+        },
+        theme: {
+          color: '#b78b61',
+        },
       }
+      console.log('🚀 Initializing Razorpay with options:', options)
+      const rzp = new window.Razorpay(options)
+      rzp.open()
+    } catch (error) {
+      console.error('❌ Donation order creation failed:', error)
+      toast.error('Failed to create donation order')
+    }
   }
+
   return (
-    <main className="min-h-screen bg-[#e4d3be] bg-cover bg-center" style={{ backgroundImage: 'url(/homebg.png)' }}>
-      <div className="min-h-screen bg-[#f1e4d7]/75">
-        <div className="mx-auto flex min-h-screen w-full max-w-[1600px] flex-col px-5 pb-0 pt-2 sm:px-6 lg:px-7">
-          <div className="p-5">
-            <Header />
+    <main className="min-h-screen bg-[#e4d3be] font-sans text-[#4f1f1f] bg-cover bg-center flex flex-col" style={{ backgroundImage: 'url(/homebg.png)' }}>
+      <div className="fixed inset-0 z-0 bg-[#f1e4d7]/70 backdrop-blur-[2px]"></div>
+      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl flex-col px-5 sm:px-6 lg:px-8">
+        <Header />
+
+        {/* Hero Section */}
+        <section className="mt-12 text-center px-4">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-[#4f1f1f] mb-6">
+            Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#b78b61] to-[#7e4747]">Plan</span>
+          </h1>
+          <p className="text-base sm:text-lg lg:text-xl text-[#5c2a2a] max-w-2xl mx-auto font-medium">
+            Unlock exclusive tools and resources to accelerate your historical research.
+          </p>
+        </section>
+
+        {/* Pricing Cards - using Grid */}
+        <section className="mt-16 mb-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4 items-stretch">
+          
+          {/* Card 1: Free Explorer */}
+          <div className="group rounded-3xl bg-[#d5ceb9]/80 p-8 shadow-[0_8px_32px_rgba(61,37,22,0.1)] backdrop-blur-xl border border-white/30 flex flex-col transition-all duration-300 hover:bg-[#d5ceb9]/90 hover:-translate-y-2 hover:shadow-[0_12px_40px_rgba(61,37,22,0.15)] ring-1 ring-white/20">
+            <h3 className="text-2xl font-bold text-[#4f1f1f] mb-2">Free Explorer</h3>
+            <p className="text-3xl font-black text-[#b78b61] mb-8 drop-shadow-sm">Free</p>
+            
+            <ul className="flex-1 space-y-4 mb-10">
+              <li className="flex items-start gap-3">
+                <span className="text-[#2e8578] font-bold text-lg leading-none mt-1">✓</span>
+                <span className="text-sm text-[#4f1f1f] font-semibold">Basic Archive Access</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-[#2e8578] font-bold text-lg leading-none mt-1">✓</span>
+                <span className="text-sm text-[#4f1f1f] font-semibold">Read Issues from the Journal</span>
+              </li>
+            </ul>
+
+            <button className="w-full rounded-xl bg-[#c5bca5] py-3.5 text-sm font-bold text-[#5c2a2a] transition cursor-default border border-white/20 shadow-inner">
+              Current Plan
+            </button>
           </div>
 
-          {/* Hero Section */}
-          <section className="mt-8 text-center">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#4f1f1f] mb-2 lg:mb-3">
-              Choose Your Plan
-            </h1>
-            <p className="text-base sm:text-lg lg:text-xl text-[#5c2a2a] max-w-2xl mx-auto">
-              Unlock Exclusive Tools and resources to accelerate your historical Research
+          {/* Card 2: Contribute Once */}
+          <div className="relative group rounded-3xl bg-[#f1e4d7]/90 p-8 shadow-[0_12px_40px_rgba(61,37,22,0.15)] backdrop-blur-xl border-2 border-[#b78b61] flex flex-col transition-all duration-300 hover:-translate-y-2 lg:-mt-4">
+            <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-[#b78b61] to-[#7e4747] px-4 py-1.5 text-xs font-black tracking-widest text-[#f1e4d7] uppercase shadow-lg">Recommended</div>
+            <h3 className="text-2xl font-bold text-[#4f1f1f] mb-2">Contribute Once</h3>
+            <p className="text-3xl font-black text-[#b78b61] mb-8 flex items-baseline gap-1 drop-shadow-sm">
+              ₹3000<span className="text-sm font-bold text-[#7e4747]">/3 years</span>
             </p>
-          </section>
-
-          {/* Pricing Cards */}
-          <section className="mt-12 mb-8 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-center">
             
-            {/* Card 1: Free Explorer */}
-            <div className="rounded-2xl bg-[#ddd6c4]/95 p-6 sm:p-8 shadow-lg w-full lg:w-80 flex flex-col">
-              <h3 className="text-2xl sm:text-3xl font-bold text-[#4f1f1f] mb-2">Free Explorer</h3>
-              <p className="text-2xl sm:text-3xl font-bold text-[#2e8578] mb-6">Free</p>
-              
-              <ul className="flex-1 space-y-3 mb-8">
-                <li className="flex items-start gap-3">
-                  <span className="text-[#2e8578] font-bold text-xl leading-none mt-0.5">✓</span>
-                  <span className="text-sm sm:text-base text-[#5c2a2a]">Basic Archive Access</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-[#2e8578] font-bold text-xl leading-none mt-0.5">✓</span>
-                  <span className="text-sm sm:text-base text-[#5c2a2a]">Can See Issues from the Journal</span>
-                </li>
-              </ul>
+            <ul className="flex-1 space-y-4 mb-10">
+              <li className="flex items-start gap-3">
+                <span className="text-[#2e8578] font-bold text-lg leading-none mt-1">✓</span>
+                <span className="text-sm text-[#4f1f1f] font-bold">Full Archive Access</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-[#2e8578] font-bold text-lg leading-none mt-1">✓</span>
+                <span className="text-sm text-[#4f1f1f] font-bold">Download Soft &amp; Hard Copies</span>
+              </li>
+               <li className="flex items-start gap-3">
+                <span className="text-[#2e8578] font-bold text-lg leading-none mt-1">✓</span>
+                <span className="text-sm text-[#4f1f1f] font-bold">Priority Early Access</span>
+              </li>
+            </ul>
 
-              <button className="w-full rounded-lg bg-[#2e8578] py-3 text-base sm:text-lg font-semibold text-white hover:bg-[#256a5e] transition">
-                Current Plan
-              </button>
-            </div>
+            <button 
+              className={`w-full rounded-xl bg-[#2e8578] py-3.5 text-sm font-bold text-white shadow-lg transition-all hover:bg-[#256a5e] hover:shadow-xl ${isCreatingOrder ? 'cursor-not-allowed opacity-70' : ''}`}
+              onClick={handleUpgradeClick}
+              disabled={isCreatingOrder}
+            >
+              {isCreatingOrder ? 'Creating Order...' : 'Upgrade Now'}
+            </button>
+          </div>
 
-            {/* Card 2: Contribute Once */}
-            <div className="rounded-2xl bg-[#ddd6c4]/95 p-6 sm:p-8 shadow-lg w-full lg:w-80 flex flex-col">
-              <h3 className="text-2xl sm:text-3xl font-bold text-[#4f1f1f] mb-2">Contribute Once</h3>
-              <p className="text-2xl sm:text-3xl font-bold text-[#2e8578] mb-6">₹3000/3years</p>
-              
-              <ul className="flex-1 space-y-3 mb-8">
-                <li className="flex items-start gap-3">
-                  <span className="text-[#2e8578] font-bold text-xl leading-none mt-0.5">✓</span>
-                  <span className="text-sm sm:text-base text-[#5c2a2a]">Archive Access</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-[#2e8578] font-bold text-xl leading-none mt-0.5">✓</span>
-                  <span className="text-sm sm:text-base text-[#5c2a2a]">Download Soft copy & Hard copy</span>
-                </li>
-              </ul>
-
-              <button 
-                className={`w-full rounded-lg bg-[#2e8578] py-3 text-base sm:text-lg font-semibold text-white hover:bg-[#256a5e] transition ${isCreatingOrder ? 'cursor-not-allowed opacity-70' : ''}`}
-                onClick={handleUpgradeClick}
-                disabled={isCreatingOrder}
-              >
-                {isCreatingOrder ? 'Creating Order...' : 'Upgrade Now'}
-              </button>
-            </div>
-
-            {/* Card 3: Fund a Specific Projects */}
-            <div className="rounded-2xl bg-[#ddd6c4]/95 p-6 sm:p-8 shadow-lg w-full lg:w-80 flex flex-col">
-              <h3 className="text-2xl sm:text-3xl font-bold text-[#4f1f1f] mb-6">Fund a Specific Projects</h3>
-              
-              <div className="flex-1 space-y-4 mb-8">
-
-                <div>
-                  <label className="text-xs sm:text-sm font-semibold text-[#5c2a2a] block mb-2">
-                    Funding Amount
-                  </label>
-                  <div className="flex gap-2">
-                    <input 
-                      type="number"
-                      min="1"
-                      placeholder="₹45000"
-                      className="flex-1 px-3 py-2 rounded-lg border border-[#b8a88a] bg-white text-sm text-[#5c2a2a] placeholder:text-[#9f8d79] focus:outline-none focus:ring-2 focus:ring-[#2e8578]"
-                      onChange={(e) => {
-                        const rupees = parseFloat(e.target.value)
-                        setDonationAmount(isNaN(rupees) ? undefined : Math.round(rupees * 100))
-                      }}
-                    />
-                  </div>
-                  <p className="text-xs text-[#9f8d79] mt-1">₹45000/100000</p>
-                </div>
+          {/* Card 3: Fund a Specific Project */}
+          <div className="group rounded-3xl bg-[#d5ceb9]/80 p-8 shadow-[0_8px_32px_rgba(61,37,22,0.1)] backdrop-blur-xl border border-white/30 flex flex-col transition-all duration-300 hover:bg-[#d5ceb9]/90 hover:-translate-y-2 hover:shadow-[0_12px_40px_rgba(61,37,22,0.15)] ring-1 ring-white/20">
+            <h3 className="text-xl font-bold text-[#4f1f1f] mb-6">Fund a Specific Project</h3>
+            
+            <div className="flex-1 mb-10 flex flex-col justify-center">
+              <label className="text-sm font-bold text-[#4f1f1f] block mb-3">
+                Donation Amount (₹)
+              </label>
+              <div className="relative">
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#7e4747] font-bold">₹</span>
+                <input 
+                  type="number"
+                  min="1"
+                  placeholder="45000"
+                  className="w-full pl-8 pr-4 py-3.5 rounded-xl border border-white/40 bg-white/50 text-[#4f1f1f] placeholder:text-[#8a7f6a] focus:outline-none focus:border-[#2e8578] focus:ring-2 focus:ring-[#2e8578]/50 transition-all font-bold shadow-inner"
+                  onChange={(e) => {
+                    const rupees = parseFloat(e.target.value)
+                    setDonationAmount(isNaN(rupees) ? undefined : Math.round(rupees * 100))
+                  }}
+                />
               </div>
-
-              <button className="w-full rounded-lg bg-[#2e8578] py-3 text-base sm:text-lg font-semibold text-white hover:bg-[#256a5e] transition"
-              onClick={()=>{handleDonation()}}
-              >
-                Support Project
-              </button>
+              <p className="text-xs text-[#7e4747] mt-3 font-bold flex items-center gap-1.5">
+                <svg className="w-3.5 h-3.5 text-[#2e8578]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                Target: ₹1,00,000 for {selectedProject}
+              </p>
             </div>
-          </section>
 
-        </div>
+            <button 
+              className="w-full rounded-xl border-2 border-[#b78b61] bg-transparent py-3.5 text-sm font-bold text-[#b78b61] transition-all hover:bg-[#b78b61] hover:text-[#f1e4d7] hover:shadow-lg"
+              onClick={()=>{handleDonation()}}
+            >
+              Support Project
+            </button>
+          </div>
+        </section>
 
         {/* Footer */}
-        <footer className="mt-4 rounded-t-xl bg-[#cfb793]/95 px-4 py-3 sm:px-6 sm:py-4">
-          <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs font-semibold text-[#4f1f1f] sm:gap-x-8 sm:text-sm lg:gap-x-12 lg:text-base">
-            <span className="cursor-pointer hover:underline">Contact Us</span>
-            <span className="cursor-pointer hover:underline">Terms of service</span>
-            <span className="cursor-pointer hover:underline">Privacy &amp; Policy</span>
-            <span className="cursor-pointer hover:underline">About</span>
-          </div>
-        </footer>
+        <Footer />
       </div>
     </main>
   )
