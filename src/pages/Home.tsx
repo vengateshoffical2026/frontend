@@ -1,4 +1,6 @@
 import { useScrollReveal } from "../hooks/useScrollReveal";
+import { dummyDonors } from "../data/donors";
+import { maskUpi } from "../utils/format";
 
 const Home = () => {
   const heroReveal = useScrollReveal();
@@ -13,15 +15,34 @@ const Home = () => {
     }`;
 
   return (
-    <main
-      className="min-h-screen bg-[#f4ecd8] font-sans selection:bg-[#8B4513]/30 selection:text-[#8B4513]"
-    >
+    <main className="min-h-screen bg-[#f4ecd8] font-sans selection:bg-[#8B4513]/30 selection:text-[#8B4513]">
       <div className="min-h-screen bg-white/30 backdrop-blur-[2px]">
-        <div className="mx-auto flex min-h-screen w-full max-w-[1600px] flex-col px-5 sm:px-6 lg:px-8">
-          
+        {/* ── Donor Infinite Scroller ── */}
+        <div className="w-full bg-[#8B4513] py-3 overflow-hidden border-y border-[#8B4513]/20 relative z-10">
+          <div className="flex whitespace-nowrap animate-marquee hover:[animation-play-state:paused]">
+            {[...dummyDonors, ...dummyDonors].map((donor, idx) => (
+              <div
+                key={`${donor.id}-${idx}`}
+                className="flex items-center gap-4 mx-8 text-white/90"
+              >
+                <div className="h-2 w-2 rounded-full bg-white/40" />
+                <span className="text-xs font-black uppercase tracking-widest">
+                  {donor.username || maskUpi(donor.upiId)}
+                </span>
+                <span className="font-serif font-black text-white px-2 py-0.5 rounded bg-white/10">
+                  ₹{donor.amount}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="mx-auto flex w-full max-w-[1600px] flex-col px-5 sm:px-6 lg:px-8">
+          {/* Main Hero Card is below */}
+
 
           {/* ── Main CSS Grid layout ── */}
-          <section className="mt-8 mb-20 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-8 lg:items-start">
+          <section className="mt-4 mb-20 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-8 lg:items-start">
             
             {/* ══ LEFT COLUMN (Takes 7/12 cols on large screens) ════════════ */}
             <div className="flex flex-col gap-8 lg:col-span-7 xl:col-span-8">
