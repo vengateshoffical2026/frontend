@@ -45,12 +45,12 @@ const Header = () => {
   }, [isMobileMenuOpen])
 
   return (
-    <header className={`sticky top-0 z-[100] w-full transition-all duration-500 font-sans ${
+    <header className={`fixed top-0 left-0 right-0 z-[1000] w-full transition-all duration-500 font-sans ${
       isScrolled 
-        ? 'bg-[#f4ecd8]/90 backdrop-blur-xl border-b border-[#DDBB99]/50 shadow-[0_2px_15px_rgba(139,69,19,0.05)]' 
+        ? 'bg-[#f4ecd8] border-b border-[#DDBB99]/50 shadow-lg' 
         : 'bg-[#f4ecd8] border-b border-[#DDBB99]'
     }`}>
-      <div className={`flex w-full items-center justify-between px-6 sm:px-10 lg:px-16 transition-all duration-500 ${
+      <div className={`relative z-[1001] flex w-full items-center justify-between px-6 sm:px-10 lg:px-16 transition-all duration-500 ${
         isScrolled ? 'h-16' : 'h-24'
       }`}>
           
@@ -58,7 +58,7 @@ const Header = () => {
           to="/"
           className="flex items-center gap-4 hover:opacity-80 transition-all group"
         >
-          <div className={`relative flex items-center justify-center overflow-hidden rounded-xl bg-white/40 ring-1 ring-[#8B4513]/10 transition-all duration-500 shadow-inner ${
+          <div className={`relative flex items-center justify-center overflow-hidden rounded-xl bg-white/60 ring-1 ring-[#8B4513]/10 transition-all duration-500 shadow-inner ${
             isScrolled ? 'h-10 w-10 p-1.5' : 'h-16 w-16 p-2.5'
           }`}>
             <img 
@@ -68,8 +68,8 @@ const Header = () => {
             />
           </div>
           <div className="flex flex-col">
-            <span className={`font-serif font-black text-[#8B4513] tracking-widest transition-all duration-500 uppercase ${
-              isScrolled ? 'text-xl' : 'text-3xl'
+            <span className={`font-serif font-black text-[#8B4513] tracking-[0.15em] transition-all duration-500 uppercase ${
+              isScrolled ? 'text-lg' : 'text-3xl'
             }`}>
               Sasanam
             </span>
@@ -98,13 +98,13 @@ const Header = () => {
 
             {/* Dropdown Menu */}
             {showDonors && (
-              <div className="absolute right-0 top-full mt-2 w-80 rounded-2xl bg-[#fffaf0] shadow-2xl border border-[#DDBB99]/40 z-[110] p-4">
+              <div className="absolute right-0 top-full mt-2 w-80 rounded-2xl bg-white shadow-[0_20px_50px_rgba(139,69,19,0.15)] border border-[#DDBB99]/40 z-[1002] p-5">
                 <h3 className="text-[10px] font-black text-[#a78e7e] mb-4 uppercase tracking-[0.2em] border-b border-[#DDBB99]/30 pb-2">Recent Contributions</h3>
                 <div className="flex flex-col gap-2 max-h-[300px] overflow-y-auto custom-scrollbar">
                   {dummyDonors.map((donor) => (
-                    <div key={donor.id} className="flex items-center justify-between rounded-xl p-3 bg-white/40 ring-1 ring-[#8B4513]/5 hover:bg-white/60 transition-colors">
+                    <div key={donor.id} className="flex items-center justify-between rounded-xl p-3 bg-[#FAF9F6] ring-1 ring-[#8B4513]/5 hover:bg-white hover:shadow-sm transition-all">
                       <div className="flex items-center gap-3">
-                        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#8B4513]/10 text-[#8B4513] font-bold text-xs ring-1 ring-[#8B4513]/20 shadow-sm">
+                        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#8B4513]/10 text-[#8B4513] font-bold text-xs ring-1 ring-[#8B4513]/20">
                           {donor.username ? donor.username.charAt(0).toUpperCase() : <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>}
                         </div>
                         <div className="flex flex-col">
@@ -119,7 +119,7 @@ const Header = () => {
                     </div>
                   ))}
                 </div>
-                <NavLink to="/pricing" className="mt-5 w-full block rounded-xl bg-[#8B4513] py-3 text-center text-xs font-black text-white hover:bg-[#a0522d] transition-all shadow-lg hover:-translate-y-0.5">
+                <NavLink to="/pricing" className="mt-5 w-full block rounded-xl bg-[#8B4513] py-3.5 text-center text-xs font-black text-white hover:bg-[#a0522d] transition-all shadow-lg hover:-translate-y-0.5 uppercase tracking-widest">
                   CONTRIBUTE NOW
                 </NavLink>
               </div>
@@ -142,22 +142,23 @@ const Header = () => {
         {/* Mobile Menu Button */}
         <button 
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="lg:hidden p-3 text-[#8B4513] hover:bg-[#8B4513]/10 rounded-xl transition-all active:scale-95 z-[120]"
+          className="lg:hidden p-3 text-[#8B4513] hover:bg-[#8B4513]/10 rounded-xl transition-all active:scale-95 z-[1003]"
           aria-label="Toggle Menu"
         >
           {isMobileMenuOpen ? (
-            <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+            <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
           ) : (
-            <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
+            <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
           )}
         </button>
       </div>
 
       {/* Mobile Menu Overlay */}
-      <div className={`lg:hidden fixed inset-0 z-[110] bg-[#f4ecd8] px-8 pt-32 pb-12 transition-all duration-500 ease-in-out transform shadow-2xl ${
+      <div className={`lg:hidden fixed inset-0 z-[1002] bg-[#f4ecd8] px-8 pt-32 pb-12 transition-all duration-500 ease-in-out transform ${
         isMobileMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
       }`}>
-        <nav className="flex flex-col gap-y-6 text-2xl font-black font-serif tracking-widest uppercase">
+        <div className="absolute inset-0 bg-[#f4ecd8] z-[-1]" /> {/* Explicit solid bg layer */}
+        <nav className="flex flex-col gap-y-6 text-2xl font-black font-serif tracking-widest uppercase relative z-10">
           <NavLink to="/" onClick={() => setIsMobileMenuOpen(false)} className="text-[#8B4513] hover:translate-x-2 transition-transform">Home</NavLink>
           <NavLink to="/journal" onClick={() => setIsMobileMenuOpen(false)} className="text-[#a78e7e] hover:text-[#8B4513] hover:translate-x-2 transition-transform">Journal</NavLink>
           <NavLink to="/archive" onClick={() => setIsMobileMenuOpen(false)} className="text-[#a78e7e] hover:text-[#8B4513] hover:translate-x-2 transition-transform">Archive</NavLink>
@@ -177,8 +178,8 @@ const Header = () => {
         </nav>
         
         {/* Decorative element for mobile menu */}
-        <div className="absolute bottom-10 right-10 opacity-5 pointer-events-none">
-          <img src="/logo.jpeg" alt="" className="w-48 h-48 mix-blend-multiply grayscale" />
+        <div className="absolute bottom-10 right-10 opacity-[0.03] pointer-events-none">
+          <img src="/logo.jpeg" alt="" className="w-64 h-64 mix-blend-multiply grayscale" />
         </div>
       </div>
     </header>
