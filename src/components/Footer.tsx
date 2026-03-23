@@ -6,7 +6,7 @@ const Footer = () => {
       <div className="w-full px-6 sm:px-10 lg:px-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-24 mb-16">
           <div className="flex flex-col gap-4">
-            <h2 className="text-2xl font-bold tracking-tight text-white mb-2" style={{ fontFamily: 'serif' }}>About Damarika</h2>
+            <h2 className="text-2xl font-bold tracking-tight text-white mb-2" style={{ fontFamily: 'serif' }}>About Sasanam</h2>
             <p className="text-sm text-white/80 leading-relaxed max-w-sm">
               We are dedicated to exploring and preserving the rich heritage, cultural nuances, and historical timelines, ensuring the legacy of knowledge passes seamlessly to the next generation.
             </p>
@@ -16,17 +16,17 @@ const Footer = () => {
             <h3 className="text-lg font-bold text-white mb-2">Quick Links</h3>
             <div className="flex flex-col gap-3">
               <Link to="/" className="text-sm font-medium text-white/80 hover:text-white transition-colors w-fit">Home</Link>
-              <Link to="/about" className="text-sm font-medium text-white/80 hover:text-white transition-colors w-fit">About</Link>
-              <Link to="/services" className="text-sm font-medium text-white/80 hover:text-white transition-colors w-fit">Services</Link>
-              <Link to="/programs" className="text-sm font-medium text-white/80 hover:text-white transition-colors w-fit">Programs</Link>
-              <Link to="/products" className="text-sm font-medium text-white/80 hover:text-white transition-colors w-fit">Products</Link>
+              <Link to="/journal" className="text-sm font-medium text-white/80 hover:text-white transition-colors w-fit">Journal</Link>
+              <Link to="/archive" className="text-sm font-medium text-white/80 hover:text-white transition-colors w-fit">Archive</Link>
+              <Link to="/library" className="text-sm font-medium text-white/80 hover:text-white transition-colors w-fit">Library</Link>
+              <Link to="/community" className="text-sm font-medium text-white/80 hover:text-white transition-colors w-fit">Community</Link>
               <Link to="/contact" className="text-sm font-medium text-white/80 hover:text-white transition-colors w-fit">Contact</Link>
             </div>
           </div>
 
           <div className="flex flex-col gap-4">
             <h3 className="text-lg font-bold text-white mb-2">Contact Us</h3>
-            <a href="mailto:info@damarika.in" className="text-sm font-medium text-white/80 hover:text-white transition-colors mb-2">info@damarika.in</a>
+            <a href="mailto:contact@sasanam.org" className="text-sm font-medium text-white/80 hover:text-white transition-colors mb-2">contact@sasanam.org</a>
             <div className="flex items-center gap-4 text-white">
                {/* Facebook, Twitter, IG, YT icons approx */}
                <a href="#" className="hover:opacity-80 transition-opacity w-8 h-8 rounded-full bg-white/10 flex items-center justify-center"><svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg></a>
@@ -36,7 +36,7 @@ const Footer = () => {
         </div>
         
         <div className="border-t border-white/20 pt-8 flex text-center justify-center">
-          <span className="text-sm font-medium text-white/80">© {new Date().getFullYear()} Damarika. All rights reserved.</span>
+          <span className="text-sm font-medium text-white/80">© {new Date().getFullYear()} Sasanam. All rights reserved.</span>
         </div>
       </div>
     </footer>

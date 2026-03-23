@@ -134,7 +134,7 @@ const Header = () => {
               to="/login"
               className="ml-4 rounded-xl bg-[#8B4513] px-7 py-3 text-sm font-black text-white transition-all shadow-xl hover:bg-[#a0522d] hover:-translate-y-0.5 active:translate-y-0 uppercase tracking-widest ring-2 ring-[#8B4513]/10"
             >
-              Contact Us
+              Login
             </NavLink>
           )}
         </nav>
@@ -172,7 +172,7 @@ const Header = () => {
               onClick={() => setIsMobileMenuOpen(false)}
               className="w-full inline-block rounded-2xl bg-[#8B4513] px-8 py-5 text-center text-white font-black uppercase tracking-[0.3em] shadow-2xl ring-4 ring-[#8B4513]/10"
             >
-              Contact Us
+              Login
             </NavLink>
           </div>
         </nav>
