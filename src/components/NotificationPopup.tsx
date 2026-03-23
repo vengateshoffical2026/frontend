@@ -60,7 +60,10 @@ const NotificationPopup = () => {
     setIsSubmitting(true);
     try {
       const res: any = await loginAPI(loginValues);
-      localStorage.setItem("token", res?.data?.token);
+      localStorage.setItem("token", res?.data?.token || res?.token);
+      if (res?.data?.user || res?.user) {
+        localStorage.setItem("user", JSON.stringify(res?.data?.user || res?.user));
+      }
       toast.success("Welcome back, scribe!");
       window.location.reload();
     } catch (error) {

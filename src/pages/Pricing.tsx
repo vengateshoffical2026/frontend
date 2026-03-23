@@ -17,6 +17,16 @@ const Pricing = () => {
   const { mutateAsync: verifyDonationPayment } = useVerifyDonationPayment();
   const [donationAmount, setDonationAmount] = useState<number | undefined>(undefined);
 
+  const getUserData = () => {
+    try {
+      const userData = localStorage.getItem('user')
+      if (userData) return JSON.parse(userData)
+    } catch {}
+    return null
+  }
+  const user = getUserData()
+  const isSubscribed = user?.isSubscribed || false
+
   const handleUpgradeClick = async () => {
     let payload: any = {
       amount: 100,
@@ -170,8 +180,11 @@ const Pricing = () => {
               </li>
             </ul>
 
-            <button className="w-full rounded-xl bg-[#EEDDCC] py-3.5 text-sm font-bold text-[#6A5A4A] transition cursor-default border border-white/20 shadow-inner">
-              Current Plan
+            <button 
+              className="w-full rounded-xl bg-[#EEDDCC] py-3.5 text-sm font-bold text-[#6A5A4A] transition cursor-default border border-white/20 shadow-inner"
+              disabled
+            >
+              {!isSubscribed ? 'Current Plan' : 'Free Tier'}
             </button>
           </div>
 
@@ -199,11 +212,15 @@ const Pricing = () => {
             </ul>
 
             <button 
-              className={`w-full rounded-xl bg-[#8B4513] py-3.5 text-sm font-bold text-white shadow-lg transition-all hover:bg-[#256a5e] hover:shadow-xl ${isCreatingOrder ? 'cursor-not-allowed opacity-70' : ''}`}
+              className={`w-full rounded-xl py-3.5 text-sm font-bold text-white shadow-lg transition-all ${
+                isSubscribed 
+                  ? 'bg-[#6A5A4A] cursor-not-allowed opacity-80' 
+                  : 'bg-[#8B4513] hover:bg-[#256a5e] hover:shadow-xl'
+              } ${isCreatingOrder && !isSubscribed ? 'cursor-not-allowed opacity-70' : ''}`}
               onClick={handleUpgradeClick}
-              disabled={isCreatingOrder}
+              disabled={isCreatingOrder || isSubscribed}
             >
-              {isCreatingOrder ? 'Creating Order...' : 'Upgrade Now'}
+              {isSubscribed ? 'Current Plan' : (isCreatingOrder ? 'Creating Order...' : 'Upgrade Now')}
             </button>
           </div>
 
