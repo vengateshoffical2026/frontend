@@ -35,7 +35,7 @@ const Login = () => {
             }
             try {
                 const res:any = await loginAPI(payload)
-                localStorage.setItem('token', res?.data?.token)
+                localStorage.setItem('token', res?.token)
                 navigate('/')
             } catch (error) {
                 console.log('Login error:', error)
