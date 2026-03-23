@@ -104,6 +104,7 @@ const Header = () => {
         <nav className="hidden lg:flex items-center gap-x-2 lg:gap-x-8 text-sm font-bold tracking-wide">
           <NavLink to="/" className={navLinkClass}>Home</NavLink>
           <NavLink to="/journal" className={navLinkClass}>Journal</NavLink>
+          <NavLink to="/news-events" className={navLinkClass}>News</NavLink>
           <NavLink to="/archive" className={navLinkClass}>Archive</NavLink>
           
           <div className="relative" ref={dropdownRef}>
@@ -180,6 +181,7 @@ const Header = () => {
         <nav className="flex flex-col gap-y-6 text-2xl font-black font-serif tracking-widest uppercase relative z-10">
           <NavLink to="/" onClick={() => setIsMobileMenuOpen(false)} className="text-[#8B4513] hover:translate-x-2 transition-transform">Home</NavLink>
           <NavLink to="/journal" onClick={() => setIsMobileMenuOpen(false)} className="text-[#a78e7e] hover:text-[#8B4513] hover:translate-x-2 transition-transform">Journal</NavLink>
+          <NavLink to="/news-events" onClick={() => setIsMobileMenuOpen(false)} className="text-[#a78e7e] hover:text-[#8B4513] hover:translate-x-2 transition-transform">News</NavLink>
           <NavLink to="/archive" onClick={() => setIsMobileMenuOpen(false)} className="text-[#a78e7e] hover:text-[#8B4513] hover:translate-x-2 transition-transform">Archive</NavLink>
           <NavLink to="/library" onClick={() => setIsMobileMenuOpen(false)} className="text-[#a78e7e] hover:text-[#8B4513] hover:translate-x-2 transition-transform">Library</NavLink>
           <NavLink to="/community" onClick={() => setIsMobileMenuOpen(false)} className="text-[#a78e7e] hover:text-[#8B4513] hover:translate-x-2 transition-transform">Community</NavLink>

@@ -8,6 +8,7 @@ import Library from './pages/Library'
 import Community from './pages/Community'
 import Pricing from './pages/Pricing'
 import Contact from './pages/Contact'
+import NewsEvents from './pages/NewsEvents'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Layout from './components/Layout'
@@ -25,6 +26,7 @@ function App() {
         <Route path="/community" element={<Layout><Community /></Layout>} />
         <Route path="/pricing" element={<Layout><Pricing /></Layout>} />
         <Route path="/contact" element={<Layout><Contact /></Layout>} />
+        <Route path="/news-events" element={<Layout><NewsEvents /></Layout>} />
         <Route path="/login" element={<Layout hideFooter><Login /></Layout>} />
         <Route path="/signup" element={<Layout hideFooter><Signup /></Layout>} />
       </Routes>

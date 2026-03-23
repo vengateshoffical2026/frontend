@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useScrollReveal } from "../hooks/useScrollReveal";
+import { toast } from "react-toastify";
 
 // News & Events data — replace/extend this array with your actual JSON data
 const newsEventsData = [
@@ -67,6 +68,20 @@ type FilterType = "all" | "news" | "event";
 const NewsEvents = () => {
   const headerReveal = useScrollReveal();
   const [filter, setFilter] = useState<FilterType>("all");
+
+  useEffect(() => {
+    const newItemsCount = newsEventsData.filter(item => item.isNew).length;
+    if (newItemsCount > 0) {
+      toast.info(`🎉 ${newItemsCount} new items have been added to our archive!`, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    }
+  }, []);
 
   const filteredItems =
     filter === "all"
