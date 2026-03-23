@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import { useState, useRef, useEffect } from 'react'
 
 const dummyDonors = [
@@ -32,6 +32,25 @@ const Header = () => {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowDonors(false)
+      }
+    }
+    if (showDonors) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [showDonors])
+
+  // Close dropdown on route change
+  const location = useLocation()
+  useEffect(() => {
+    setShowDonors(false)
+  }, [location.pathname])
 
   useEffect(() => {
     if (isMobileMenuOpen) {

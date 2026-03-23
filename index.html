@@ -2,19 +2,103 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/jpeg" href="/logo.jpeg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sasanam | Preserving History</title>
-    
-    <!-- Premium Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anek+Tamil:wght@100..800&family=Cinzel:wght@400..900&family=IBM+Plex+Serif:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
-    
-    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <!-- ═══ PRIMARY SEO ═══════════════════════════════════════════════ -->
+    <title>Sasanam – Historical Archive of Ancient Inscriptions</title>
+    <meta
+      name="description"
+      content="Sasanam is India's premier digital archive of ancient inscriptions, copper plates, and historical documents. Explore, decipher, and contribute to preserving Tamil and South Indian heritage."
+    />
+    <meta
+      name="keywords"
+      content="sasanam, ancient inscriptions, south india inscriptions, tamil inscriptions, historical archive, epigraph, copper plate, stone inscription, pallava, chola, pandya, decipherment"
+    />
+    <meta name="author" content="Sasanam Historical Archive" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <link rel="canonical" href="https://sasanam.org/" />
+
+    <!-- ═══ OPEN GRAPH (Facebook / LinkedIn / WhatsApp) ══════════════ -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://sasanam.org/" />
+    <meta property="og:site_name" content="Sasanam" />
+    <meta property="og:title" content="Sasanam – Historical Archive of Ancient Inscriptions" />
+    <meta
+      property="og:description"
+      content="India's premier digital archive of ancient inscriptions. Explore, decipher and contribute to preserving South Indian heritage."
+    />
+    <meta property="og:image" content="https://sasanam.org/og-cover.jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_IN" />
+
+    <!-- ═══ TWITTER CARD ═════════════════════════════════════════════ -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@sasanam_archive" />
+    <meta name="twitter:title" content="Sasanam – Historical Archive of Ancient Inscriptions" />
+    <meta
+      name="twitter:description"
+      content="India's premier digital archive of ancient inscriptions. Explore, decipher and contribute to preserving South Indian heritage."
+    />
+    <meta name="twitter:image" content="https://sasanam.org/og-cover.jpeg" />
+
+    <!-- ═══ STRUCTURED DATA (JSON-LD) ════════════════════════════════ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Sasanam",
+      "alternateName": "Sasanam Historical Archive",
+      "url": "https://sasanam.org/",
+      "description": "India's premier digital archive of ancient inscriptions, copper plates, and historical documents.",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://sasanam.org/?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Sasanam Historical Archive",
+      "url": "https://sasanam.org/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://sasanam.org/logo.jpeg"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "contact@sasanam.org",
+        "contactType": "customer service"
+      },
+      "sameAs": []
+    }
+    </script>
+
+    <!-- ═══ FAVICONS ══════════════════════════════════════════════════ -->
+    <link rel="icon" type="image/jpeg" href="/logo.jpeg" />
+    <link rel="apple-touch-icon" href="/logo.jpeg" />
+    <meta name="theme-color" content="#8B4513" />
+    <meta name="msapplication-TileColor" content="#8B4513" />
+
+    <!-- ═══ PERFORMANCE ═══════════════════════════════════════════════ -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anek+Tamil:wght@100..800&family=Cinzel:wght@400..900&family=IBM+Plex+Serif:ital,wght@0,100..700;1,100..700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="dns-prefetch" href="https://checkout.razorpay.com" />
+    <script defer src="https://checkout.razorpay.com/v1/checkout.js"></script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
+
