@@ -55,6 +55,7 @@ const Pricing = () => {
               }
               const res = await verifyPaymentMutation(verificationPayload)
               console.log('✅ Verification response:', res)
+              localStorage.setItem('user', JSON.stringify(res?.data?.user))
               if (response.razorpay_signature) {
                 toast.success('Payment verified successfully!')
               } else {

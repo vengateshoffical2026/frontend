@@ -14,4 +14,8 @@ DONATION_PAYMENT :{
   CREATE_ORDER: `${BaSE_URL}/donation-payment/order`,
   VERIFY_PAYMENT: `${BaSE_URL}/donation-payment/verify`,
 },
+JOURNAL:{
+GET_ALL_SECTIONS: `${BaSE_URL}/sasanam-section`,
+GET_BOOKS_BY_SECTION_ID: `${BaSE_URL}/sasanam-books`
+}
 }
