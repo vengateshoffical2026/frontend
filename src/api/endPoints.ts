@@ -16,6 +16,7 @@ DONATION_PAYMENT :{
 },
 JOURNAL:{
 GET_ALL_SECTIONS: `${BaSE_URL}/sasanam-section`,
-GET_BOOKS_BY_SECTION_ID: `${BaSE_URL}/sasanam-books`
+GET_BOOKS_BY_SECTION_ID: `${BaSE_URL}/sasanam-books`,
+ADD_BOOK: `${BaSE_URL}/sasanam-book-details`,
 }
 }

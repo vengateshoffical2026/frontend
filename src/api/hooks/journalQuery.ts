@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query"
-import { getAllSections, getBooksBySectionId } from "../controllers/journal"
+import { useMutation, useQuery } from "@tanstack/react-query"
+import { addBook, getAllSections, getBooksBySectionId } from "../controllers/journal"
 
 
 export const useGetAllSections = () => {
@@ -18,5 +18,14 @@ export const useGetBooksBySectionId = (sectionId: string) => {
             return await getBooksBySectionId(sectionId);
         },
         enabled:!!sectionId,
+    })
+}
+
+export const useAddBook = () => {
+    return useMutation({
+        mutationKey: ["addBook"],
+        mutationFn: async (data: string) => {
+            return await addBook(data);
+        }
     })
 }
