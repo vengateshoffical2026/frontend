@@ -24,7 +24,12 @@ const Header = () => {
   const displayName = user?.username?.split('@')[0] || user?.username || ''
 
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-    `transition-all duration-300 font-semibold px-3 py-2 flex items-center gap-1.5 ${isActive ? 'text-[#8B4513]' : 'text-[#a78e7e] hover:text-[#8B4513]'}`
+    `relative transition-all duration-300 font-semibold px-3 py-2 flex items-center gap-1.5 ${isActive ? 'text-[#8B4513]' : 'text-[#a78e7e] hover:text-[#8B4513]'}`
+
+  const activeIndicator = (isActive: boolean) =>
+    isActive ? (
+      <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-5 h-[3px] rounded-full bg-[#8B4513] transition-all duration-300" />
+    ) : null
 
   useEffect(() => {
     const handleScroll = () => {
@@ -109,19 +114,34 @@ const Header = () => {
 
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center gap-x-2 lg:gap-x-8 text-sm font-bold tracking-wide">
-          <NavLink to="/" className={navLinkClass}>Home</NavLink>
-          <NavLink to="/journal" className={navLinkClass}>Journal</NavLink>
-          <NavLink to="/news-events" className={navLinkClass}>
-            News
-            {hasNewNews && (
-              <span className="h-2 w-2 rounded-full bg-red-500 animate-pulse ring-2 ring-red-500/20" />
-            )}
+          <NavLink to="/" className={navLinkClass}>
+            {({ isActive }) => (<>Home{activeIndicator(isActive)}</>)}
           </NavLink>
-          <NavLink to="/archive" className={navLinkClass}>Archive</NavLink>
-          <NavLink to="/pricing" className={navLinkClass}>Subscribe</NavLink>
-          <NavLink to="/about" className={navLinkClass}>About</NavLink>
-          <NavLink to="/library" className={`hidden xl:inline ${navLinkClass({ isActive: false })}`}>Library</NavLink>
-          <NavLink to="/community" className={`hidden xl:inline ${navLinkClass({ isActive: false })}`}>Community</NavLink>
+          <NavLink to="/news-events" className={navLinkClass}>
+            {({ isActive }) => (<>News{hasNewNews && <span className="h-2 w-2 rounded-full bg-red-500 animate-pulse ring-2 ring-red-500/20" />}{activeIndicator(isActive)}</>)}
+          </NavLink>
+          {token && (
+            <>
+              <NavLink to="/journal" className={navLinkClass}>
+                {({ isActive }) => (<>Journal{activeIndicator(isActive)}</>)}
+              </NavLink>
+              <NavLink to="/archive" className={navLinkClass}>
+                {({ isActive }) => (<>Archive{activeIndicator(isActive)}</>)}
+              </NavLink>
+              <NavLink to="/library" className={navLinkClass}>
+                {({ isActive }) => (<>Library{activeIndicator(isActive)}</>)}
+              </NavLink>
+            </>
+          )}
+          <NavLink to="/pricing" className={navLinkClass}>
+            {({ isActive }) => (<>Subscribe{activeIndicator(isActive)}</>)}
+          </NavLink>
+          <NavLink to="/community" className={navLinkClass}>
+            {({ isActive }) => (<>Community{activeIndicator(isActive)}</>)}
+          </NavLink>
+          <NavLink to="/about" className={navLinkClass}>
+            {({ isActive }) => (<>About{activeIndicator(isActive)}</>)}
+          </NavLink>
           
           {token ? (
             /* Logged-in user dropdown */
@@ -244,19 +264,30 @@ const Header = () => {
         )}
 
         <nav className="flex flex-col gap-y-6 text-2xl font-black font-serif tracking-widest uppercase relative z-10">
-          <NavLink to="/" onClick={() => setIsMobileMenuOpen(false)} className="text-[#8B4513] hover:translate-x-2 transition-transform">Home</NavLink>
-          <NavLink to="/journal" onClick={() => setIsMobileMenuOpen(false)} className="text-[#a78e7e] hover:text-[#8B4513] hover:translate-x-2 transition-transform">Journal</NavLink>
-          <NavLink to="/news-events" onClick={() => setIsMobileMenuOpen(false)} className="text-[#a78e7e] hover:text-[#8B4513] hover:translate-x-2 transition-transform flex items-center gap-3">
-            News
-            {hasNewNews && (
-              <span className="h-3 w-3 rounded-full bg-red-500 animate-pulse" />
-            )}
-          </NavLink>
-          <NavLink to="/archive" onClick={() => setIsMobileMenuOpen(false)} className="text-[#a78e7e] hover:text-[#8B4513] hover:translate-x-2 transition-transform">Archive</NavLink>
-          <NavLink to="/library" onClick={() => setIsMobileMenuOpen(false)} className="text-[#a78e7e] hover:text-[#8B4513] hover:translate-x-2 transition-transform">Library</NavLink>
-          <NavLink to="/community" onClick={() => setIsMobileMenuOpen(false)} className="text-[#a78e7e] hover:text-[#8B4513] hover:translate-x-2 transition-transform">Community</NavLink>
-          <NavLink to="/pricing" onClick={() => setIsMobileMenuOpen(false)} className="text-[#a78e7e] hover:text-[#8B4513] hover:translate-x-2 transition-transform">Subscribe</NavLink>
-          <NavLink to="/about" onClick={() => setIsMobileMenuOpen(false)} className="text-[#a78e7e] hover:text-[#8B4513] hover:translate-x-2 transition-transform">About</NavLink>
+          {[
+            { to: '/', label: 'Home', always: true },
+            { to: '/news-events', label: 'News', always: true, badge: hasNewNews },
+            { to: '/journal', label: 'Journal', always: false },
+            { to: '/archive', label: 'Archive', always: false },
+            { to: '/library', label: 'Library', always: false },
+            { to: '/pricing', label: 'Subscribe', always: true },
+            { to: '/community', label: 'Community', always: true },
+            { to: '/about', label: 'About', always: true },
+          ]
+            .filter((item) => item.always || !!token)
+            .map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={({ isActive }) =>
+                  `flex items-center gap-3 hover:translate-x-2 transition-transform ${isActive ? 'text-[#8B4513] border-l-4 border-[#8B4513] pl-4' : 'text-[#a78e7e] hover:text-[#8B4513]'}`
+                }
+              >
+                {item.label}
+                {item.badge && <span className="h-3 w-3 rounded-full bg-red-500 animate-pulse" />}
+              </NavLink>
+            ))}
           
           <div className="mt-12 pt-12 border-t border-[#8B4513]/20">
             {token ? (
