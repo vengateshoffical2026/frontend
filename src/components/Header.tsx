@@ -7,12 +7,14 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null)
+  const [mobileExpanded, setMobileExpanded] = useState<string | null>(null)
   const navigate = useNavigate()
   const userMenuRef = useRef<HTMLDivElement>(null)
-  
-  const hasNewNews = newsEventsData.some(item => item.isNew);
+  const dropdownRef = useRef<HTMLDivElement>(null)
 
-  // Parse user data from localStorage
+  const hasNewNews = newsEventsData.some(item => item.isNew)
+
   const getUserData = () => {
     try {
       const userData = localStorage.getItem('user')
@@ -23,39 +25,21 @@ const Header = () => {
   const user = getUserData()
   const displayName = user?.username?.split('@')[0] || user?.username || ''
 
-  const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-    `relative transition-all duration-300 font-semibold px-3 py-2 flex items-center gap-1.5 ${isActive ? 'text-[#8B4513]' : 'text-[#a78e7e] hover:text-[#8B4513]'}`
-
-  const activeIndicator = (isActive: boolean) =>
-    isActive ? (
-      <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-5 h-[3px] rounded-full bg-[#8B4513] transition-all duration-300" />
-    ) : null
-
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20)
-    }
+    const handleScroll = () => setIsScrolled(window.scrollY > 20)
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = 'unset'
-    }
-    return () => {
-      document.body.style.overflow = 'unset'
-    }
+    document.body.style.overflow = isMobileMenuOpen ? 'hidden' : 'unset'
+    return () => { document.body.style.overflow = 'unset' }
   }, [isMobileMenuOpen])
 
-  // Close user dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
-        setIsUserMenuOpen(false)
-      }
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) setIsUserMenuOpen(false)
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) setOpenDropdown(null)
     }
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
@@ -65,6 +49,8 @@ const Header = () => {
   useEffect(() => {
     setIsMobileMenuOpen(false)
     setIsUserMenuOpen(false)
+    setOpenDropdown(null)
+    setMobileExpanded(null)
   }, [location.pathname])
 
   const handleLogout = () => {
@@ -75,122 +61,209 @@ const Header = () => {
     window.location.reload()
   }
 
+  // Main nav links (always visible)
+  const mainNav = [
+    { to: '/', label: 'Home' },
+    { to: '/about', label: 'About' },
+  ]
+
+  // Explore dropdown - only when logged in
+  const exploreItems = [
+    { to: '/journal', label: 'Journal' },
+    { to: '/archive', label: 'Archive' },
+    { to: '/library', label: 'Library' },
+  ]
+
+  // More dropdown
+  const moreItems = [
+    { to: '/news-events', label: 'News & Events', badge: hasNewNews },
+    { to: '/community', label: 'Community' },
+    { to: '/contact', label: 'Contact' },
+    { to: '/pricing', label: 'Subscribe' },
+  ]
+
+  const isDropdownActive = (items: { to: string }[]) =>
+    items.some((item) => location.pathname === item.to)
+
   return (
     <header className={`fixed top-0 left-0 right-0 z-[1000] w-full transition-all duration-500 font-sans ${
-      isScrolled 
-        ? 'bg-[#f4ecd8] border-b border-[#DDBB99]/50 shadow-lg' 
-        : 'bg-[#f4ecd8] border-b border-[#DDBB99]'
+      isScrolled
+        ? 'bg-[#f4ecd8]/95 backdrop-blur-md border-b border-[#DDBB99]/40 shadow-md'
+        : 'bg-[#f4ecd8] border-b border-[#DDBB99]/60'
     }`}>
-      <div className={`relative z-[1001] flex w-full items-center justify-between px-6 sm:px-10 lg:px-16 transition-all duration-500 ${
-        isScrolled ? 'h-16' : 'h-24'
+      <div className={`relative z-[1001] flex w-full items-center justify-between px-5 sm:px-8 lg:px-14 transition-all duration-500 ${
+        isScrolled ? 'h-14' : 'h-[68px]'
       }`}>
-          
-        <NavLink
-          to="/"
-          className="flex items-center gap-4 hover:opacity-80 transition-all group"
-        >
-          <div className={`relative flex items-center justify-center overflow-hidden rounded-xl bg-white/60 ring-1 ring-[#8B4513]/10 transition-all duration-500 shadow-inner ${
-            isScrolled ? 'h-10 w-10 p-1.5' : 'h-16 w-16 p-2.5'
+
+        {/* Logo */}
+        <NavLink to="/" className="flex items-center gap-3 hover:opacity-80 transition-all group shrink-0">
+          <div className={`relative flex items-center justify-center overflow-hidden rounded-lg bg-white/60 ring-1 ring-[#8B4513]/10 transition-all duration-500 shadow-inner ${
+            isScrolled ? 'h-8 w-8 p-1' : 'h-11 w-11 p-1.5'
           }`}>
-            <img 
-              src="/logo.jpeg" 
-              alt="Sasanam Logo" 
-              className="h-full w-full object-contain mix-blend-multiply transition-transform duration-500 group-hover:scale-110"
-            />
+            <img src="/logo.jpeg" alt="Sasanam" className="h-full w-full object-contain mix-blend-multiply" />
           </div>
-          <div className="flex flex-col">
-            <span className={`font-serif font-black text-[#8B4513] tracking-[0.15em] transition-all duration-500 uppercase ${
-              isScrolled ? 'text-lg' : 'text-3xl'
-            }`}>
-              Sasanam
-            </span>
-            {!isScrolled && (
-              <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#8B4513]/40 -mt-1 scale-90 origin-left">
-                Historical Archive
-              </span>
-            )}
-          </div>
+          <span className={`font-serif font-black text-[#8B4513] tracking-[0.1em] uppercase transition-all duration-500 ${
+            isScrolled ? 'text-base' : 'text-lg'
+          }`}>
+            Sasanam
+          </span>
         </NavLink>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-x-2 lg:gap-x-8 text-sm font-bold tracking-wide">
-          <NavLink to="/" className={navLinkClass}>
-            {({ isActive }) => (<>Home{activeIndicator(isActive)}</>)}
-          </NavLink>
-          <NavLink to="/news-events" className={navLinkClass}>
-            {({ isActive }) => (<>News{hasNewNews && <span className="h-2 w-2 rounded-full bg-red-500 animate-pulse ring-2 ring-red-500/20" />}{activeIndicator(isActive)}</>)}
-          </NavLink>
+        <nav className="hidden lg:flex items-center gap-1 text-sm font-semibold" ref={dropdownRef}>
+
+          {/* Main links */}
+          {mainNav.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.to === '/'}
+              className={({ isActive }) =>
+                `relative px-4 py-2 rounded-lg transition-all duration-200 ${
+                  isActive
+                    ? 'text-[#8B4513] font-bold'
+                    : 'text-[#6A5A4A] hover:text-[#8B4513] hover:bg-[#8B4513]/5'
+                }`
+              }
+            >
+              {({ isActive }) => (
+                <>
+                  {item.label}
+                  {isActive && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-[#8B4513]" />}
+                </>
+              )}
+            </NavLink>
+          ))}
+
+          {/* Explore dropdown - only when logged in */}
           {token && (
-            <>
-              <NavLink to="/journal" className={navLinkClass}>
-                {({ isActive }) => (<>Journal{activeIndicator(isActive)}</>)}
-              </NavLink>
-              <NavLink to="/archive" className={navLinkClass}>
-                {({ isActive }) => (<>Archive{activeIndicator(isActive)}</>)}
-              </NavLink>
-              <NavLink to="/library" className={navLinkClass}>
-                {({ isActive }) => (<>Library{activeIndicator(isActive)}</>)}
-              </NavLink>
-            </>
+            <div className="relative">
+              <button
+                onClick={() => setOpenDropdown(openDropdown === 'explore' ? null : 'explore')}
+                className={`relative flex items-center gap-1 px-4 py-2 rounded-lg transition-all duration-200 ${
+                  isDropdownActive(exploreItems) || openDropdown === 'explore'
+                    ? 'text-[#8B4513] font-bold'
+                    : 'text-[#6A5A4A] hover:text-[#8B4513] hover:bg-[#8B4513]/5'
+                }`}
+              >
+                Explore
+                <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${openDropdown === 'explore' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+                {isDropdownActive(exploreItems) && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-[#8B4513]" />}
+              </button>
+
+              {openDropdown === 'explore' && (
+                <div className="absolute top-full left-0 mt-2 w-48 rounded-xl bg-[#fdfaf2] shadow-[0_12px_40px_rgba(61,37,22,0.2)] border border-[#8B4513]/10 overflow-hidden py-1">
+                  {exploreItems.map((item) => (
+                    <NavLink
+                      key={item.to}
+                      to={item.to}
+                      className={({ isActive }) =>
+                        `flex items-center gap-3 px-4 py-2.5 text-sm transition-colors ${
+                          isActive
+                            ? 'text-[#8B4513] font-bold bg-[#8B4513]/8'
+                            : 'text-[#4A3B32] hover:bg-[#8B4513]/5 hover:text-[#8B4513]'
+                        }`
+                      }
+                    >
+                      {({ isActive }) => (
+                        <>
+                          {isActive && <span className="w-1.5 h-1.5 rounded-full bg-[#8B4513] shrink-0" />}
+                          {item.label}
+                        </>
+                      )}
+                    </NavLink>
+                  ))}
+                </div>
+              )}
+            </div>
           )}
-          <NavLink to="/pricing" className={navLinkClass}>
-            {({ isActive }) => (<>Subscribe{activeIndicator(isActive)}</>)}
-          </NavLink>
-          <NavLink to="/community" className={navLinkClass}>
-            {({ isActive }) => (<>Community{activeIndicator(isActive)}</>)}
-          </NavLink>
-          <NavLink to="/about" className={navLinkClass}>
-            {({ isActive }) => (<>About{activeIndicator(isActive)}</>)}
-          </NavLink>
-          
+
+          {/* More dropdown */}
+          <div className="relative">
+            <button
+              onClick={() => setOpenDropdown(openDropdown === 'more' ? null : 'more')}
+              className={`relative flex items-center gap-1 px-4 py-2 rounded-lg transition-all duration-200 ${
+                isDropdownActive(moreItems) || openDropdown === 'more'
+                  ? 'text-[#8B4513] font-bold'
+                  : 'text-[#6A5A4A] hover:text-[#8B4513] hover:bg-[#8B4513]/5'
+              }`}
+            >
+              More
+              {hasNewNews && <span className="h-1.5 w-1.5 rounded-full bg-red-500 animate-pulse" />}
+              <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${openDropdown === 'more' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+              {isDropdownActive(moreItems) && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-[#8B4513]" />}
+            </button>
+
+            {openDropdown === 'more' && (
+              <div className="absolute top-full right-0 mt-2 w-52 rounded-xl bg-[#fdfaf2] shadow-[0_12px_40px_rgba(61,37,22,0.2)] border border-[#8B4513]/10 overflow-hidden py-1">
+                {moreItems.map((item) => (
+                  <NavLink
+                    key={item.to}
+                    to={item.to}
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 px-4 py-2.5 text-sm transition-colors ${
+                        isActive
+                          ? 'text-[#8B4513] font-bold bg-[#8B4513]/8'
+                          : 'text-[#4A3B32] hover:bg-[#8B4513]/5 hover:text-[#8B4513]'
+                      }`
+                    }
+                  >
+                    {({ isActive }) => (
+                      <>
+                        {isActive && <span className="w-1.5 h-1.5 rounded-full bg-[#8B4513] shrink-0" />}
+                        {item.label}
+                        {item.badge && <span className="ml-auto h-2 w-2 rounded-full bg-red-500 animate-pulse" />}
+                      </>
+                    )}
+                  </NavLink>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Auth */}
           {token ? (
-            /* Logged-in user dropdown */
-            <div className="relative ml-4" ref={userMenuRef}>
+            <div className="relative ml-3" ref={userMenuRef}>
               <button
                 onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                className="flex items-center gap-2.5 rounded-xl bg-[#8B4513]/10 px-4 py-2.5 text-sm font-bold text-[#8B4513] transition-all hover:bg-[#8B4513]/20 active:scale-95 border border-[#8B4513]/10"
+                className="flex items-center gap-2 rounded-full bg-[#8B4513] pl-1 pr-3 py-1 text-white transition-all hover:bg-[#a0522d] active:scale-95"
               >
-                {/* User avatar */}
-                <div className="h-8 w-8 rounded-full bg-[#8B4513] flex items-center justify-center text-white text-xs font-black uppercase shadow-md">
+                <div className="h-7 w-7 rounded-full bg-white/20 flex items-center justify-center text-xs font-black uppercase">
                   {displayName.charAt(0)}
                 </div>
-                <span className="max-w-[120px] truncate capitalize">{displayName}</span>
-                <svg className={`w-4 h-4 transition-transform duration-200 ${isUserMenuOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <span className="max-w-20 truncate capitalize text-xs font-bold">{displayName}</span>
+                <svg className={`w-3 h-3 transition-transform duration-200 ${isUserMenuOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
 
-              {/* Dropdown menu */}
               {isUserMenuOpen && (
-                <div className="absolute right-0 top-full mt-2 w-64 rounded-2xl bg-[#fdfaf2] shadow-[0_20px_60px_rgba(61,37,22,0.25)] border border-[#8B4513]/10 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200 z-[1100]">
-                  <div className="p-4 border-b border-[#8B4513]/10 bg-[#f4ecd8]/50">
-                    <p className="text-xs font-black uppercase tracking-widest text-[#8B4513]/50 mb-1">Signed in as</p>
+                <div className="absolute right-0 top-full mt-2 w-56 rounded-xl bg-[#fdfaf2] shadow-[0_20px_60px_rgba(61,37,22,0.25)] border border-[#8B4513]/10 overflow-hidden z-[1100]">
+                  <div className="p-3 border-b border-[#8B4513]/10 bg-[#f4ecd8]/50">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-[#8B4513]/50 mb-0.5">Signed in as</p>
                     <p className="text-sm font-bold text-[#4A3B32] truncate">{user?.username || 'User'}</p>
                     {user?.isSubscribed !== undefined && (
-                      <span className={`inline-block mt-2 text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full ${
-                        user.isSubscribed 
-                          ? 'bg-emerald-100 text-emerald-700' 
-                          : 'bg-amber-100 text-amber-700'
+                      <span className={`inline-block mt-1.5 text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full ${
+                        user.isSubscribed ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
                       }`}>
-                        {user.isSubscribed ? '✦ Contributor' : 'Free Explorer'}
+                        {user.isSubscribed ? 'Contributor' : 'Free Explorer'}
                       </span>
                     )}
                   </div>
-                  <div className="p-2">
-                    <NavLink
-                      to="/pricing"
-                      onClick={() => setIsUserMenuOpen(false)}
-                      className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-[#4A3B32] hover:bg-[#8B4513]/5 transition-colors"
-                    >
+                  <div className="p-1.5">
+                    <NavLink to="/pricing" onClick={() => setIsUserMenuOpen(false)}
+                      className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-semibold text-[#4A3B32] hover:bg-[#8B4513]/5 transition-colors">
                       <svg className="w-4 h-4 text-[#8B4513]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                       </svg>
                       Subscription
                     </NavLink>
-                    <button 
-                      onClick={handleLogout}
-                      className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-red-600 hover:bg-red-50 transition-colors"
-                    >
+                    <button onClick={handleLogout}
+                      className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-semibold text-red-600 hover:bg-red-50 transition-colors">
                       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                       </svg>
@@ -201,102 +274,154 @@ const Header = () => {
               )}
             </div>
           ) : (
-            <NavLink
-              to="/login"
-              className="ml-4 rounded-xl bg-[#8B4513] px-7 py-3 text-sm font-black text-white transition-all shadow-xl hover:bg-[#a0522d] hover:-translate-y-0.5 active:translate-y-0 uppercase tracking-widest ring-2 ring-[#8B4513]/10"
-            >
+            <NavLink to="/login"
+              className="ml-3 rounded-full bg-[#8B4513] px-5 py-2 text-xs font-black text-white shadow-lg hover:bg-[#a0522d] hover:-translate-y-0.5 active:translate-y-0 uppercase tracking-widest transition-all">
               Login
             </NavLink>
           )}
         </nav>
 
         {/* Mobile Menu Button */}
-        <div className="flex items-center gap-2">
-          {/* Mobile: show user avatar if logged in */}
+        <div className="flex items-center gap-2 lg:hidden">
           {token && !isMobileMenuOpen && (
-            <div className="lg:hidden h-9 w-9 rounded-full bg-[#8B4513] flex items-center justify-center text-white text-xs font-black uppercase shadow-md">
+            <div className="h-8 w-8 rounded-full bg-[#8B4513] flex items-center justify-center text-white text-xs font-black uppercase shadow-md">
               {displayName.charAt(0)}
             </div>
           )}
-          {hasNewNews && !isMobileMenuOpen && (
-            <span className="lg:hidden h-2 w-2 rounded-full bg-red-500 animate-pulse ring-2 ring-red-500/20 mr-1" />
-          )}
-          <button 
+          <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden p-3 text-[#8B4513] hover:bg-[#8B4513]/10 rounded-xl transition-all active:scale-95 z-[1003]"
+            className="p-2 text-[#8B4513] hover:bg-[#8B4513]/10 rounded-lg transition-all active:scale-95 z-[1003]"
             aria-label="Toggle Menu"
           >
             {isMobileMenuOpen ? (
-              <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
             ) : (
-              <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
+              <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
             )}
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu Overlay */}
-      <div className={`lg:hidden fixed inset-0 z-[1002] bg-[#f4ecd8] px-8 pt-32 pb-12 transition-all duration-500 ease-in-out transform ${
+      {/* Mobile Menu */}
+      <div className={`lg:hidden fixed inset-0 z-[1002] bg-[#f4ecd8] px-6 pt-24 pb-8 overflow-y-auto transition-all duration-400 ease-in-out transform ${
         isMobileMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
       }`}>
-        <div className="absolute inset-0 bg-[#f4ecd8] z-[-1]" /> {/* Explicit solid bg layer */}
-        
-        {/* Show user info at the top of mobile menu if logged in */}
+        <div className="absolute inset-0 bg-[#f4ecd8] z-[-1]" />
+
         {token && user && (
-          <div className="mb-8 p-4 rounded-2xl bg-white/50 border border-[#8B4513]/10 flex items-center gap-4">
-            <div className="h-12 w-12 rounded-full bg-[#8B4513] flex items-center justify-center text-white text-lg font-black uppercase shadow-md flex-shrink-0">
+          <div className="mb-6 p-3.5 rounded-xl bg-white/50 border border-[#8B4513]/10 flex items-center gap-3">
+            <div className="h-10 w-10 rounded-full bg-[#8B4513] flex items-center justify-center text-white text-base font-black uppercase shadow-md shrink-0">
               {displayName.charAt(0)}
             </div>
             <div className="min-w-0">
-              <p className="text-base font-bold text-[#4A3B32] truncate capitalize">{displayName}</p>
+              <p className="text-sm font-bold text-[#4A3B32] truncate capitalize">{displayName}</p>
               <p className="text-xs text-[#6A5A4A] truncate">{user.username}</p>
-              {user?.isSubscribed !== undefined && (
-                <span className={`inline-block mt-1 text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full ${
-                  user.isSubscribed 
-                    ? 'bg-emerald-100 text-emerald-700' 
-                    : 'bg-amber-100 text-amber-700'
-                }`}>
-                  {user.isSubscribed ? '✦ Contributor' : 'Free Explorer'}
-                </span>
-              )}
             </div>
           </div>
         )}
 
-        <nav className="flex flex-col gap-y-6 text-2xl font-black font-serif tracking-widest uppercase relative z-10">
-          {[
-            { to: '/', label: 'Home', always: true },
-            { to: '/news-events', label: 'News', always: true, badge: hasNewNews },
-            { to: '/journal', label: 'Journal', always: false },
-            { to: '/archive', label: 'Archive', always: false },
-            { to: '/library', label: 'Library', always: false },
-            { to: '/pricing', label: 'Subscribe', always: true },
-            { to: '/community', label: 'Community', always: true },
-            { to: '/about', label: 'About', always: true },
-          ]
-            .filter((item) => item.always || !!token)
-            .map((item) => (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                onClick={() => setIsMobileMenuOpen(false)}
-                className={({ isActive }) =>
-                  `flex items-center gap-3 hover:translate-x-2 transition-transform ${isActive ? 'text-[#8B4513] border-l-4 border-[#8B4513] pl-4' : 'text-[#a78e7e] hover:text-[#8B4513]'}`
-                }
+        <nav className="flex flex-col gap-1">
+          {/* Main links */}
+          {mainNav.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.to === '/'}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={({ isActive }) =>
+                `px-4 py-3 rounded-xl text-base font-bold transition-all ${
+                  isActive
+                    ? 'text-[#8B4513] bg-[#8B4513]/8 border-l-[3px] border-[#8B4513]'
+                    : 'text-[#6A5A4A] hover:text-[#8B4513] hover:bg-[#8B4513]/5'
+                }`
+              }
+            >
+              {item.label}
+            </NavLink>
+          ))}
+
+          {/* Explore accordion - only when logged in */}
+          {token && (
+            <div>
+              <button
+                onClick={() => setMobileExpanded(mobileExpanded === 'explore' ? null : 'explore')}
+                className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-base font-bold transition-all ${
+                  isDropdownActive(exploreItems)
+                    ? 'text-[#8B4513] bg-[#8B4513]/8'
+                    : 'text-[#6A5A4A] hover:text-[#8B4513] hover:bg-[#8B4513]/5'
+                }`}
               >
-                {item.label}
-                {item.badge && <span className="h-3 w-3 rounded-full bg-red-500 animate-pulse" />}
-              </NavLink>
-            ))}
-          
-          <div className="mt-12 pt-12 border-t border-[#8B4513]/20">
+                Explore
+                <svg className={`w-4 h-4 transition-transform duration-200 ${mobileExpanded === 'explore' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <div className={`overflow-hidden transition-all duration-300 ${mobileExpanded === 'explore' ? 'max-h-60 opacity-100' : 'max-h-0 opacity-0'}`}>
+                <div className="ml-4 mt-1 flex flex-col gap-0.5 border-l-2 border-[#8B4513]/15 pl-4">
+                  {exploreItems.map((item) => (
+                    <NavLink
+                      key={item.to}
+                      to={item.to}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={({ isActive }) =>
+                        `px-3 py-2.5 rounded-lg text-sm font-semibold transition-all ${
+                          isActive ? 'text-[#8B4513] font-bold bg-[#8B4513]/8' : 'text-[#6A5A4A] hover:text-[#8B4513]'
+                        }`
+                      }
+                    >
+                      {item.label}
+                    </NavLink>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* More accordion */}
+          <div>
+            <button
+              onClick={() => setMobileExpanded(mobileExpanded === 'more' ? null : 'more')}
+              className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-base font-bold transition-all ${
+                isDropdownActive(moreItems)
+                  ? 'text-[#8B4513] bg-[#8B4513]/8'
+                  : 'text-[#6A5A4A] hover:text-[#8B4513] hover:bg-[#8B4513]/5'
+              }`}
+            >
+              <span className="flex items-center gap-2">
+                More
+                {hasNewNews && <span className="h-2 w-2 rounded-full bg-red-500 animate-pulse" />}
+              </span>
+              <svg className={`w-4 h-4 transition-transform duration-200 ${mobileExpanded === 'more' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div className={`overflow-hidden transition-all duration-300 ${mobileExpanded === 'more' ? 'max-h-60 opacity-100' : 'max-h-0 opacity-0'}`}>
+              <div className="ml-4 mt-1 flex flex-col gap-0.5 border-l-2 border-[#8B4513]/15 pl-4">
+                {moreItems.map((item) => (
+                  <NavLink
+                    key={item.to}
+                    to={item.to}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={({ isActive }) =>
+                      `flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all ${
+                        isActive ? 'text-[#8B4513] font-bold bg-[#8B4513]/8' : 'text-[#6A5A4A] hover:text-[#8B4513]'
+                      }`
+                    }
+                  >
+                    {item.label}
+                    {item.badge && <span className="h-1.5 w-1.5 rounded-full bg-red-500 animate-pulse" />}
+                  </NavLink>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Login / Logout */}
+          <div className="mt-6 pt-6 border-t border-[#8B4513]/15">
             {token ? (
               <button
-                onClick={() => {
-                  setIsMobileMenuOpen(false)
-                  handleLogout()
-                }}
-                className="w-full inline-block rounded-2xl bg-red-600 px-8 py-5 text-center text-white font-black uppercase tracking-[0.3em] shadow-2xl ring-4 ring-red-600/10 text-base"
+                onClick={() => { setIsMobileMenuOpen(false); handleLogout() }}
+                className="w-full rounded-xl bg-red-600 px-6 py-3.5 text-center text-white font-bold text-sm uppercase tracking-wider shadow-lg"
               >
                 Logout
               </button>
@@ -304,21 +429,16 @@ const Header = () => {
               <NavLink
                 to="/login"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="w-full inline-block rounded-2xl bg-[#8B4513] px-8 py-5 text-center text-white font-black uppercase tracking-[0.3em] shadow-2xl ring-4 ring-[#8B4513]/10"
+                className="w-full inline-block rounded-xl bg-[#8B4513] px-6 py-3.5 text-center text-white font-bold text-sm uppercase tracking-wider shadow-lg"
               >
                 Login
               </NavLink>
             )}
           </div>
         </nav>
-        
-        {/* Decorative element for mobile menu */}
-        <div className="absolute bottom-10 right-10 opacity-[0.03] pointer-events-none">
-          <img src="/logo.jpeg" alt="" className="w-64 h-64 mix-blend-multiply grayscale" />
-        </div>
       </div>
     </header>
   )
 }
 
-export default Header;
+export default Header
