@@ -12,6 +12,10 @@ export const API_ENDPOINTS = {
     VERIFY_PAYMENT: '/donation-payment/verify',
   },
   DONATION_LIST: '/donation-list',
+  ABOUT: {
+    TEAM: '/about/team',
+    AUTHORS: '/about/authors',
+  },
   JOURNAL: {
     GET_ALL_SECTIONS: '/sasanam-section',
     GET_BOOKS_BY_SECTION_ID: '/sasanam-books',

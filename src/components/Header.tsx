@@ -119,6 +119,7 @@ const Header = () => {
           </NavLink>
           <NavLink to="/archive" className={navLinkClass}>Archive</NavLink>
           <NavLink to="/pricing" className={navLinkClass}>Subscribe</NavLink>
+          <NavLink to="/about" className={navLinkClass}>About</NavLink>
           <NavLink to="/library" className={`hidden xl:inline ${navLinkClass({ isActive: false })}`}>Library</NavLink>
           <NavLink to="/community" className={`hidden xl:inline ${navLinkClass({ isActive: false })}`}>Community</NavLink>
           
@@ -255,6 +256,7 @@ const Header = () => {
           <NavLink to="/library" onClick={() => setIsMobileMenuOpen(false)} className="text-[#a78e7e] hover:text-[#8B4513] hover:translate-x-2 transition-transform">Library</NavLink>
           <NavLink to="/community" onClick={() => setIsMobileMenuOpen(false)} className="text-[#a78e7e] hover:text-[#8B4513] hover:translate-x-2 transition-transform">Community</NavLink>
           <NavLink to="/pricing" onClick={() => setIsMobileMenuOpen(false)} className="text-[#a78e7e] hover:text-[#8B4513] hover:translate-x-2 transition-transform">Subscribe</NavLink>
+          <NavLink to="/about" onClick={() => setIsMobileMenuOpen(false)} className="text-[#a78e7e] hover:text-[#8B4513] hover:translate-x-2 transition-transform">About</NavLink>
           
           <div className="mt-12 pt-12 border-t border-[#8B4513]/20">
             {token ? (
