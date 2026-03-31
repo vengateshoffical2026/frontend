@@ -1,13 +1,15 @@
 import { useState } from 'react'
 import { useCreateOrder, useVerifyPayment } from '../api/hooks/subscriptionPaymentQuery'
 import { toast } from 'react-toastify'
-import { useCreateDonationOrder, useVerifyDonationPayment } from '../api/hooks/donationQuery'
+import { useCreateDonationOrder, useVerifyDonationPayment, useDonationList } from '../api/hooks/donationQuery'
 
 declare global {
   interface Window {
     Razorpay: any
   }
 }
+
+const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_live_SGteQC3JSxjhtP'
 
 const Pricing = () => {
   const [selectedProject] = useState('Chola Temple Inscription')
@@ -16,6 +18,8 @@ const Pricing = () => {
   const { mutateAsync: createDonationOrder } = useCreateDonationOrder();
   const { mutateAsync: verifyDonationPayment } = useVerifyDonationPayment();
   const [donationAmount, setDonationAmount] = useState<number | undefined>(undefined);
+  const [donationPage, setDonationPage] = useState(1);
+  const { data: donationListData, isLoading: isDonationListLoading } = useDonationList(donationPage, 10);
 
   const getUserData = () => {
     try {
@@ -25,11 +29,11 @@ const Pricing = () => {
     return null
   }
   const user = getUserData()
-  const isSubscribed = user?.isSubscribed || false
+  const [isSubscribed, setIsSubscribed] = useState(user?.isSubscribed || false)
 
   const handleUpgradeClick = async () => {
-    let payload: any = {
-      amount: 100,
+    const payload = {
+      amount: 300000,
       currency: 'INR',
       receipt: 'receipt_' + Date.now().toString()
     }
@@ -37,16 +41,14 @@ const Pricing = () => {
       const order = await createOrderMutation(payload)
 
       const options = {
-        key: 'rzp_live_SGteQC3JSxjhtP', // Replace with actual key
+        key: RAZORPAY_KEY,
         amount: order?.data?.order?.amount ?? 300000,
         currency: order?.data?.order?.currency ?? 'INR',
         order_id: order?.data?.order?.id || null,
         name: 'Sasanam',
-        description: 'Upgrade to Contributor',
+        description: 'Upgrade to Contributor - 3 Year Access',
         handler: async function (response: any) {
           if (response.razorpay_payment_id) {
-            toast.success('Payment successful!')
-            // Always try to verify, even if signature is missing
             try {
               const verificationPayload = {
                 razorpay_payment_id: response.razorpay_payment_id,
@@ -54,15 +56,11 @@ const Pricing = () => {
                 razorpay_signature: response.razorpay_signature || null
               }
               const res = await verifyPaymentMutation(verificationPayload)
-              console.log('✅ Verification response:', res)
               localStorage.setItem('user', JSON.stringify(res?.data?.user))
-              if (response.razorpay_signature) {
-                toast.success('Payment verified successfully!')
-              } else {
-                toast.warning('Payment completed but signature missing - manual verification may be needed')
-              }
+              setIsSubscribed(true)
+              toast.success('Payment verified successfully!')
             } catch (err) {
-              console.error('❌ Verification error:', err)
+              console.error('Verification error:', err)
               toast.error('Payment verification failed - please contact support')
             }
           } else {
@@ -70,14 +68,13 @@ const Pricing = () => {
           }
         },
         prefill: {
-          name: 'User Name',
-          email: 'user@example.com',
+          name: user?.fullName || '',
+          email: user?.email || '',
         },
         theme: {
-          color: '#8B4513', // vintage accent
+          color: '#8B4513',
         },
       }
-      console.log('🚀 Initializing Razorpay with options:', options)
       const rzp = new window.Razorpay(options)
       rzp.open()
     } catch (error) {
@@ -90,16 +87,15 @@ const Pricing = () => {
       toast.error('Please enter a valid donation amount')
       return;
     }
-    let payload: any = {
+    const payload = {
       amount: donationAmount,
       currency: 'INR',
-      receipt: 'receipt_' + Date.now().toString()
+      receipt: 'don_' + Date.now().toString()
     }
     try {
       const order = await createDonationOrder(payload)
-      console.log('🚀 Donation order created:', order?.data?.order)
       const options = {
-        key: 'rzp_live_SGteQC3JSxjhtP',
+        key: RAZORPAY_KEY,
         amount: order?.data?.order?.amount ?? donationAmount,
         currency: order?.data?.order?.currency ?? 'INR',
         order_id: order?.data?.order?.id || null,
@@ -107,22 +103,16 @@ const Pricing = () => {
         description: `Donation for ${selectedProject}`,
         handler: async function (response: any) {
           if (response.razorpay_payment_id) {
-            toast.success('Donation successful!')
             try {
               const verificationPayload = {
                 razorpay_payment_id: response.razorpay_payment_id,
                 razorpay_order_id: response.razorpay_order_id || null,
                 razorpay_signature: response.razorpay_signature || null
               }
-              const res = await verifyDonationPayment(verificationPayload)
-              console.log('✅ Donation verification response:', res)
-              if (response.razorpay_signature) {
-                toast.success('Donation verified successfully!')
-              } else {
-                toast.warning('Donation completed but signature missing - manual verification may be needed')
-              }
+              await verifyDonationPayment(verificationPayload)
+              toast.success('Donation verified successfully! Thank you!')
             } catch (err) {
-              console.error('❌ Donation verification error:', err)
+              console.error('Donation verification error:', err)
               toast.error('Donation verification failed - please contact support')
             }
           } else {
@@ -130,21 +120,28 @@ const Pricing = () => {
           }
         },
         prefill: {
-          name: 'User Name',
-          email: 'user@example.com',
+          name: user?.fullName || '',
+          email: user?.email || '',
         },
         theme: {
           color: '#8B4513',
         },
       }
-      console.log('🚀 Initializing Razorpay with options:', options)
       const rzp = new window.Razorpay(options)
       rzp.open()
     } catch (error) {
-      console.error('❌ Donation order creation failed:', error)
+      console.error('Donation order creation failed:', error)
       toast.error('Failed to create donation order')
     }
   }
+
+  const formatAmount = (paise: number) => {
+    return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 0 }).format(paise / 100)
+  }
+
+  const donations = donationListData?.data?.donations || []
+  const totalDonations = donationListData?.data?.total || 0
+  const totalPages = Math.ceil(totalDonations / 10)
 
   return (
     <main className="min-h-screen bg-[#FAF9F6] font-sans text-[#4A3B32]  flex flex-col" >
@@ -261,8 +258,71 @@ const Pricing = () => {
           </div>
         </section>
 
-        
-        
+        {/* Donation List Section */}
+        <section className="mb-20 px-4">
+          <div className="rounded-3xl bg-[#FFFFFF]/90 p-8 shadow-[0_8px_32px_rgba(61,37,22,0.1)] backdrop-blur-xl border border-white/30">
+            <h2 className="text-2xl sm:text-3xl font-bold text-[#4A3B32] mb-2 text-center">Our Generous Donors</h2>
+            <p className="text-sm text-[#6A5A4A] mb-8 text-center font-medium">
+              Thank you to everyone who has contributed to preserving our heritage.
+            </p>
+
+            {isDonationListLoading ? (
+              <div className="text-center py-8 text-[#a78e7e] font-semibold">Loading donations...</div>
+            ) : donations.length === 0 ? (
+              <div className="text-center py-8 text-[#a78e7e] font-semibold">
+                No donations yet. Be the first to contribute!
+              </div>
+            ) : (
+              <>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left">
+                    <thead>
+                      <tr className="border-b-2 border-[#EEDDCC]">
+                        <th className="py-3 px-4 text-xs font-bold text-[#8B4513] uppercase tracking-wider">Donor</th>
+                        <th className="py-3 px-4 text-xs font-bold text-[#8B4513] uppercase tracking-wider">Amount</th>
+                        <th className="py-3 px-4 text-xs font-bold text-[#8B4513] uppercase tracking-wider hidden sm:table-cell">Date</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {donations.map((donation) => (
+                        <tr key={donation._id} className="border-b border-[#F5F5DC] hover:bg-[#FAF9F6] transition-colors">
+                          <td className="py-3 px-4 text-sm font-semibold text-[#4A3B32] capitalize">{donation.donaterName}</td>
+                          <td className="py-3 px-4 text-sm font-bold text-[#8B4513]">{formatAmount(donation.donationAmount)}</td>
+                          <td className="py-3 px-4 text-sm text-[#6A5A4A] hidden sm:table-cell">
+                            {new Date(donation.donationDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                {totalPages > 1 && (
+                  <div className="flex justify-center items-center gap-3 mt-6">
+                    <button
+                      onClick={() => setDonationPage((p) => Math.max(1, p - 1))}
+                      disabled={donationPage <= 1}
+                      className="px-4 py-2 rounded-lg text-sm font-bold text-[#8B4513] border border-[#8B4513] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#8B4513] hover:text-white transition-colors"
+                    >
+                      Previous
+                    </button>
+                    <span className="text-sm font-semibold text-[#6A5A4A]">
+                      Page {donationPage} of {totalPages}
+                    </span>
+                    <button
+                      onClick={() => setDonationPage((p) => Math.min(totalPages, p + 1))}
+                      disabled={donationPage >= totalPages}
+                      className="px-4 py-2 rounded-lg text-sm font-bold text-[#8B4513] border border-[#8B4513] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#8B4513] hover:text-white transition-colors"
+                    >
+                      Next
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </section>
+
       </div>
     </main>
   )
