@@ -1,4 +1,5 @@
-import { useGetAllSections, useGetBooksBySectionId } from "../api/hooks/journalQuery";
+
+import { useAddBook, useGetAllSections, useGetBooksBySectionId } from "../api/hooks/journalQuery";
 import SasanamBooks from "../components/SasanamBooks";
 import SasanamSections from "../components/SasanamSections";
 import { useMemo, useState } from "react";
@@ -81,7 +82,8 @@ const Journal = () => {
 
   const { data: sectionsData, isLoading: sectionLoading, error } = useGetAllSections();
   const { data: booksData, isLoading: booksLoading } = useGetBooksBySectionId(selectedSectionId ?? "");
-
+  const {mutateAsync: addBook} = useAddBook();
+  const [response, setResponse] = useState<any>(null);
   const reversedSections = useMemo(() => {
     if (Array.isArray(sectionsData)) return [...sectionsData].reverse();
     return [];
@@ -89,7 +91,7 @@ const Journal = () => {
 
   return (
     <main className="relative min-h-screen bg-[#F7F3EC] font-sans text-[#4A3B32] flex flex-col overflow-x-hidden">
-
+     <iframe src="/HS 01.pdf" width="100%" height="600px"></iframe>
       {/* ── Background atmosphere ── */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         {/* soft radial warm glow top-center */}
@@ -208,7 +210,6 @@ const Journal = () => {
 
         </section>
       </div>
-
       {/* ── shimmer keyframe (injected globally) ── */}
       <style>{`
         @keyframes shimmer { to { transform: translateX(200%); } }
