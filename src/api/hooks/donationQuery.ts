@@ -1,22 +1,21 @@
-import { useMutation } from "@tanstack/react-query"
-import { createDonationOrderAPI, verifyDonationPaymentAPI } from "../controllers/donationPayment"
-
-export const useVerifyDonationPayment = () => {
-    return useMutation({
-        mutationKey: ['verifyDonationPayment'],
-        mutationFn: async (payload: any) => {
-            const response = await verifyDonationPaymentAPI(payload)
-            return response
-        }
-    })
-}
+import { useMutation } from '@tanstack/react-query'
+import {
+  createDonationOrderAPI,
+  verifyDonationPaymentAPI,
+  type CreateDonationOrderData,
+  type VerifyDonationPaymentData,
+} from '../controllers/donationPayment'
 
 export const useCreateDonationOrder = () => {
-    return useMutation({
-        mutationKey: ['createDonationOrder'],
-        mutationFn: async (payload: any) => {
-            const response = await createDonationOrderAPI(payload)
-            return response
-        }
-    })
+  return useMutation({
+    mutationKey: ['createDonationOrder'],
+    mutationFn: (payload: CreateDonationOrderData) => createDonationOrderAPI(payload),
+  })
+}
+
+export const useVerifyDonationPayment = () => {
+  return useMutation({
+    mutationKey: ['verifyDonationPayment'],
+    mutationFn: (payload: VerifyDonationPaymentData) => verifyDonationPaymentAPI(payload),
+  })
 }

@@ -1,12 +1,24 @@
-import { API_ENDPOINTS } from "../endPoints"
-import apiClient from "../interceptors/axiosInstance"
+import { API_ENDPOINTS } from '../endPoints'
+import apiClient from '../interceptors/axiosInstance'
 
-export const createDonationOrderAPI = async (payload: any) => {
+export interface CreateDonationOrderData {
+  amount: number
+  currency: string
+  receipt: string
+}
+
+export interface VerifyDonationPaymentData {
+  razorpay_order_id: string
+  razorpay_payment_id: string
+  razorpay_signature: string
+}
+
+export const createDonationOrderAPI = async (payload: CreateDonationOrderData) => {
   const response = await apiClient.post(API_ENDPOINTS.DONATION_PAYMENT.CREATE_ORDER, payload)
   return response.data
 }
 
-export const verifyDonationPaymentAPI = async (payload: any) => {
-  const response = await apiClient.post(API_ENDPOINTS.DONATION_PAYMENT.VERIFY_PAYMENT, payload);
-  return response.data; 
+export const verifyDonationPaymentAPI = async (payload: VerifyDonationPaymentData) => {
+  const response = await apiClient.post(API_ENDPOINTS.DONATION_PAYMENT.VERIFY_PAYMENT, payload)
+  return response.data
 }

@@ -1,15 +1,19 @@
 import { useMutation } from '@tanstack/react-query'
-import { createOrderAPI, verifyPaymentAPI } from '../controllers/subscriptionPayment'
+import {
+  createOrderAPI,
+  verifyPaymentAPI,
+  type CreateOrderData,
+  type VerifyPaymentData,
+} from '../controllers/subscriptionPayment'
 
 export const useCreateOrder = () => {
   return useMutation({
-    mutationFn: (payload: any) =>  createOrderAPI(payload),
-    })
-  }
-
+    mutationFn: (payload: CreateOrderData) => createOrderAPI(payload),
+  })
+}
 
 export const useVerifyPayment = () => {
   return useMutation({
-    mutationFn: (payload: any) =>  verifyPaymentAPI(payload),
-    })
-  }
+    mutationFn: (payload: VerifyPaymentData) => verifyPaymentAPI(payload),
+  })
+}
