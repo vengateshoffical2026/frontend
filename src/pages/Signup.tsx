@@ -26,7 +26,7 @@ const validationSchema = Yup.object({
 });
 
 const SignupForm = () => {
-    const [submitted, setSubmitted] = useState(false);
+    const [submitted] = useState(false);
     const navigate = useNavigate();
 
     const formik = useFormik({

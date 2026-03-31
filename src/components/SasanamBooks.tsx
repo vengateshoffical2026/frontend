@@ -14,7 +14,7 @@ interface SasanamBooksProps {
   loading?: boolean;
 }
 
-const SasanamBooks: React.FC<SasanamBooksProps> = ({ data, loading }) => {
+const SasanamBooks: React.FC<SasanamBooksProps> = ({ data }) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full p-4">
       
