@@ -1,6 +1,5 @@
 import { useScrollReveal } from "../hooks/useScrollReveal";
-import { dummyDonors } from "../data/donors";
-import { maskUpi } from "../utils/format";
+import { useDonationList } from "../api/hooks/donationQuery";
 
 const Home = () => {
   const heroReveal = useScrollReveal();
@@ -8,6 +7,9 @@ const Home = () => {
   const featuredReveal = useScrollReveal();
   const toolsReveal = useScrollReveal();
   const communityReveal = useScrollReveal();
+
+  const { data: donationData } = useDonationList(1, 20);
+  const donors = donationData?.data?.donations ?? [];
 
   const revealClass = (isVisible: boolean) =>
     `transition-all duration-1000 ease-out ${
@@ -18,24 +20,26 @@ const Home = () => {
     <main className="min-h-screen bg-[#f4ecd8] font-sans selection:bg-[#8B4513]/30 selection:text-[#8B4513]">
       <div className="min-h-screen bg-white/30 backdrop-blur-[2px]">
         {/* ── Donor Infinite Scroller ── */}
+        {donors.length > 0 && (
         <div className="w-full bg-[#8B4513] py-3 overflow-hidden border-y border-[#8B4513]/20 relative z-10">
           <div className="flex whitespace-nowrap animate-marquee hover:[animation-play-state:paused]">
-            {[...dummyDonors, ...dummyDonors].map((donor, idx) => (
+            {[...donors, ...donors].map((donor, idx) => (
               <div
-                key={`${donor.id}-${idx}`}
+                key={`${donor._id}-${idx}`}
                 className="flex items-center gap-4 mx-8 text-white/90"
               >
                 <div className="h-2 w-2 rounded-full bg-white/40" />
                 <span className="text-xs font-black uppercase tracking-widest">
-                  {donor.username || maskUpi(donor.upiId)}
+                  {donor.donaterName}
                 </span>
                 <span className="font-serif font-black text-white px-2 py-0.5 rounded bg-white/10">
-                  ₹{donor.amount}
+                  ₹{donor.donationAmount}
                 </span>
               </div>
             ))}
           </div>
         </div>
+        )}
 
         <div className="mx-auto flex w-full max-w-[1600px] flex-col px-5 sm:px-6 lg:px-8">
           {/* Main Hero Card is below */}

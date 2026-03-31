@@ -11,6 +11,7 @@ export const API_ENDPOINTS = {
     CREATE_ORDER: '/donation-payment/order',
     VERIFY_PAYMENT: '/donation-payment/verify',
   },
+  DONATION_LIST: '/donation-list',
   JOURNAL: {
     GET_ALL_SECTIONS: '/sasanam-section',
     GET_BOOKS_BY_SECTION_ID: '/sasanam-books',
