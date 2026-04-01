@@ -8,7 +8,7 @@ interface PageSEOProps {
 }
 
 const SITE_NAME = 'Sasanam – Ancient Inscriptions Archive'
-const BASE_URL = 'https://sasanam.org'
+const BASE_URL = 'https://www.sasanam.in'
 
 export default function PageSEO({ title, description, path, type = 'website' }: PageSEOProps) {
   const fullTitle = path === '/' ? title : `${title} | ${SITE_NAME}`
