@@ -23,7 +23,7 @@ const Header = () => {
     return null
   }
   const user = getUserData()
-  const displayName = user?.username?.split('@')[0] || user?.username || ''
+  const displayName = user?.fullName || user?.email?.split('@')[0] || ''
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 20)
@@ -245,7 +245,7 @@ const Header = () => {
                 <div className="absolute right-0 top-full mt-2 w-56 rounded-xl bg-[#fdfaf2] shadow-[0_20px_60px_rgba(61,37,22,0.25)] border border-[#8B4513]/10 overflow-hidden z-[1100]">
                   <div className="p-3 border-b border-[#8B4513]/10 bg-[#f4ecd8]/50">
                     <p className="text-[10px] font-black uppercase tracking-widest text-[#8B4513]/50 mb-0.5">Signed in as</p>
-                    <p className="text-sm font-bold text-[#4A3B32] truncate">{user?.username || 'User'}</p>
+                    <p className="text-sm font-bold text-[#4A3B32] truncate">{user?.email || 'User'}</p>
                     {user?.isSubscribed !== undefined && (
                       <span className={`inline-block mt-1.5 text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full ${
                         user.isSubscribed ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
@@ -315,7 +315,7 @@ const Header = () => {
             </div>
             <div className="min-w-0">
               <p className="text-sm font-bold text-[#4A3B32] truncate capitalize">{displayName}</p>
-              <p className="text-xs text-[#6A5A4A] truncate">{user.username}</p>
+              <p className="text-xs text-[#6A5A4A] truncate">{user.email}</p>
             </div>
           </div>
         )}

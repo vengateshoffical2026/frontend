@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { useCreateOrder, useVerifyPayment } from '../api/hooks/subscriptionPaymentQuery'
 import { toast } from 'react-toastify'
 import { useCreateDonationOrder, useVerifyDonationPayment, useDonationList } from '../api/hooks/donationQuery'
+import { useQueryClient } from '@tanstack/react-query'
+import { useNavigate } from 'react-router-dom'
 
 declare global {
   interface Window {
@@ -14,12 +16,14 @@ const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_live_SGteQC3JS
 const Pricing = () => {
   const [selectedProject] = useState('Chola Temple Inscription')
   const { mutateAsync: createOrderMutation, isPending: isCreatingOrder } = useCreateOrder()
-  const { mutateAsync: verifyPaymentMutation } = useVerifyPayment();
-  const { mutateAsync: createDonationOrder } = useCreateDonationOrder();
-  const { mutateAsync: verifyDonationPayment } = useVerifyDonationPayment();
-  const [donationAmount, setDonationAmount] = useState<number | undefined>(undefined);
-  const [donationPage, setDonationPage] = useState(1);
-  const { data: donationListData, isLoading: isDonationListLoading } = useDonationList(donationPage, 10);
+  const { mutateAsync: verifyPaymentMutation } = useVerifyPayment()
+  const { mutateAsync: createDonationOrder, isPending: isCreatingDonation } = useCreateDonationOrder()
+  const { mutateAsync: verifyDonationPayment } = useVerifyDonationPayment()
+  const [donationAmount, setDonationAmount] = useState<number | undefined>(undefined)
+  const [donationPage, setDonationPage] = useState(1)
+  const { data: donationListData, isLoading: isDonationListLoading } = useDonationList(donationPage, 10)
+  const queryClient = useQueryClient()
+  const navigate = useNavigate()
 
   const getUserData = () => {
     try {
@@ -29,42 +33,59 @@ const Pricing = () => {
     return null
   }
   const user = getUserData()
+  const token = localStorage.getItem('token')
   const [isSubscribed, setIsSubscribed] = useState(user?.isSubscribed || false)
 
   const handleUpgradeClick = async () => {
+    if (!token || !user) {
+      toast.error('Please log in to subscribe')
+      navigate('/login')
+      return
+    }
+
     const payload = {
       amount: 300000,
       currency: 'INR',
-      receipt: 'receipt_' + Date.now().toString()
+      receipt: 'rcpt_' + Date.now().toString()
     }
     try {
       const order = await createOrderMutation(payload)
+      const orderData = order?.data?.order
+
+      if (!orderData?.id) {
+        toast.error('Failed to create order - please try again')
+        return
+      }
 
       const options = {
         key: RAZORPAY_KEY,
-        amount: order?.data?.order?.amount ?? 300000,
-        currency: order?.data?.order?.currency ?? 'INR',
-        order_id: order?.data?.order?.id || null,
+        amount: orderData.amount,
+        currency: orderData.currency || 'INR',
+        order_id: orderData.id,
         name: 'Sasanam',
-        description: 'Upgrade to Contributor - 3 Year Access',
+        description: 'Contributor Plan - 3 Year Access',
         handler: async function (response: any) {
-          if (response.razorpay_payment_id) {
-            try {
-              const verificationPayload = {
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_order_id: response.razorpay_order_id || null,
-                razorpay_signature: response.razorpay_signature || null
-              }
-              const res = await verifyPaymentMutation(verificationPayload)
-              localStorage.setItem('user', JSON.stringify(res?.data?.user))
+          if (!response.razorpay_payment_id || !response.razorpay_order_id || !response.razorpay_signature) {
+            toast.error('Payment incomplete - please contact support')
+            return
+          }
+          try {
+            const res = await verifyPaymentMutation({
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_signature: response.razorpay_signature
+            })
+
+            if (res?.data?.user) {
+              localStorage.setItem('user', JSON.stringify(res.data.user))
               setIsSubscribed(true)
-              toast.success('Payment verified successfully!')
-            } catch (err) {
-              console.error('Verification error:', err)
-              toast.error('Payment verification failed - please contact support')
+              toast.success('Subscription activated successfully!')
+            } else {
+              toast.warning('Payment processed but user update failed - please refresh')
             }
-          } else {
-            toast.error('Payment failed')
+          } catch (err) {
+            console.error('Verification error:', err)
+            toast.error('Payment verification failed - please contact support')
           }
         },
         prefill: {
@@ -74,18 +95,29 @@ const Pricing = () => {
         theme: {
           color: '#8B4513',
         },
+        modal: {
+          ondismiss: function () {
+            toast.info('Payment cancelled')
+          }
+        }
       }
       const rzp = new window.Razorpay(options)
       rzp.open()
     } catch (error) {
-      toast.error('Failed to create order')
+      console.error('Create order error:', error)
+      toast.error('Failed to create order - please try again')
     }
   }
 
   const handleDonation = async () => {
+    if (!token || !user) {
+      toast.error('Please log in to donate')
+      navigate('/login')
+      return
+    }
     if (!donationAmount || donationAmount <= 0) {
       toast.error('Please enter a valid donation amount')
-      return;
+      return
     }
     const payload = {
       amount: donationAmount,
@@ -94,29 +126,36 @@ const Pricing = () => {
     }
     try {
       const order = await createDonationOrder(payload)
+      const orderData = order?.data?.order
+
+      if (!orderData?.id) {
+        toast.error('Failed to create donation order - please try again')
+        return
+      }
+
       const options = {
         key: RAZORPAY_KEY,
-        amount: order?.data?.order?.amount ?? donationAmount,
-        currency: order?.data?.order?.currency ?? 'INR',
-        order_id: order?.data?.order?.id || null,
+        amount: orderData.amount,
+        currency: orderData.currency || 'INR',
+        order_id: orderData.id,
         name: 'Sasanam',
         description: `Donation for ${selectedProject}`,
         handler: async function (response: any) {
-          if (response.razorpay_payment_id) {
-            try {
-              const verificationPayload = {
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_order_id: response.razorpay_order_id || null,
-                razorpay_signature: response.razorpay_signature || null
-              }
-              await verifyDonationPayment(verificationPayload)
-              toast.success('Donation verified successfully! Thank you!')
-            } catch (err) {
-              console.error('Donation verification error:', err)
-              toast.error('Donation verification failed - please contact support')
-            }
-          } else {
-            toast.error('Donation failed')
+          if (!response.razorpay_payment_id || !response.razorpay_order_id || !response.razorpay_signature) {
+            toast.error('Payment incomplete - please contact support')
+            return
+          }
+          try {
+            await verifyDonationPayment({
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_signature: response.razorpay_signature
+            })
+            toast.success('Thank you for your donation!')
+            queryClient.invalidateQueries({ queryKey: ['donationList'] })
+          } catch (err) {
+            console.error('Donation verification error:', err)
+            toast.error('Donation verification failed - please contact support')
           }
         },
         prefill: {
@@ -126,6 +165,11 @@ const Pricing = () => {
         theme: {
           color: '#8B4513',
         },
+        modal: {
+          ondismiss: function () {
+            toast.info('Payment cancelled')
+          }
+        }
       }
       const rzp = new window.Razorpay(options)
       rzp.open()
@@ -147,7 +191,7 @@ const Pricing = () => {
     <main className="min-h-screen bg-[#FAF9F6] font-sans text-[#4A3B32]  flex flex-col" >
       <div className="fixed inset-0 z-0 bg-[#FFFFFF]/70 backdrop-blur-[2px]"></div>
       <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl flex-col px-5 sm:px-6 lg:px-8">
-        
+
 
         {/* Hero Section */}
         <section className="mt-12 text-center px-4">
@@ -161,12 +205,12 @@ const Pricing = () => {
 
         {/* Pricing Cards - using Grid */}
         <section className="mt-16 mb-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4 items-stretch">
-          
+
           {/* Card 1: Free Explorer */}
           <div className="group rounded-3xl bg-[#F5F5DC]/80 p-8 shadow-[0_8px_32px_rgba(61,37,22,0.1)] backdrop-blur-xl border border-white/30 flex flex-col transition-all duration-300 hover:bg-[#F5F5DC]/90 hover:-translate-y-2 hover:shadow-[0_12px_40px_rgba(61,37,22,0.15)] ring-1 ring-white/20">
             <h3 className="text-2xl font-bold text-[#4A3B32] mb-2">Free Explorer</h3>
             <p className="text-3xl font-black text-[#8B4513] mb-8 drop-shadow-sm">Free</p>
-            
+
             <ul className="flex-1 space-y-4 mb-10">
               <li className="flex items-start gap-3">
                 <span className="text-[#8B4513] font-bold text-lg leading-none mt-1">✓</span>
@@ -178,7 +222,7 @@ const Pricing = () => {
               </li>
             </ul>
 
-            <button 
+            <button
               className="w-full rounded-xl bg-[#EEDDCC] py-3.5 text-sm font-bold text-[#6A5A4A] transition cursor-default border border-white/20 shadow-inner"
               disabled
             >
@@ -193,7 +237,7 @@ const Pricing = () => {
             <p className="text-3xl font-black text-[#8B4513] mb-8 flex items-baseline gap-1 drop-shadow-sm">
               ₹3000<span className="text-sm font-bold text-[#a78e7e]">/3 years</span>
             </p>
-            
+
             <ul className="flex-1 space-y-4 mb-10">
               <li className="flex items-start gap-3">
                 <span className="text-[#8B4513] font-bold text-lg leading-none mt-1">✓</span>
@@ -209,10 +253,10 @@ const Pricing = () => {
               </li>
             </ul>
 
-            <button 
+            <button
               className={`w-full rounded-xl py-3.5 text-sm font-bold text-white shadow-lg transition-all ${
-                isSubscribed 
-                  ? 'bg-[#6A5A4A] cursor-not-allowed opacity-80' 
+                isSubscribed
+                  ? 'bg-[#6A5A4A] cursor-not-allowed opacity-80'
                   : 'bg-[#8B4513] hover:bg-[#256a5e] hover:shadow-xl'
               } ${isCreatingOrder && !isSubscribed ? 'cursor-not-allowed opacity-70' : ''}`}
               onClick={handleUpgradeClick}
@@ -225,17 +269,17 @@ const Pricing = () => {
           {/* Card 3: Fund a Specific Project */}
           <div className="group rounded-3xl bg-[#F5F5DC]/80 p-8 shadow-[0_8px_32px_rgba(61,37,22,0.1)] backdrop-blur-xl border border-white/30 flex flex-col transition-all duration-300 hover:bg-[#F5F5DC]/90 hover:-translate-y-2 hover:shadow-[0_12px_40px_rgba(61,37,22,0.15)] ring-1 ring-white/20">
             <h3 className="text-xl font-bold text-[#4A3B32] mb-6">Fund a Specific Project</h3>
-            
+
             <div className="flex-1 mb-10 flex flex-col justify-center">
               <label className="text-sm font-bold text-[#4A3B32] block mb-3">
                 Donation Amount (₹)
               </label>
               <div className="relative">
                 <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#a78e7e] font-bold">₹</span>
-                <input 
+                <input
                   type="number"
                   min="1"
-                  placeholder="45000"
+                  placeholder="500"
                   className="w-full pl-8 pr-4 py-3.5 rounded-xl border border-white/40 bg-white/50 text-[#4A3B32] placeholder:text-[#8a7f6a] focus:outline-none focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/50 transition-all font-bold shadow-inner"
                   onChange={(e) => {
                     const rupees = parseFloat(e.target.value)
@@ -243,17 +287,23 @@ const Pricing = () => {
                   }}
                 />
               </div>
-              <p className="text-xs text-[#a78e7e] mt-3 font-bold flex items-center gap-1.5">
+              {donationAmount && donationAmount > 0 && (
+                <p className="text-xs text-[#8B4513] mt-2 font-bold">
+                  You will donate {formatAmount(donationAmount)}
+                </p>
+              )}
+              <p className="text-xs text-[#a78e7e] mt-2 font-bold flex items-center gap-1.5">
                 <svg className="w-3.5 h-3.5 text-[#8B4513]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 Target: ₹1,00,000 for {selectedProject}
               </p>
             </div>
 
-            <button 
-              className="w-full rounded-xl border-2 border-[#8B4513] bg-transparent py-3.5 text-sm font-bold text-[#8B4513] transition-all hover:bg-[#8B4513] hover:text-[#FFFFFF] hover:shadow-lg"
-              onClick={()=>{handleDonation()}}
+            <button
+              className={`w-full rounded-xl border-2 border-[#8B4513] bg-transparent py-3.5 text-sm font-bold text-[#8B4513] transition-all hover:bg-[#8B4513] hover:text-[#FFFFFF] hover:shadow-lg ${isCreatingDonation ? 'cursor-not-allowed opacity-70' : ''}`}
+              onClick={handleDonation}
+              disabled={isCreatingDonation}
             >
-              Support Project
+              {isCreatingDonation ? 'Processing...' : 'Support Project'}
             </button>
           </div>
         </section>
