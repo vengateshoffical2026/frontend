@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useScrollReveal } from "../hooks/useScrollReveal";
 import { newsEventsData, type NewsEventItem } from "../data/newsEvents";
+import PageSEO from "../components/PageSEO";
 
 type FilterType = "all" | "news" | "event";
 
@@ -30,6 +31,11 @@ const NewsEvents = () => {
 
   return (
     <div className="min-h-screen px-5 sm:px-6 lg:px-8 py-16 max-w-[1600px] mx-auto">
+      <PageSEO
+        title="News & Events"
+        description="Stay updated with the latest news, events, and discoveries from Sasanam's ancient inscriptions archive. New findings, community events, and research updates."
+        path="/news-events"
+      />
       {/* Page Header */}
       <div
         ref={headerReveal.ref as any}

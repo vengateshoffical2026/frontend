@@ -1,6 +1,13 @@
+import PageSEO from '../components/PageSEO'
+
 const Library = () => {
   return (
     <main className="min-h-screen bg-[#FAF9F6] font-sans text-[#4A3B32]  flex flex-col" >
+      <PageSEO
+        title="Library – Ancient Books & Texts"
+        description="Explore Sasanam's digital library of ancient books, translated texts, and epigraphic literature on South Indian history and inscriptions."
+        path="/library"
+      />
       <div className="fixed inset-0 z-0 bg-[#FFFFFF]/70 backdrop-blur-[2px]"></div>
       <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl flex-col px-5 sm:px-6 lg:px-8">
         

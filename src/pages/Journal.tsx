@@ -3,6 +3,7 @@ import {  useGetAllSections, useGetBooksBySectionId } from "../api/hooks/journal
 import SasanamBooks from "../components/SasanamBooks";
 import SasanamSections from "../components/SasanamSections";
 import { useMemo, useState } from "react";
+import PageSEO from "../components/PageSEO";
 
 /* ─── Decorative SVG ornaments ──────────────────────────────────────── */
 const OrnamentDivider = () => (
@@ -89,6 +90,11 @@ const Journal = () => {
 
   return (
     <main className="relative min-h-screen bg-[#F7F3EC] font-sans text-[#4A3B32] flex flex-col overflow-x-hidden">
+      <PageSEO
+        title="Journal – Ancient Inscriptions Collection"
+        description="Browse Sasanam's curated journal of ancient inscriptions organized by sections. Explore Pallava, Chola, Pandya era stone and copper plate inscriptions from South India."
+        path="/journal"
+      />
       {/* ── Background atmosphere ── */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         {/* soft radial warm glow top-center */}

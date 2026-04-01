@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import { useTeamMembers, useAuthors } from '../api/hooks/aboutQuery'
+import PageSEO from '../components/PageSEO'
 
 const About = () => {
   const heroReveal = useScrollReveal()
@@ -30,6 +31,11 @@ const About = () => {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
+      <PageSEO
+        title="About Sasanam"
+        description="Learn about Sasanam, the team behind India's digital archive of ancient inscriptions, and the authors who contributed to preserving South Indian epigraphic heritage."
+        path="/about"
+      />
       {/* Background decoration */}
       <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-[500px] h-[500px] bg-[#8B4513]/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-[#8B4513]/5 rounded-full blur-3xl pointer-events-none" />

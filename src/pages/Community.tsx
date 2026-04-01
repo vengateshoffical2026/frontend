@@ -1,6 +1,13 @@
+import PageSEO from '../components/PageSEO'
+
 const Community = () => {
   return (
     <main className="min-h-screen bg-[#FAF9F6] font-sans text-[#4A3B32]  flex flex-col" >
+      <PageSEO
+        title="Community – Collaborate on Inscriptions"
+        description="Join the Sasanam community of historians, epigraphists, and enthusiasts working together to transcribe and preserve ancient South Indian inscriptions."
+        path="/community"
+      />
       <div className="fixed inset-0 z-0 bg-[#FFFFFF]/70 backdrop-blur-[2px]"></div>
       <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl flex-col px-5 sm:px-6 lg:px-8">
         

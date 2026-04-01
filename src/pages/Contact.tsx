@@ -1,4 +1,5 @@
 import { useScrollReveal } from "../hooks/useScrollReveal";
+import PageSEO from "../components/PageSEO";
 
 const Contact = () => {
   const reveal = useScrollReveal();
@@ -10,6 +11,11 @@ const Contact = () => {
 
   return (
     <div className="min-h-[80vh] flex flex-col items-center justify-center px-6 py-20 relative overflow-hidden">
+      <PageSEO
+        title="Contact Us"
+        description="Get in touch with the Sasanam team. Reach out for inquiries about ancient inscriptions, collaborations, or support for India's premier epigraphic archive."
+        path="/contact"
+      />
       {/* Background decoration */}
       <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-[500px] h-[500px] bg-[#8B4513]/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-[#8B4513]/5 rounded-full blur-3xl pointer-events-none" />

@@ -1,5 +1,6 @@
 import { useScrollReveal } from "../hooks/useScrollReveal";
 import { useDonationList } from "../api/hooks/donationQuery";
+import PageSEO from "../components/PageSEO";
 
 const Home = () => {
   const heroReveal = useScrollReveal();
@@ -18,6 +19,11 @@ const Home = () => {
 
   return (
     <main className="min-h-screen bg-[#f4ecd8] font-sans selection:bg-[#8B4513]/30 selection:text-[#8B4513]">
+      <PageSEO
+        title="Sasanam – India's Digital Archive of Ancient Inscriptions & Epigraphs"
+        description="Sasanam is India's premier digital archive of ancient inscriptions, copper plates, stone epigraphs, and historical documents from Tamil Nadu and South India. Explore Pallava, Chola, and Pandya era inscriptions."
+        path="/"
+      />
       <div className="min-h-screen bg-white/30 backdrop-blur-[2px]">
         {/* ── Donor Infinite Scroller ── */}
         {donors.length > 0 && (

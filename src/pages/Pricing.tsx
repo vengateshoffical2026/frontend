@@ -3,6 +3,7 @@ import { useCreateOrder, useVerifyPayment } from '../api/hooks/subscriptionPayme
 import { toast } from 'react-toastify'
 import { useCreateDonationOrder, useVerifyDonationPayment, useDonationList } from '../api/hooks/donationQuery'
 import { useQueryClient } from '@tanstack/react-query'
+import PageSEO from '../components/PageSEO'
 import { useNavigate } from 'react-router-dom'
 
 declare global {
@@ -189,6 +190,11 @@ const Pricing = () => {
 
   return (
     <main className="min-h-screen bg-[#FAF9F6] font-sans text-[#4A3B32]  flex flex-col" >
+      <PageSEO
+        title="Subscribe & Donate"
+        description="Support Sasanam's mission to preserve ancient inscriptions. Subscribe to access the full archive or make a donation to help digitize South Indian heritage."
+        path="/pricing"
+      />
       <div className="fixed inset-0 z-0 bg-[#FFFFFF]/70 backdrop-blur-[2px]"></div>
       <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-7xl flex-col px-5 sm:px-6 lg:px-8">
 
