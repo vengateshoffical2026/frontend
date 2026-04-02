@@ -13,7 +13,7 @@ const Layout = ({ children, hideFooter = false }: LayoutProps) => {
     <div className="min-h-screen flex flex-col bg-cream font-sans text-body selection:bg-primary/30 selection:text-primary">
       <Header />
       <NotificationPopup />
-      <main className="flex-1 w-full pt-24">
+      <main className="flex-1 w-full pt-24 relative z-0">
         {children}
       </main>
       {!hideFooter && <Footer />}

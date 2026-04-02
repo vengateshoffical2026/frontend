@@ -1,5 +1,6 @@
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useState, useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 
 const Header = () => {
   const token: string | null = localStorage.getItem('token')
@@ -72,6 +73,7 @@ const Header = () => {
     items.some((item) => location.pathname === item.to)
 
   return (
+    <>
     <header className={`fixed top-0 left-0 right-0 z-[1000] w-full transition-all duration-500 font-sans ${
       isScrolled
         ? 'bg-cream/95 backdrop-blur-md border-b border-[#DDBB99]/40 shadow-md'
@@ -341,13 +343,16 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <div className="lg:hidden fixed inset-0 z-[1001] bg-black/30" onClick={() => setIsMobileMenuOpen(false)} />
-      )}
-      <div className={`lg:hidden fixed inset-y-0 right-0 z-[1002] w-[85%] max-w-sm bg-cream px-6 pt-24 pb-8 overflow-y-auto shadow-2xl transition-transform duration-300 ease-out ${
-        isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
-      }`}>
+    </header>
+    {/* Mobile Menu — portaled to body so it's above all stacking contexts */}
+    {createPortal(
+      <>
+        {isMobileMenuOpen && (
+          <div className="lg:hidden fixed inset-0 z-[9998] bg-black/30" onClick={() => setIsMobileMenuOpen(false)} />
+        )}
+        <div className={`lg:hidden fixed inset-y-0 right-0 z-[9999] w-[85%] max-w-sm bg-cream px-6 pt-24 pb-8 overflow-y-auto shadow-2xl transition-transform duration-300 ease-out ${
+          isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}>
 
         {/* User info card (logged in) */}
         {token && user && (
@@ -537,7 +542,10 @@ const Header = () => {
           </div>
         </nav>
       </div>
-    </header>
+      </>,
+      document.body
+    )}
+    </>
   )
 }
 

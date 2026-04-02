@@ -42,7 +42,7 @@ const Contact = () => {
 
       <div
         ref={reveal.ref as any}
-        className={`w-full max-w-4xl bg-beige/80 backdrop-blur-md rounded-[2.5rem] p-10 sm:p-16 shadow-[0_20px_50px_rgba(139,69,19,0.15)] border border-white/40 relative z-10 ${revealClass(reveal.isVisible)}`}
+        className={`w-full max-w-4xl bg-beige/80 backdrop-blur-md rounded-[2.5rem] p-10 sm:p-16 shadow-[0_20px_50px_rgba(139,69,19,0.15)] border border-white/40 relative ${revealClass(reveal.isVisible)}`}
       >
         <div className="flex flex-col items-center text-center mb-12">
           <h1 className="text-4xl sm:text-5xl font-serif font-black text-body mb-6 uppercase tracking-widest">
