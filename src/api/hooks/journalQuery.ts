@@ -5,6 +5,8 @@ export const useGetAllSections = () => {
   return useQuery({
     queryKey: ['getAllSections'],
     queryFn: getAllSections,
+    gcTime:0,
+    staleTime: 0,
   })
 }
 
@@ -13,6 +15,8 @@ export const useGetBooksBySectionId = (sectionId: string) => {
     queryKey: ['getBooksBySectionId', sectionId],
     queryFn: () => getBooksBySectionId(sectionId),
     enabled: !!sectionId,
+    gcTime:0,
+    staleTime: 0,
   })
 }
 

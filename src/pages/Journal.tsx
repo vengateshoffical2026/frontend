@@ -83,6 +83,7 @@ const Journal = () => {
 
   const { data: sectionsData, isLoading: sectionLoading, error } = useGetAllSections();
   const { data: booksData, isLoading: booksLoading } = useGetBooksBySectionId(selectedSectionId ?? "");
+  console.log("data",booksData)
   const reversedSections = useMemo(() => {
     if (Array.isArray(sectionsData)) return [...sectionsData].reverse();
     return [];

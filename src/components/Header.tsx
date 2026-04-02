@@ -1,6 +1,7 @@
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useState, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
+import { useDownloadStatus } from '../api/hooks/journalQuery'
 
 const Header = () => {
   const token: string | null = localStorage.getItem('token')
@@ -12,7 +13,7 @@ const Header = () => {
   const navigate = useNavigate()
   const userMenuRef = useRef<HTMLDivElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
-
+  const { data: dlStatus } = useDownloadStatus()
   const getUserData = () => {
     try {
       const userData = localStorage.getItem('user')
@@ -90,11 +91,16 @@ const Header = () => {
           }`}>
             <img src="/logo.jpeg" alt="Sasanam" className="h-full w-full object-contain mix-blend-multiply" />
           </div>
-          <span className={`font-serif font-black text-primary tracking-[0.1em] uppercase transition-all duration-500 ${
-            isScrolled ? 'text-base' : 'text-lg'
-          }`}>
-            Sasanam
-          </span>
+          <div className="flex gap-[2px]">
+  {['சா','ச','ன','ம்'].map((char, i) => (
+    <span
+      key={i}
+      className="font-tamil text-[28px] text-[#c89b5e] drop-shadow-[1px_1px_2px_rgba(0,0,0,0.2)]"
+    >
+      {char}
+    </span>
+  ))}
+</div>
         </NavLink>
 
         {/* Desktop Navigation */}
@@ -182,7 +188,9 @@ const Header = () => {
           )}
 
           {/* === LOGGED IN: Sasanam === */}
-          {token && (
+          {dlStatus?.isSubscribed && (
+            <>
+            {token && (
             <NavLink
               to="/sasanam"
               className={({ isActive }) =>
@@ -200,6 +208,8 @@ const Header = () => {
                 </>
               )}
             </NavLink>
+          )}
+            </>
           )}
 
           {/* === LOGGED IN: More dropdown === */}

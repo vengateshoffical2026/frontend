@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 
 const Footer = () => {
+  const token = localStorage.getItem("token")
   return (
     <footer className="w-full bg-gradient-to-b from-primary to-[#5a2d0c] text-white pt-16 pb-8 relative overflow-hidden">
       {/* Decorative elements */}
@@ -41,16 +42,28 @@ const Footer = () => {
                 { to: '/news-events', label: 'News & Events' },
                 { to: '/about', label: 'About' },
                 { to: '/contact', label: 'Contact' },
-              ].map((link) => (
-                <Link
-                  key={link.to}
-                  to={link.to}
-                  className="group text-sm font-medium text-white/60 hover:text-white transition-all duration-200 w-fit flex items-center gap-2"
-                >
-                  <span className="h-px w-0 bg-white group-hover:w-3 transition-all duration-300" />
-                  {link.label}
-                </Link>
-              ))}
+              ].map((link) => {
+  const isRestricted =
+    link?.label === "Journal" ||
+    link?.label === "Subscribe" ||
+    link?.label === "News & Events" ||
+    link?.label === "Contact"
+
+  if (isRestricted && !token) {
+    return null; // hide link if no token
+  }
+
+  return (
+    <Link
+      key={link.to}
+      to={link.to}
+      className="group text-sm font-medium text-white/60 hover:text-white transition-all duration-200 w-fit flex items-center gap-2"
+    >
+      <span className="h-px w-0 bg-white group-hover:w-3 transition-all duration-300" />
+      {link.label}
+    </Link>
+  );
+})}
             </div>
           </div>
 

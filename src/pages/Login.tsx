@@ -1,8 +1,9 @@
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link,useNavigate } from 'react-router-dom'
 import { loginAPI } from '../api/controllers/authcontroller'
 import { toast } from 'react-toastify'
+import { useEffect } from 'react'
 
 interface FormField {
     id: string
@@ -15,7 +16,6 @@ const formFields: FormField[] = [
     { id: 'username', label: 'Email or Mobile Number', type: 'text', placeholder: 'Enter your email or mobile number' },
     { id: 'password', label: 'Password', type: 'password', placeholder: 'Enter your password' }
 ]
-
 const Login = () => {
     const navigate = useNavigate();
 
@@ -48,7 +48,12 @@ const Login = () => {
             }
         },
     })
-
+    const token = localStorage.getItem("token")
+useEffect(()=>{
+    if(token){
+        navigate("/")
+    }
+},[])
     return (
         <div className="flex min-h-[calc(100vh-80px)] items-center justify-center p-6 sm:p-12 lg:p-20 relative overflow-hidden">
             {/* Background texture/overlay */}

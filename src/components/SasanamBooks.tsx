@@ -108,12 +108,12 @@ const SasanamBooks: React.FC<SasanamBooksProps> = ({ data }) => {
 
       {/* Books Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {data.map((book) => {
+        {data.map((book:any) => {
           const hasPdf = !!book.pdfFile;
           return (
             <div
               key={book._id}
-              className="group relative bg-paper border border-border/80 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_12px_40px_rgba(61,37,22,0.13)] hover:border-accent flex flex-col"
+              className={`${book?.coverImage ? `bg-[url(${book?.coverImage})] bg-cover bg-center` : "bg-paper"} group relative bg-paper border border-border/80 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_12px_40px_rgba(61,37,22,0.13)] hover:border-accent flex flex-col`}
             >
               {/* Decorative top bar */}
               <div className="h-2 bg-gradient-to-r from-primary via-primary-light to-accent" />
