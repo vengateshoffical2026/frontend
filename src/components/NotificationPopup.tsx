@@ -94,7 +94,7 @@ const NotificationPopup = () => {
             className="pointer-events-auto h-16 w-16 rounded-full bg-primary text-white shadow-[0_10px_30px_rgba(139,69,19,0.4)] flex items-center justify-center hover:scale-110 active:scale-95 transition-all relative ring-4 ring-white group"
           >
             {view === "news" && hasNew && (
-              <span className="absolute -top-1 -right-1 h-6 w-6 bg-red-500 rounded-full border-2 border-white flex items-center justify-center text-[11px] font-black group-hover:animate-bounce">
+              <span className="absolute -top-1 -right-1 h-6 w-6 bg-red-500 rounded-full border-2 border-white flex items-center justify-center text-2xs font-black group-hover:animate-bounce">
                 {newItems.length}
               </span>
             )}
@@ -140,11 +140,11 @@ const NotificationPopup = () => {
                   </div>
                   <form onSubmit={handleLogin} className="space-y-3">
                     <div className="space-y-1">
-                      <label className="text-[9px] font-black uppercase tracking-widest text-primary/60 ml-1">Email or Mobile</label>
+                      <label className="text-2xs font-black uppercase tracking-widest text-primary/60 ml-1">Email or Mobile</label>
                       <input type="text" placeholder="scribe@sasanam.org" className="w-full px-4 py-3 rounded-xl bg-cream/40 border-2 border-cream focus:border-primary/30 focus:bg-white outline-none text-sm font-semibold transition-all" value={loginValues.email} onChange={(e) => setLoginValues({ ...loginValues, email: e.target.value })} required />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-[9px] font-black uppercase tracking-widest text-primary/60 ml-1">Secret Key</label>
+                      <label className="text-2xs font-black uppercase tracking-widest text-primary/60 ml-1">Secret Key</label>
                       <input type="password" placeholder="••••••••" className="w-full px-4 py-3 rounded-xl bg-cream/40 border-2 border-cream focus:border-primary/30 focus:bg-white outline-none text-sm font-semibold transition-all" value={loginValues.password} onChange={(e) => setLoginValues({ ...loginValues, password: e.target.value })} required />
                     </div>
                     <button type="submit" disabled={isSubmitting} className="w-full py-4 mt-2 bg-primary text-white text-xs font-black uppercase tracking-[0.2em] rounded-xl shadow-lg hover:bg-primary-light transition-all disabled:opacity-50 flex items-center justify-center gap-2">
@@ -152,7 +152,7 @@ const NotificationPopup = () => {
                     </button>
                     {!hasNew && (
                       <div className="text-center pt-2">
-                        <Link to="/signup" onClick={handleDismiss} className="text-[10px] font-bold text-primary uppercase tracking-widest hover:underline">Enroll as New Scribe</Link>
+                        <Link to="/signup" onClick={handleDismiss} className="text-2xs font-bold text-primary uppercase tracking-widest hover:underline">Enroll as New Scribe</Link>
                       </div>
                     )}
                   </form>
@@ -167,16 +167,16 @@ const NotificationPopup = () => {
                   {newItems.map((item) => (
                     <Link key={item.id} to="/news-events" onClick={() => setIsMinimized(true)} className="group flex flex-col gap-1 p-3 rounded-2xl bg-[#FAF9F6] border border-primary/5 hover:bg-white hover:border-primary/20 transition-all">
                       <div className="flex items-center gap-2">
-                        <span className="text-[9px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-black uppercase tracking-tighter">{item.type}</span>
-                        <span className="text-[10px] text-muted font-bold">{item.date}</span>
+                        <span className="text-2xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-black uppercase tracking-tighter">{item.type}</span>
+                        <span className="text-2xs text-muted font-bold">{item.date}</span>
                       </div>
                       <h4 className="text-sm font-bold text-body group-hover:text-primary transition-colors">{item.title}</h4>
                     </Link>
                   ))}
                   <div className="flex flex-col gap-2 pt-2">
-                    <Link to="/news-events" onClick={handleDismiss} className="w-full block py-3 text-center text-[10px] font-black uppercase tracking-widest text-white bg-primary rounded-xl hover:bg-primary-light transition-all shadow-md">Explore Now</Link>
+                    <Link to="/news-events" onClick={handleDismiss} className="w-full block py-3 text-center text-2xs font-black uppercase tracking-widest text-white bg-primary rounded-xl hover:bg-primary-light transition-all shadow-md">Explore Now</Link>
                     {!token && (
-                      <button onClick={() => setView("login")} className="w-full py-2 text-[9px] font-black uppercase tracking-widest text-primary/60 hover:text-primary transition-colors">Skip to Login</button>
+                      <button onClick={() => setView("login")} className="w-full py-2 text-2xs font-black uppercase tracking-widest text-primary/60 hover:text-primary transition-colors">Skip to Login</button>
                     )}
                   </div>
                 </div>

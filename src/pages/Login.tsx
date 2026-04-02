@@ -84,7 +84,7 @@ const Login = () => {
                     
                     <div className="max-w-md mx-auto w-full">
                         <div className="mb-10 text-center lg:text-left">
-                            <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-[10px] font-black tracking-[0.2em] uppercase rounded-full mb-4">Secured Access</span>
+                            <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-2xs font-black tracking-[0.2em] uppercase rounded-full mb-4">Secured Access</span>
                             <h1 className="text-4xl font-serif font-black text-body mb-3 leading-tight tracking-tight">Access the Archives</h1>
                             <p className="text-muted font-medium text-sm tracking-wide">Step back in time. Please provide your identification.</p>
                         </div>
@@ -92,7 +92,7 @@ const Login = () => {
                         <form onSubmit={formik.handleSubmit} className="space-y-6">
                             {formFields.map((field) => (
                                 <div key={field.id} className="space-y-2">
-                                    <label htmlFor={field.id} className="block text-[10px] font-black uppercase tracking-widest text-primary/60 ml-1">
+                                    <label htmlFor={field.id} className="block text-2xs font-black uppercase tracking-widest text-primary/60 ml-1">
                                         {field.label}
                                     </label>
                                     <div className="relative group">
@@ -110,7 +110,7 @@ const Login = () => {
                                         <div className="absolute inset-x-0 -bottom-px h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent scale-x-0 transition-transform duration-500 group-focus-within:scale-x-100"></div>
                                     </div>
                                     {formik.touched[field.id as keyof typeof formik.values] && formik.errors[field.id as keyof typeof formik.values] && (
-                                        <p className="text-[10px] font-bold text-red-500 ml-2 mt-1">{formik.errors[field.id as keyof typeof formik.values]}</p>
+                                        <p className="text-2xs font-bold text-red-500 ml-2 mt-1">{formik.errors[field.id as keyof typeof formik.values]}</p>
                                     )}
                                 </div>
                             ))}
@@ -144,7 +144,7 @@ const Login = () => {
 
                         <div className="mt-12 text-center relative">
                             <div className="absolute inset-x-0 top-1/2 h-px bg-gradient-to-r from-transparent via-primary/10 to-transparent"></div>
-                            <span className="relative z-10 bg-card px-4 text-[10px] font-black uppercase tracking-[0.3em] text-primary/40">No connection?</span>
+                            <span className="relative z-10 bg-card px-4 text-2xs font-black uppercase tracking-[0.3em] text-primary/40">No connection?</span>
                         </div>
 
                         <p className="mt-8 text-center text-sm font-medium text-muted">

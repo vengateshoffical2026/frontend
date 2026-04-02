@@ -128,7 +128,7 @@ const SasanamBooks: React.FC<SasanamBooksProps> = ({ data }) => {
                     </svg>
                   </div>
                   {hasPdf && (
-                    <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-100">
+                    <span className="text-2xs font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-100">
                       PDF Available
                     </span>
                   )}

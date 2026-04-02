@@ -127,7 +127,7 @@ const Sasanam = () => {
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                     </button>
                   ) : (
-                    <button onClick={() => navigate('/pricing')} className="text-[11px] font-semibold text-primary hover:underline">
+                    <button onClick={() => navigate('/pricing')} className="text-2xs font-semibold text-primary hover:underline">
                       Want unlimited? Subscribe now
                     </button>
                   )}
@@ -178,17 +178,17 @@ const Sasanam = () => {
                         </svg>
                       </div>
                       {hasPdf && (
-                        <span className="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-primary/10 text-primary">
+                        <span className="text-2xs font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-primary/10 text-primary">
                           PDF
                         </span>
                       )}
                     </div>
 
                     <h3 className="text-sm font-bold text-body mb-1 line-clamp-2 group-hover:text-primary transition-colors leading-snug">{book.bookName}</h3>
-                    <p className="text-[11px] text-muted mb-1">by <span className="font-semibold">{book.authorName}</span></p>
-                    {book.description && <p className="text-[11px] text-muted/60 line-clamp-2 mt-1">{book.description}</p>}
+                    <p className="text-2xs text-muted mb-1">by <span className="font-semibold">{book.authorName}</span></p>
+                    {book.description && <p className="text-2xs text-muted/60 line-clamp-2 mt-1">{book.description}</p>}
 
-                    <span className="mt-auto pt-3 text-[11px] font-bold text-primary/60 group-hover:text-primary flex items-center gap-1 transition-colors">
+                    <span className="mt-auto pt-3 text-2xs font-bold text-primary/60 group-hover:text-primary flex items-center gap-1 transition-colors">
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                         <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
@@ -200,13 +200,13 @@ const Sasanam = () => {
                   {/* Footer: Download action */}
                   {hasPdf && (
                     <div className="px-5 py-3 border-t border-border/40 bg-cream/30 flex items-center justify-between">
-                      <span className="text-[10px] font-medium text-muted">{book.pdfFile}</span>
+                      <span className="text-2xs font-medium text-muted">{book.pdfFile}</span>
                       {token ? (
                         canDownloadNow ? (
                           <button
                             onClick={(e) => handleDownload(e, book._id, book.bookName)}
                             disabled={downloadingId === book._id}
-                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-white text-[10px] font-bold uppercase tracking-wider hover:bg-primary-light active:scale-95 disabled:opacity-50 transition-all"
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-white text-2xs font-bold uppercase tracking-wider hover:bg-primary-light active:scale-95 disabled:opacity-50 transition-all"
                             title="Download PDF"
                           >
                             {downloadingId === book._id ? (
@@ -221,7 +221,7 @@ const Sasanam = () => {
                         ) : (
                           <button
                             onClick={(e) => { e.stopPropagation(); navigate('/pricing') }}
-                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-100 text-amber-700 text-[10px] font-bold uppercase tracking-wider hover:bg-amber-200 transition-all"
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-100 text-amber-700 text-2xs font-bold uppercase tracking-wider hover:bg-amber-200 transition-all"
                             title="Subscribe to download more"
                           >
                             <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -233,7 +233,7 @@ const Sasanam = () => {
                       ) : (
                         <button
                           onClick={(e) => { e.stopPropagation(); navigate('/login') }}
-                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-200 text-gray-500 text-[10px] font-bold uppercase tracking-wider hover:bg-gray-300 transition-all"
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-200 text-gray-500 text-2xs font-bold uppercase tracking-wider hover:bg-gray-300 transition-all"
                           title="Login to download"
                         >
                           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

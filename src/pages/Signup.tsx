@@ -91,7 +91,7 @@ const SignupForm = () => {
                 <div className="flex-1 p-8 sm:p-12 lg:p-16 flex flex-col justify-center bg-card relative">
                     <div className="max-w-md mx-auto w-full">
                         <div className="mb-10 text-center lg:text-left">
-                            <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-[10px] font-black tracking-[0.2em] uppercase rounded-full mb-4">Enrollment Form</span>
+                            <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-2xs font-black tracking-[0.2em] uppercase rounded-full mb-4">Enrollment Form</span>
                             <h1 className="text-4xl font-serif font-black text-body mb-3 leading-tight tracking-tight">Become a Scribe</h1>
                             <p className="text-muted font-medium text-sm tracking-wide">Enter the lineage of those who record history.</p>
                         </div>
@@ -107,27 +107,27 @@ const SignupForm = () => {
                             <form onSubmit={formik.handleSubmit} className="space-y-4">
                                 
                                 <div className="space-y-1">
-                                    <label htmlFor="fullName" className="block text-[10px] font-black uppercase tracking-widest text-primary/60 ml-1">Full Identity</label>
+                                    <label htmlFor="fullName" className="block text-2xs font-black uppercase tracking-widest text-primary/60 ml-1">Full Identity</label>
                                     <input id="fullName" type="text" placeholder="e.g. Samuel Silas" className={getFieldClass("fullName")} {...formik.getFieldProps("fullName")} />
-                                    {formik.touched.fullName && formik.errors.fullName && <p className="text-[10px] font-bold text-red-500 ml-2">{formik.errors.fullName}</p>}
+                                    {formik.touched.fullName && formik.errors.fullName && <p className="text-2xs font-bold text-red-500 ml-2">{formik.errors.fullName}</p>}
                                 </div>
 
                                 <div className="space-y-1">
-                                    <label htmlFor="email" className="block text-[10px] font-black uppercase tracking-widest text-primary/60 ml-1">Comm Channel (Email)</label>
+                                    <label htmlFor="email" className="block text-2xs font-black uppercase tracking-widest text-primary/60 ml-1">Comm Channel (Email)</label>
                                     <input id="email" type="email" placeholder="you@domain.com" className={getFieldClass("email")} {...formik.getFieldProps("email")} />
-                                    {formik.touched.email && formik.errors.email && <p className="text-[10px] font-bold text-red-500 ml-2">{formik.errors.email}</p>}
+                                    {formik.touched.email && formik.errors.email && <p className="text-2xs font-bold text-red-500 ml-2">{formik.errors.email}</p>}
                                 </div>
 
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
                                     <div className="space-y-1">
-                                        <label htmlFor="password" className="block text-[10px] font-black uppercase tracking-widest text-primary/60 ml-1">Passphrase</label>
+                                        <label htmlFor="password" className="block text-2xs font-black uppercase tracking-widest text-primary/60 ml-1">Passphrase</label>
                                         <input id="password" type="password" placeholder="••••••••" className={getFieldClass("password")} {...formik.getFieldProps("password")} />
-                                        {formik.touched.password && formik.errors.password && <p className="text-[10px] font-bold text-red-500 ml-2">{formik.errors.password}</p>}
+                                        {formik.touched.password && formik.errors.password && <p className="text-2xs font-bold text-red-500 ml-2">{formik.errors.password}</p>}
                                     </div>
                                     <div className="space-y-1">
-                                        <label htmlFor="confirmPassword" className="block text-[10px] font-black uppercase tracking-widest text-primary/60 ml-1">Validate</label>
+                                        <label htmlFor="confirmPassword" className="block text-2xs font-black uppercase tracking-widest text-primary/60 ml-1">Validate</label>
                                         <input id="confirmPassword" type="password" placeholder="••••••••" className={getFieldClass("confirmPassword")} {...formik.getFieldProps("confirmPassword")} />
-                                        {formik.touched.confirmPassword && formik.errors.confirmPassword && <p className="text-[10px] font-bold text-red-500 ml-2">{formik.errors.confirmPassword}</p>}
+                                        {formik.touched.confirmPassword && formik.errors.confirmPassword && <p className="text-2xs font-bold text-red-500 ml-2">{formik.errors.confirmPassword}</p>}
                                     </div>
                                 </div>
 
@@ -145,7 +145,7 @@ const SignupForm = () => {
                                             I solemnly swear to abide by the <a href="#" className="text-primary font-black hover:underline">Vows of Preservation</a> and platform terms.
                                         </span>
                                     </label>
-                                    {formik.touched.terms && formik.errors.terms && <p className="text-[10px] font-bold text-red-500 ml-10 mt-1">{formik.errors.terms}</p>}
+                                    {formik.touched.terms && formik.errors.terms && <p className="text-2xs font-bold text-red-500 ml-10 mt-1">{formik.errors.terms}</p>}
                                 </div>
 
                                 <button

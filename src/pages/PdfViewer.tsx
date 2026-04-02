@@ -112,7 +112,7 @@ export default function PdfViewer() {
           </button>
           <div className="min-w-0">
             <h2 className="text-sm font-bold text-heading truncate">{bookName || 'Document'}</h2>
-            {authorName && <p className="text-[11px] text-subtle">by {authorName}</p>}
+            {authorName && <p className="text-2xs text-subtle">by {authorName}</p>}
           </div>
         </div>
         {numPages > 0 && (
@@ -155,7 +155,7 @@ export default function PdfViewer() {
                       ref={(el) => setPageRef(p, el)}
                       data-page={p}
                       className="mb-3 rounded-xl overflow-hidden shadow-[0_2px_12px_rgba(61,37,22,0.1)] border border-border/40"
-                      style={!show ? { height: pageH, width: pageWidth, background: '#fdf8f0' } : undefined}
+                      style={!show ? { height: pageH, width: pageWidth, background: 'var(--color-paper)' } : undefined}
                     >
                       {show ? (
                         <Page

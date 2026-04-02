@@ -135,7 +135,7 @@ const Journal = () => {
               {/* script-style decorative top line */}
               <div className="flex items-center gap-3">
                 <div className="h-px w-12 bg-gradient-to-r from-transparent to-accent/60" />
-                <span className="text-[10px] uppercase tracking-[0.3em] text-subtle font-medium">
+                <span className="text-2xs uppercase tracking-[0.3em] text-subtle font-medium">
                   {step === "sections" ? "Browse Archive" : "Section Contents"}
                 </span>
                 <div className="h-px w-12 bg-gradient-to-l from-transparent to-accent/60" />

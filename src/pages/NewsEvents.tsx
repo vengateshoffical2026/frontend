@@ -118,12 +118,12 @@ const NewsEventCard = ({
       {/* Badges */}
       <div className="absolute top-5 right-5 z-10 flex gap-2">
         {item.isNew && (
-          <span className="px-3 py-1.5 rounded-full bg-primary text-white text-[10px] font-black uppercase tracking-widest shadow-lg animate-pulse">
+          <span className="px-3 py-1.5 rounded-full bg-primary text-white text-2xs font-black uppercase tracking-widest shadow-lg animate-pulse">
             New
           </span>
         )}
         {item.type === "event" && isUpcoming(item.date) && (
-          <span className="px-3 py-1.5 rounded-full bg-white text-primary text-[10px] font-black uppercase tracking-widest shadow-md ring-1 ring-primary/20">
+          <span className="px-3 py-1.5 rounded-full bg-white text-primary text-2xs font-black uppercase tracking-widest shadow-md ring-1 ring-primary/20">
             Upcoming
           </span>
         )}
@@ -146,7 +146,7 @@ const NewsEventCard = ({
         {/* Type & Date */}
         <div className="flex items-center gap-3 mb-4">
           <span
-            className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${
+            className={`px-3 py-1 rounded-lg text-2xs font-black uppercase tracking-widest ${
               item.type === "news"
                 ? "bg-primary/10 text-primary"
                 : "bg-body/10 text-body"

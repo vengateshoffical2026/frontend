@@ -272,11 +272,11 @@ const Header = () => {
                       </div>
                       <div className="min-w-0 flex-1">
                         <p className="text-sm font-bold text-body truncate capitalize">{displayName}</p>
-                        <p className="text-[11px] text-muted truncate">{user?.email || 'User'}</p>
+                        <p className="text-2xs text-muted truncate">{user?.email || 'User'}</p>
                       </div>
                     </div>
                     {user?.isSubscribed !== undefined && (
-                      <span className={`inline-flex items-center gap-1.5 mt-1 text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full ${
+                      <span className={`inline-flex items-center gap-1.5 mt-1 text-2xs font-black uppercase tracking-wider px-2.5 py-1 rounded-full ${
                         user.isSubscribed ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
                       }`}>
                         <span className={`h-1.5 w-1.5 rounded-full ${user.isSubscribed ? 'bg-emerald-500' : 'bg-amber-500'}`} />
@@ -357,7 +357,7 @@ const Header = () => {
               <p className="text-sm font-bold text-body truncate capitalize">{displayName}</p>
               <p className="text-xs text-muted truncate">{user.email}</p>
               {user?.isSubscribed !== undefined && (
-                <span className={`inline-flex items-center gap-1 mt-1 text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full ${
+                <span className={`inline-flex items-center gap-1 mt-1 text-2xs font-black uppercase tracking-wider px-2 py-0.5 rounded-full ${
                   user.isSubscribed ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
                 }`}>
                   <span className={`h-1 w-1 rounded-full ${user.isSubscribed ? 'bg-emerald-500' : 'bg-amber-500'}`} />
