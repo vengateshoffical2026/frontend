@@ -49,7 +49,7 @@ const Home = () => {
                     {donor.donaterName}
                   </span>
                   <span className="font-serif font-black text-white px-2.5 py-0.5 rounded-lg bg-white/15">
-                    ₹{donor.donationAmount}
+                    ₹{Math.round(donor.donationAmount / 100)}
                   </span>
                 </div>
               ))}
