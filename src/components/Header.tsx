@@ -342,10 +342,12 @@ const Header = () => {
       </div>
 
       {/* Mobile Menu */}
-      <div className={`lg:hidden fixed inset-0 z-[1002] bg-cream px-6 pt-24 pb-8 overflow-y-auto transition-all duration-400 ease-in-out transform ${
-        isMobileMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
+      {isMobileMenuOpen && (
+        <div className="lg:hidden fixed inset-0 z-[1001] bg-black/30" onClick={() => setIsMobileMenuOpen(false)} />
+      )}
+      <div className={`lg:hidden fixed inset-y-0 right-0 z-[1002] w-[85%] max-w-sm bg-cream px-6 pt-24 pb-8 overflow-y-auto shadow-2xl transition-transform duration-300 ease-out ${
+        isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
       }`}>
-        <div className="absolute inset-0 bg-cream z-[-1]" />
 
         {/* User info card (logged in) */}
         {token && user && (
