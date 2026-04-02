@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: sasanam-frontend
+    runtime: static
+    buildCommand: npm install && npm run build --pord
+    staticPublishPath: ./dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
