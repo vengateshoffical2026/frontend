@@ -12,6 +12,7 @@ import About from './pages/About'
 import Contact from './pages/Contact'
 import NewsEvents from './pages/NewsEvents'
 import Sasanam from './pages/Sasanam'
+import PdfViewer from './pages/PdfViewer'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Layout from './components/Layout'
@@ -35,6 +36,7 @@ function App() {
         <Route path="/login" element={<Layout hideFooter><Login /></Layout>} />
         <Route path="/signup" element={<Layout hideFooter><Signup /></Layout>} />
         <Route path="/upload" element={<Layout><Upload /></Layout>} />
+        <Route path="/view/:bookId" element={<PdfViewer />} />
       </Routes>
       <ToastContainer 
         autoClose={2000}

@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useGetAllBooks, useDownloadStatus } from '../api/hooks/journalQuery'
 import { downloadBook } from '../api/controllers/journal'
-import apiClient from '../api/interceptors/axiosInstance'
 import { toast } from 'react-toastify'
 import PageSEO from '../components/PageSEO'
 import { useNavigate } from 'react-router-dom'
@@ -12,11 +11,6 @@ const Sasanam = () => {
   const queryClient = useQueryClient()
   const token = localStorage.getItem('token')
   const [downloadingId, setDownloadingId] = useState<string | null>(null)
-  const [viewingBook, setViewingBook] = useState<any>(null)
-  const [viewMode, setViewMode] = useState<'pdf' | 'html' | 'none'>('none')
-  const [bookContent, setBookContent] = useState<string | null>(null)
-  const [pdfUrl, setPdfUrl] = useState<string | null>(null)
-  const [contentLoading, setContentLoading] = useState(false)
 
   const { data: books, isLoading } = useGetAllBooks()
   const { data: dlStatus } = useDownloadStatus()
@@ -27,50 +21,6 @@ const Sasanam = () => {
   const freeLimit = dlStatus?.freeLimit ?? 4
   const downloadCount = dlStatus?.downloadCount ?? 0
   const canDownloadNow = unlimitedAccess || remaining > 0
-
-  // View book content
-  const handleView = async (book: any) => {
-    setViewingBook(book)
-    setBookContent(null)
-    setPdfUrl(null)
-    setViewMode('none')
-    setContentLoading(true)
-
-    // Try HTML content first
-    try {
-      const res = await apiClient.get(`/sasanam-book-details/${book._id}`)
-      const details = res.data?.data
-      if (details && details.bookDetails) {
-        setBookContent(details.bookDetails)
-        setViewMode('html')
-        setContentLoading(false)
-        return
-      }
-    } catch {}
-
-    // Fallback: show PDF
-    if (book.pdfFile) {
-      try {
-        const res = await apiClient.get(`/sasanam-books/${book._id}/view`, { responseType: 'blob' })
-        const blob = new Blob([res.data], { type: 'application/pdf' })
-        const url = URL.createObjectURL(blob)
-        setPdfUrl(url)
-        setViewMode('pdf')
-      } catch {
-        setViewMode('none')
-      }
-    }
-
-    setContentLoading(false)
-  }
-
-  const closeViewer = () => {
-    setViewingBook(null)
-    setBookContent(null)
-    if (pdfUrl) URL.revokeObjectURL(pdfUrl)
-    setPdfUrl(null)
-    setViewMode('none')
-  }
 
   // Download PDF
   const handleDownload = async (e: React.MouseEvent, bookId: string, bookName: string) => {
@@ -126,56 +76,6 @@ const Sasanam = () => {
         path="/sasanam"
       />
 
-      {/* ── Fullscreen Book Viewer ── */}
-      {viewingBook && (
-        <div className="fixed inset-0 z-[9999] bg-[#1a1a1a] flex flex-col">
-          {/* Header bar */}
-          <div className="flex items-center justify-between px-4 py-2 bg-[#2a2218] shrink-0">
-            <div className="flex items-center gap-3 min-w-0">
-              <button onClick={closeViewer} className="p-2 rounded-lg text-[#e2c9a0] hover:bg-white/10 transition-all shrink-0">
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-              </button>
-              <div className="min-w-0">
-                <h2 className="text-sm font-bold text-[#fdfaf2] truncate">{viewingBook.bookName}</h2>
-                <p className="text-[11px] text-[#c9a87a]">by {viewingBook.authorName}</p>
-              </div>
-            </div>
-          </div>
-          {/* Content */}
-          <div className="flex-1 overflow-hidden">
-            {contentLoading ? (
-              <div className="flex flex-col items-center justify-center h-full gap-3">
-                <div className="h-10 w-10 border-3 border-[#c9a87a] border-t-transparent rounded-full animate-spin" />
-                <p className="text-sm text-[#c9a87a]">Loading document...</p>
-              </div>
-            ) : viewMode === 'pdf' && pdfUrl ? (
-              <iframe
-                src={`${pdfUrl}#toolbar=0&navpanes=0&scrollbar=1`}
-                className="w-full h-full border-0"
-                title={viewingBook.bookName}
-              />
-            ) : viewMode === 'html' && bookContent ? (
-              <div className="overflow-y-auto h-full bg-[#fdfaf2]">
-                <div className="max-w-4xl mx-auto p-6 sm:p-10">
-                  <div className="prose prose-stone max-w-none text-[#4A3B32] leading-relaxed" dangerouslySetInnerHTML={{ __html: bookContent }} />
-                </div>
-              </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center h-full gap-4 text-center px-6">
-                <div className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center">
-                  <svg className="w-8 h-8 text-[#c9a87a]/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-                  </svg>
-                </div>
-                <p className="text-base font-semibold text-[#fdfaf2]">No content available yet</p>
-                <p className="text-sm text-[#c9a87a]">This book's content will be available soon.</p>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
 
       <div className="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8 py-8">
 
@@ -268,7 +168,7 @@ const Sasanam = () => {
                 >
                   {/* Card body — clickable to view */}
                   <button
-                    onClick={() => handleView(book)}
+                    onClick={() => book.pdfFile ? navigate(`/view/${book._id}`, { state: { bookName: book.bookName, authorName: book.authorName } }) : null}
                     className="text-left p-5 pb-3 flex-1 flex flex-col cursor-pointer"
                   >
                     <div className="flex items-start justify-between mb-3">
