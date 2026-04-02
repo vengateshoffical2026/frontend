@@ -46,9 +46,9 @@ const NewsEvents = () => {
         }`}
       >
         <h1 className="text-4xl sm:text-5xl xl:text-6xl font-serif font-black text-[#4A3B32] tracking-tight">
-          News & <span className="text-[#8B4513]">Events</span>
+          News & <span className="text-primary">Events</span>
         </h1>
-        <div className="w-24 h-1 bg-[#8B4513]/20 rounded-full mx-auto mt-6 mb-6" />
+        <div className="w-24 h-1 bg-primary/20 rounded-full mx-auto mt-6 mb-6" />
         <p className="text-lg text-[#6A5A4A] max-w-2xl mx-auto font-medium leading-relaxed">
           Stay updated with the latest discoveries, research milestones, and
           upcoming events from the Sasanam community.
@@ -63,8 +63,8 @@ const NewsEvents = () => {
             onClick={() => setFilter(type)}
             className={`px-6 py-3 rounded-2xl text-sm font-black uppercase tracking-widest transition-all duration-300 ${
               filter === type
-                ? "bg-[#8B4513] text-white shadow-xl -translate-y-0.5"
-                : "bg-white/50 text-[#a78e7e] hover:bg-white/80 hover:text-[#8B4513] border border-[#8B4513]/10"
+                ? "bg-primary text-white shadow-xl -translate-y-0.5"
+                : "bg-white/50 text-[#a78e7e] hover:bg-white/80 hover:text-primary border border-primary/10"
             }`}
           >
             {type === "all" ? "All" : type === "news" ? "News" : "Events"}
@@ -118,12 +118,12 @@ const NewsEventCard = ({
       {/* Badges */}
       <div className="absolute top-5 right-5 z-10 flex gap-2">
         {item.isNew && (
-          <span className="px-3 py-1.5 rounded-full bg-[#8B4513] text-white text-[10px] font-black uppercase tracking-widest shadow-lg animate-pulse">
+          <span className="px-3 py-1.5 rounded-full bg-primary text-white text-[10px] font-black uppercase tracking-widest shadow-lg animate-pulse">
             New
           </span>
         )}
         {item.type === "event" && isUpcoming(item.date) && (
-          <span className="px-3 py-1.5 rounded-full bg-white text-[#8B4513] text-[10px] font-black uppercase tracking-widest shadow-md ring-1 ring-[#8B4513]/20">
+          <span className="px-3 py-1.5 rounded-full bg-white text-primary text-[10px] font-black uppercase tracking-widest shadow-md ring-1 ring-primary/20">
             Upcoming
           </span>
         )}
@@ -148,7 +148,7 @@ const NewsEventCard = ({
           <span
             className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${
               item.type === "news"
-                ? "bg-[#8B4513]/10 text-[#8B4513]"
+                ? "bg-primary/10 text-primary"
                 : "bg-[#4A3B32]/10 text-[#4A3B32]"
             }`}
           >
@@ -160,7 +160,7 @@ const NewsEventCard = ({
         </div>
 
         {/* Title */}
-        <h3 className="text-xl font-bold text-[#4A3B32] leading-snug mb-3 group-hover:text-[#8B4513] transition-colors line-clamp-2">
+        <h3 className="text-xl font-bold text-[#4A3B32] leading-snug mb-3 group-hover:text-primary transition-colors line-clamp-2">
           {item.title}
         </h3>
 
@@ -170,7 +170,7 @@ const NewsEventCard = ({
         </p>
 
         {/* Read More */}
-        <div className="mt-6 flex items-center gap-2 text-[#8B4513] font-bold text-sm group-hover:gap-3 transition-all">
+        <div className="mt-6 flex items-center gap-2 text-primary font-bold text-sm group-hover:gap-3 transition-all">
           <span>Read More</span>
           <svg
             className="w-4 h-4"

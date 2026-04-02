@@ -83,12 +83,12 @@ const Header = () => {
 
         {/* Logo */}
         <NavLink to="/" className="flex items-center gap-3 hover:opacity-80 transition-all group shrink-0">
-          <div className={`relative flex items-center justify-center overflow-hidden rounded-lg bg-white/60 ring-1 ring-[#8B4513]/10 transition-all duration-500 shadow-inner ${
+          <div className={`relative flex items-center justify-center overflow-hidden rounded-lg bg-white/60 ring-1 ring-primary/10 transition-all duration-500 shadow-inner ${
             isScrolled ? 'h-8 w-8 p-1' : 'h-11 w-11 p-1.5'
           }`}>
             <img src="/logo.jpeg" alt="Sasanam" className="h-full w-full object-contain mix-blend-multiply" />
           </div>
-          <span className={`font-serif font-black text-[#8B4513] tracking-[0.1em] uppercase transition-all duration-500 ${
+          <span className={`font-serif font-black text-primary tracking-[0.1em] uppercase transition-all duration-500 ${
             isScrolled ? 'text-base' : 'text-lg'
           }`}>
             Sasanam
@@ -105,15 +105,15 @@ const Header = () => {
             className={({ isActive }) =>
               `relative px-4 py-2 rounded-lg transition-all duration-200 ${
                 isActive
-                  ? 'text-[#8B4513] font-bold'
-                  : 'text-[#6A5A4A] hover:text-[#8B4513] hover:bg-[#8B4513]/5'
+                  ? 'text-primary font-bold'
+                  : 'text-[#6A5A4A] hover:text-primary hover:bg-primary/5'
               }`
             }
           >
             {({ isActive }) => (
               <>
                 Home
-                {isActive && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-[#8B4513]" />}
+                {isActive && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-primary" />}
               </>
             )}
           </NavLink>
@@ -124,15 +124,15 @@ const Header = () => {
             className={({ isActive }) =>
               `relative px-4 py-2 rounded-lg transition-all duration-200 ${
                 isActive
-                  ? 'text-[#8B4513] font-bold'
-                  : 'text-[#6A5A4A] hover:text-[#8B4513] hover:bg-[#8B4513]/5'
+                  ? 'text-primary font-bold'
+                  : 'text-[#6A5A4A] hover:text-primary hover:bg-primary/5'
               }`
             }
           >
             {({ isActive }) => (
               <>
                 About
-                {isActive && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-[#8B4513]" />}
+                {isActive && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-primary" />}
               </>
             )}
           </NavLink>
@@ -144,15 +144,15 @@ const Header = () => {
               className={({ isActive }) =>
                 `relative px-4 py-2 rounded-lg transition-all duration-200 ${
                   isActive
-                    ? 'text-[#8B4513] font-bold'
-                    : 'text-[#6A5A4A] hover:text-[#8B4513] hover:bg-[#8B4513]/5'
+                    ? 'text-primary font-bold'
+                    : 'text-[#6A5A4A] hover:text-primary hover:bg-primary/5'
                 }`
               }
             >
               {({ isActive }) => (
                 <>
                   News & Events
-                  {isActive && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-[#8B4513]" />}
+                  {isActive && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-primary" />}
                 </>
               )}
             </NavLink>
@@ -165,15 +165,15 @@ const Header = () => {
               className={({ isActive }) =>
                 `relative px-4 py-2 rounded-lg transition-all duration-200 ${
                   isActive
-                    ? 'text-[#8B4513] font-bold'
-                    : 'text-[#6A5A4A] hover:text-[#8B4513] hover:bg-[#8B4513]/5'
+                    ? 'text-primary font-bold'
+                    : 'text-[#6A5A4A] hover:text-primary hover:bg-primary/5'
                 }`
               }
             >
               {({ isActive }) => (
                 <>
                   Journal
-                  {isActive && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-[#8B4513]" />}
+                  {isActive && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-primary" />}
                 </>
               )}
             </NavLink>
@@ -186,15 +186,15 @@ const Header = () => {
               className={({ isActive }) =>
                 `relative px-4 py-2 rounded-lg transition-all duration-200 ${
                   isActive
-                    ? 'text-[#8B4513] font-bold'
-                    : 'text-[#6A5A4A] hover:text-[#8B4513] hover:bg-[#8B4513]/5'
+                    ? 'text-primary font-bold'
+                    : 'text-[#6A5A4A] hover:text-primary hover:bg-primary/5'
                 }`
               }
             >
               {({ isActive }) => (
                 <>
                   Sasanam
-                  {isActive && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-[#8B4513]" />}
+                  {isActive && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-primary" />}
                 </>
               )}
             </NavLink>
@@ -207,19 +207,19 @@ const Header = () => {
                 onClick={() => setOpenDropdown(openDropdown === 'more' ? null : 'more')}
                 className={`relative flex items-center gap-1 px-4 py-2 rounded-lg transition-all duration-200 ${
                   isDropdownActive(moreItems) || openDropdown === 'more'
-                    ? 'text-[#8B4513] font-bold'
-                    : 'text-[#6A5A4A] hover:text-[#8B4513] hover:bg-[#8B4513]/5'
+                    ? 'text-primary font-bold'
+                    : 'text-[#6A5A4A] hover:text-primary hover:bg-primary/5'
                 }`}
               >
                 More
                 <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${openDropdown === 'more' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                 </svg>
-                {isDropdownActive(moreItems) && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-[#8B4513]" />}
+                {isDropdownActive(moreItems) && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-primary" />}
               </button>
 
               {openDropdown === 'more' && (
-                <div className="absolute top-full right-0 mt-2 w-52 rounded-xl bg-[#fdfaf2] shadow-[0_12px_40px_rgba(61,37,22,0.2)] border border-[#8B4513]/10 overflow-hidden py-1">
+                <div className="absolute top-full right-0 mt-2 w-52 rounded-xl bg-[#fdfaf2] shadow-[0_12px_40px_rgba(61,37,22,0.2)] border border-primary/10 overflow-hidden py-1">
                   {moreItems.map((item) => (
                     <NavLink
                       key={item.to}
@@ -227,14 +227,14 @@ const Header = () => {
                       className={({ isActive }) =>
                         `flex items-center gap-3 px-4 py-2.5 text-sm transition-colors ${
                           isActive
-                            ? 'text-[#8B4513] font-bold bg-[#8B4513]/8'
-                            : 'text-[#4A3B32] hover:bg-[#8B4513]/5 hover:text-[#8B4513]'
+                            ? 'text-primary font-bold bg-primary/8'
+                            : 'text-[#4A3B32] hover:bg-primary/5 hover:text-primary'
                         }`
                       }
                     >
                       {({ isActive }) => (
                         <>
-                          {isActive && <span className="w-1.5 h-1.5 rounded-full bg-[#8B4513] shrink-0" />}
+                          {isActive && <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />}
                           {item.label}
                         </>
                       )}
@@ -251,7 +251,7 @@ const Header = () => {
             <div className="relative ml-3" ref={userMenuRef}>
               <button
                 onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                className="flex items-center gap-2 rounded-full bg-[#8B4513] pl-1 pr-3 py-1 text-white transition-all hover:bg-[#a0522d] active:scale-95"
+                className="flex items-center gap-2 rounded-full bg-primary pl-1 pr-3 py-1 text-white transition-all hover:bg-primary-light active:scale-95"
               >
                 <div className="h-7 w-7 rounded-full bg-white/20 flex items-center justify-center text-xs font-black uppercase">
                   {displayName.charAt(0)}
@@ -263,11 +263,11 @@ const Header = () => {
               </button>
 
               {isUserMenuOpen && (
-                <div className="absolute right-0 top-full mt-2 w-60 rounded-xl bg-[#fdfaf2] shadow-[0_20px_60px_rgba(61,37,22,0.25)] border border-[#8B4513]/10 overflow-hidden z-[1100]">
+                <div className="absolute right-0 top-full mt-2 w-60 rounded-xl bg-[#fdfaf2] shadow-[0_20px_60px_rgba(61,37,22,0.25)] border border-primary/10 overflow-hidden z-[1100]">
                   {/* User info */}
-                  <div className="p-4 border-b border-[#8B4513]/10 bg-[#f4ecd8]/50">
+                  <div className="p-4 border-b border-primary/10 bg-[#f4ecd8]/50">
                     <div className="flex items-center gap-3 mb-2">
-                      <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#8B4513] to-[#a0522d] flex items-center justify-center text-white text-sm font-black uppercase shadow-md">
+                      <div className="h-10 w-10 rounded-full bg-gradient-to-br from-primary to-primary-light flex items-center justify-center text-white text-sm font-black uppercase shadow-md">
                         {displayName.charAt(0)}
                       </div>
                       <div className="min-w-0 flex-1">
@@ -288,8 +288,8 @@ const Header = () => {
                   {/* Menu items */}
                   <div className="p-1.5">
                     <NavLink to="/pricing" onClick={() => setIsUserMenuOpen(false)}
-                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-[#4A3B32] hover:bg-[#8B4513]/5 transition-colors">
-                      <svg className="w-4 h-4 text-[#8B4513]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-[#4A3B32] hover:bg-primary/5 transition-colors">
+                      <svg className="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                       </svg>
                       Subscription
@@ -309,11 +309,11 @@ const Header = () => {
             /* LOGGED OUT: Login & Sign Up buttons */
             <div className="flex items-center gap-2 ml-3">
               <NavLink to="/login"
-                className="rounded-full border border-[#8B4513]/30 px-5 py-2 text-xs font-black text-[#8B4513] uppercase tracking-widest hover:bg-[#8B4513]/5 hover:-translate-y-0.5 active:translate-y-0 transition-all">
+                className="rounded-full border border-primary/30 px-5 py-2 text-xs font-black text-primary uppercase tracking-widest hover:bg-primary/5 hover:-translate-y-0.5 active:translate-y-0 transition-all">
                 Login
               </NavLink>
               <NavLink to="/signup"
-                className="rounded-full bg-[#8B4513] px-5 py-2 text-xs font-black text-white shadow-lg hover:bg-[#a0522d] hover:-translate-y-0.5 active:translate-y-0 uppercase tracking-widest transition-all">
+                className="rounded-full bg-primary px-5 py-2 text-xs font-black text-white shadow-lg hover:bg-primary-light hover:-translate-y-0.5 active:translate-y-0 uppercase tracking-widest transition-all">
                 Sign Up
               </NavLink>
             </div>
@@ -323,13 +323,13 @@ const Header = () => {
         {/* Mobile Menu Button */}
         <div className="flex items-center gap-2 lg:hidden">
           {token && !isMobileMenuOpen && (
-            <div className="h-8 w-8 rounded-full bg-[#8B4513] flex items-center justify-center text-white text-xs font-black uppercase shadow-md">
+            <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-white text-xs font-black uppercase shadow-md">
               {displayName.charAt(0)}
             </div>
           )}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="p-2 text-[#8B4513] hover:bg-[#8B4513]/10 rounded-lg transition-all active:scale-95 z-[1003]"
+            className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-all active:scale-95 z-[1003]"
             aria-label="Toggle Menu"
           >
             {isMobileMenuOpen ? (
@@ -349,8 +349,8 @@ const Header = () => {
 
         {/* User info card (logged in) */}
         {token && user && (
-          <div className="mb-6 p-4 rounded-2xl bg-white/50 border border-[#8B4513]/10 flex items-center gap-3">
-            <div className="h-11 w-11 rounded-full bg-gradient-to-br from-[#8B4513] to-[#a0522d] flex items-center justify-center text-white text-base font-black uppercase shadow-md shrink-0">
+          <div className="mb-6 p-4 rounded-2xl bg-white/50 border border-primary/10 flex items-center gap-3">
+            <div className="h-11 w-11 rounded-full bg-gradient-to-br from-primary to-primary-light flex items-center justify-center text-white text-base font-black uppercase shadow-md shrink-0">
               {displayName.charAt(0)}
             </div>
             <div className="min-w-0 flex-1">
@@ -377,8 +377,8 @@ const Header = () => {
             className={({ isActive }) =>
               `px-4 py-3 rounded-xl text-base font-bold transition-all ${
                 isActive
-                  ? 'text-[#8B4513] bg-[#8B4513]/8 border-l-[3px] border-[#8B4513]'
-                  : 'text-[#6A5A4A] hover:text-[#8B4513] hover:bg-[#8B4513]/5'
+                  ? 'text-primary bg-primary/8 border-l-[3px] border-primary'
+                  : 'text-[#6A5A4A] hover:text-primary hover:bg-primary/5'
               }`
             }
           >
@@ -392,8 +392,8 @@ const Header = () => {
             className={({ isActive }) =>
               `px-4 py-3 rounded-xl text-base font-bold transition-all ${
                 isActive
-                  ? 'text-[#8B4513] bg-[#8B4513]/8 border-l-[3px] border-[#8B4513]'
-                  : 'text-[#6A5A4A] hover:text-[#8B4513] hover:bg-[#8B4513]/5'
+                  ? 'text-primary bg-primary/8 border-l-[3px] border-primary'
+                  : 'text-[#6A5A4A] hover:text-primary hover:bg-primary/5'
               }`
             }
           >
@@ -408,8 +408,8 @@ const Header = () => {
               className={({ isActive }) =>
                 `px-4 py-3 rounded-xl text-base font-bold transition-all ${
                   isActive
-                    ? 'text-[#8B4513] bg-[#8B4513]/8 border-l-[3px] border-[#8B4513]'
-                    : 'text-[#6A5A4A] hover:text-[#8B4513] hover:bg-[#8B4513]/5'
+                    ? 'text-primary bg-primary/8 border-l-[3px] border-primary'
+                    : 'text-[#6A5A4A] hover:text-primary hover:bg-primary/5'
                 }`
               }
             >
@@ -425,8 +425,8 @@ const Header = () => {
               className={({ isActive }) =>
                 `px-4 py-3 rounded-xl text-base font-bold transition-all ${
                   isActive
-                    ? 'text-[#8B4513] bg-[#8B4513]/8 border-l-[3px] border-[#8B4513]'
-                    : 'text-[#6A5A4A] hover:text-[#8B4513] hover:bg-[#8B4513]/5'
+                    ? 'text-primary bg-primary/8 border-l-[3px] border-primary'
+                    : 'text-[#6A5A4A] hover:text-primary hover:bg-primary/5'
                 }`
               }
             >
@@ -442,8 +442,8 @@ const Header = () => {
               className={({ isActive }) =>
                 `px-4 py-3 rounded-xl text-base font-bold transition-all ${
                   isActive
-                    ? 'text-[#8B4513] bg-[#8B4513]/8 border-l-[3px] border-[#8B4513]'
-                    : 'text-[#6A5A4A] hover:text-[#8B4513] hover:bg-[#8B4513]/5'
+                    ? 'text-primary bg-primary/8 border-l-[3px] border-primary'
+                    : 'text-[#6A5A4A] hover:text-primary hover:bg-primary/5'
                 }`
               }
             >
@@ -458,8 +458,8 @@ const Header = () => {
                 onClick={() => setMobileExpanded(mobileExpanded === 'more' ? null : 'more')}
                 className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-base font-bold transition-all ${
                   isDropdownActive(moreItems)
-                    ? 'text-[#8B4513] bg-[#8B4513]/8'
-                    : 'text-[#6A5A4A] hover:text-[#8B4513] hover:bg-[#8B4513]/5'
+                    ? 'text-primary bg-primary/8'
+                    : 'text-[#6A5A4A] hover:text-primary hover:bg-primary/5'
                 }`}
               >
                 More
@@ -468,7 +468,7 @@ const Header = () => {
                 </svg>
               </button>
               <div className={`overflow-hidden transition-all duration-300 ${mobileExpanded === 'more' ? 'max-h-80 opacity-100' : 'max-h-0 opacity-0'}`}>
-                <div className="ml-4 mt-1 flex flex-col gap-0.5 border-l-2 border-[#8B4513]/15 pl-4">
+                <div className="ml-4 mt-1 flex flex-col gap-0.5 border-l-2 border-primary/15 pl-4">
                   {moreItems.map((item) => (
                     <NavLink
                       key={item.to}
@@ -476,7 +476,7 @@ const Header = () => {
                       onClick={() => setIsMobileMenuOpen(false)}
                       className={({ isActive }) =>
                         `px-3 py-2.5 rounded-lg text-sm font-semibold transition-all ${
-                          isActive ? 'text-[#8B4513] font-bold bg-[#8B4513]/8' : 'text-[#6A5A4A] hover:text-[#8B4513]'
+                          isActive ? 'text-primary font-bold bg-primary/8' : 'text-[#6A5A4A] hover:text-primary'
                         }`
                       }
                     >
@@ -496,8 +496,8 @@ const Header = () => {
               className={({ isActive }) =>
                 `px-4 py-3 rounded-xl text-base font-bold transition-all ${
                   isActive
-                    ? 'text-[#8B4513] bg-[#8B4513]/8 border-l-[3px] border-[#8B4513]'
-                    : 'text-[#6A5A4A] hover:text-[#8B4513] hover:bg-[#8B4513]/5'
+                    ? 'text-primary bg-primary/8 border-l-[3px] border-primary'
+                    : 'text-[#6A5A4A] hover:text-primary hover:bg-primary/5'
                 }`
               }
             >
@@ -506,7 +506,7 @@ const Header = () => {
           )}
 
           {/* Bottom auth section */}
-          <div className="mt-6 pt-6 border-t border-[#8B4513]/15">
+          <div className="mt-6 pt-6 border-t border-primary/15">
             {token ? (
               <button
                 onClick={() => { setIsMobileMenuOpen(false); handleLogout() }}
@@ -519,14 +519,14 @@ const Header = () => {
                 <NavLink
                   to="/login"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full inline-block rounded-xl border-2 border-[#8B4513] px-6 py-3.5 text-center text-[#8B4513] font-bold text-sm uppercase tracking-wider"
+                  className="w-full inline-block rounded-xl border-2 border-primary px-6 py-3.5 text-center text-primary font-bold text-sm uppercase tracking-wider"
                 >
                   Login
                 </NavLink>
                 <NavLink
                   to="/signup"
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="w-full inline-block rounded-xl bg-[#8B4513] px-6 py-3.5 text-center text-white font-bold text-sm uppercase tracking-wider shadow-lg"
+                  className="w-full inline-block rounded-xl bg-primary px-6 py-3.5 text-center text-white font-bold text-sm uppercase tracking-wider shadow-lg"
                 >
                   Sign Up
                 </NavLink>

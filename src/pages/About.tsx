@@ -23,7 +23,7 @@ const About = () => {
   const defaultAvatar = (name: string) => {
     const initials = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2)
     return (
-      <div className="w-full h-full bg-gradient-to-br from-[#8B4513] to-[#a78e7e] flex items-center justify-center text-white text-2xl font-black">
+      <div className="w-full h-full bg-gradient-to-br from-primary to-[#a78e7e] flex items-center justify-center text-white text-2xl font-black">
         {initials}
       </div>
     )
@@ -37,8 +37,8 @@ const About = () => {
         path="/about"
       />
       {/* Background decoration */}
-      <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-[500px] h-[500px] bg-[#8B4513]/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-[#8B4513]/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-[500px] h-[500px] bg-primary/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-primary/5 rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
 
@@ -48,9 +48,9 @@ const About = () => {
           className={`pt-16 pb-12 text-center ${revealClass(heroReveal.isVisible)}`}
         >
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-[#4A3B32] mb-6">
-            About <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8B4513] to-[#a78e7e]">Sasanam</span>
+            About <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-[#a78e7e]">Sasanam</span>
           </h1>
-          <div className="w-24 h-1 bg-[#8B4513]/20 rounded-full mx-auto mb-6" />
+          <div className="w-24 h-1 bg-primary/20 rounded-full mx-auto mb-6" />
           <p className="text-base sm:text-lg lg:text-xl text-[#6A5A4A] max-w-3xl mx-auto font-medium leading-relaxed">
             Dedicated to preserving and digitizing historical inscriptions and manuscripts.
             Our team of researchers, technologists, and historians work together to make ancient knowledge accessible to everyone.
@@ -86,7 +86,7 @@ const About = () => {
                   key={member._id}
                   className="group rounded-3xl bg-[#F5F5DC]/80 backdrop-blur-md p-8 shadow-[0_8px_32px_rgba(61,37,22,0.1)] border border-white/30 flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_12px_40px_rgba(61,37,22,0.15)]"
                 >
-                  <div className="w-28 h-28 rounded-full overflow-hidden mb-5 ring-4 ring-[#8B4513]/20 shadow-lg">
+                  <div className="w-28 h-28 rounded-full overflow-hidden mb-5 ring-4 ring-primary/20 shadow-lg">
                     {member.photo ? (
                       <img src={member.photo} alt={member.name} className="w-full h-full object-cover" />
                     ) : (
@@ -94,7 +94,7 @@ const About = () => {
                     )}
                   </div>
                   <h3 className="text-xl font-bold text-[#4A3B32] mb-1">{member.name}</h3>
-                  <span className="text-sm font-bold text-[#8B4513] uppercase tracking-wider mb-3">{member.role}</span>
+                  <span className="text-sm font-bold text-primary uppercase tracking-wider mb-3">{member.role}</span>
                   {member.bio && (
                     <p className="text-sm text-[#6A5A4A] leading-relaxed mt-2">{member.bio}</p>
                   )}
@@ -134,7 +134,7 @@ const About = () => {
                     key={author._id}
                     className="group rounded-2xl bg-[#FFFFFF]/90 backdrop-blur-md p-6 shadow-[0_4px_20px_rgba(61,37,22,0.08)] border border-white/40 flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(61,37,22,0.12)]"
                   >
-                    <div className="w-20 h-20 rounded-full overflow-hidden mb-4 ring-3 ring-[#8B4513]/15 shadow-md">
+                    <div className="w-20 h-20 rounded-full overflow-hidden mb-4 ring-3 ring-primary/15 shadow-md">
                       {author.photo ? (
                         <img src={author.photo} alt={author.name} className="w-full h-full object-cover" />
                       ) : (
@@ -143,10 +143,10 @@ const About = () => {
                     </div>
                     <h3 className="text-base font-bold text-[#4A3B32] mb-1">{author.name}</h3>
                     <div className="flex items-center gap-1.5 mt-1">
-                      <svg className="w-3.5 h-3.5 text-[#8B4513] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg className="w-3.5 h-3.5 text-primary flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                       </svg>
-                      <span className="text-xs font-semibold text-[#8B4513]">{author.bookName}</span>
+                      <span className="text-xs font-semibold text-primary">{author.bookName}</span>
                     </div>
                   </div>
                 ))}
@@ -157,7 +157,7 @@ const About = () => {
                   <button
                     onClick={() => setAuthorPage((p) => Math.max(1, p - 1))}
                     disabled={authorPage <= 1}
-                    className="px-4 py-2 rounded-lg text-sm font-bold text-[#8B4513] border border-[#8B4513] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#8B4513] hover:text-white transition-colors"
+                    className="px-4 py-2 rounded-lg text-sm font-bold text-primary border border-primary disabled:opacity-40 disabled:cursor-not-allowed hover:bg-primary hover:text-white transition-colors"
                   >
                     Previous
                   </button>
@@ -167,7 +167,7 @@ const About = () => {
                   <button
                     onClick={() => setAuthorPage((p) => Math.min(totalAuthorPages, p + 1))}
                     disabled={authorPage >= totalAuthorPages}
-                    className="px-4 py-2 rounded-lg text-sm font-bold text-[#8B4513] border border-[#8B4513] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#8B4513] hover:text-white transition-colors"
+                    className="px-4 py-2 rounded-lg text-sm font-bold text-primary border border-primary disabled:opacity-40 disabled:cursor-not-allowed hover:bg-primary hover:text-white transition-colors"
                   >
                     Next
                   </button>

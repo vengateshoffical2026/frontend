@@ -81,14 +81,14 @@ const Sasanam = () => {
 
         {/* Header */}
         <div className="text-center mb-12">
-          <span className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-[#8B4513] mb-3 px-3 py-1.5 rounded-full bg-[#8B4513]/10">
+          <span className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-primary mb-3 px-3 py-1.5 rounded-full bg-primary/10">
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
             </svg>
             Digital Library
           </span>
           <h1 className="text-4xl sm:text-5xl font-serif font-black tracking-tight text-[#4A3B32] mb-4">
-            Sasanam <span className="text-[#8B4513]">Books</span>
+            Sasanam <span className="text-primary">Books</span>
           </h1>
           <p className="text-base text-[#6A5A4A] max-w-xl mx-auto">
             Browse our collection of ancient inscription books.
@@ -113,7 +113,7 @@ const Sasanam = () => {
                       {Array.from({ length: freeLimit }).map((_, i) => (
                         <div
                           key={i}
-                          className={`w-3 h-3 rounded-full transition-colors ${i < downloadCount ? 'bg-[#8B4513]' : 'bg-[#8B4513]/15'}`}
+                          className={`w-3 h-3 rounded-full transition-colors ${i < downloadCount ? 'bg-primary' : 'bg-primary/15'}`}
                         />
                       ))}
                     </div>
@@ -122,12 +122,12 @@ const Sasanam = () => {
                     </span>
                   </div>
                   {remaining === 0 ? (
-                    <button onClick={() => navigate('/pricing')} className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-full bg-[#8B4513] text-white hover:-translate-y-0.5 hover:shadow-lg transition-all">
+                    <button onClick={() => navigate('/pricing')} className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-full bg-primary text-white hover:-translate-y-0.5 hover:shadow-lg transition-all">
                       Subscribe to Download More
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                     </button>
                   ) : (
-                    <button onClick={() => navigate('/pricing')} className="text-[11px] font-semibold text-[#8B4513] hover:underline">
+                    <button onClick={() => navigate('/pricing')} className="text-[11px] font-semibold text-primary hover:underline">
                       Want unlimited? Subscribe now
                     </button>
                   )}
@@ -135,8 +135,8 @@ const Sasanam = () => {
               )
             ) : (
               <div className="flex items-center justify-center gap-3">
-                <button onClick={() => navigate('/login')} className="text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-full border border-[#8B4513]/30 text-[#8B4513] hover:bg-[#8B4513]/5 transition-all">Login</button>
-                <button onClick={() => navigate('/signup')} className="text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-full bg-[#8B4513] text-white hover:-translate-y-0.5 hover:shadow-lg transition-all">Sign Up</button>
+                <button onClick={() => navigate('/login')} className="text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-full border border-primary/30 text-primary hover:bg-primary/5 transition-all">Login</button>
+                <button onClick={() => navigate('/signup')} className="text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-full bg-primary text-white hover:-translate-y-0.5 hover:shadow-lg transition-all">Sign Up</button>
               </div>
             )}
           </div>
@@ -172,23 +172,23 @@ const Sasanam = () => {
                     className="text-left p-5 pb-3 flex-1 flex flex-col cursor-pointer"
                   >
                     <div className="flex items-start justify-between mb-3">
-                      <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-[#8B4513]/10 shrink-0">
-                        <svg className="w-6 h-6 text-[#8B4513]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 shrink-0">
+                        <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                           <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                         </svg>
                       </div>
                       {hasPdf && (
-                        <span className="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#8B4513]/10 text-[#8B4513]">
+                        <span className="text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-primary/10 text-primary">
                           PDF
                         </span>
                       )}
                     </div>
 
-                    <h3 className="text-sm font-bold text-[#4A3B32] mb-1 line-clamp-2 group-hover:text-[#8B4513] transition-colors leading-snug">{book.bookName}</h3>
+                    <h3 className="text-sm font-bold text-[#4A3B32] mb-1 line-clamp-2 group-hover:text-primary transition-colors leading-snug">{book.bookName}</h3>
                     <p className="text-[11px] text-[#6A5A4A] mb-1">by <span className="font-semibold">{book.authorName}</span></p>
                     {book.description && <p className="text-[11px] text-[#6A5A4A]/60 line-clamp-2 mt-1">{book.description}</p>}
 
-                    <span className="mt-auto pt-3 text-[11px] font-bold text-[#8B4513]/60 group-hover:text-[#8B4513] flex items-center gap-1 transition-colors">
+                    <span className="mt-auto pt-3 text-[11px] font-bold text-primary/60 group-hover:text-primary flex items-center gap-1 transition-colors">
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                         <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
@@ -206,7 +206,7 @@ const Sasanam = () => {
                           <button
                             onClick={(e) => handleDownload(e, book._id, book.bookName)}
                             disabled={downloadingId === book._id}
-                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#8B4513] text-white text-[10px] font-bold uppercase tracking-wider hover:bg-[#a0522d] active:scale-95 disabled:opacity-50 transition-all"
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-white text-[10px] font-bold uppercase tracking-wider hover:bg-primary-light active:scale-95 disabled:opacity-50 transition-all"
                             title="Download PDF"
                           >
                             {downloadingId === book._id ? (
@@ -253,7 +253,7 @@ const Sasanam = () => {
         {/* Empty state */}
         {!isLoading && allBooks.length === 0 && (
           <div className="text-center py-20">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#8B4513]/10 text-[#8B4513]">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary">
               <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
               </svg>

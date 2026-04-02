@@ -202,7 +202,7 @@ const Pricing = () => {
         {/* Hero Section */}
         <section className="mt-12 text-center px-4">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-[#4A3B32] mb-6">
-            Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8B4513] to-[#a78e7e]">Plan</span>
+            Choose Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-[#a78e7e]">Plan</span>
           </h1>
           <p className="text-base sm:text-lg lg:text-xl text-[#6A5A4A] max-w-2xl mx-auto font-medium">
             Unlock exclusive tools and resources to accelerate your historical research.
@@ -215,15 +215,15 @@ const Pricing = () => {
           {/* Card 1: Free Explorer */}
           <div className="group rounded-3xl bg-[#F5F5DC]/80 p-8 shadow-[0_8px_32px_rgba(61,37,22,0.1)] backdrop-blur-xl border border-white/30 flex flex-col transition-all duration-300 hover:bg-[#F5F5DC]/90 hover:-translate-y-2 hover:shadow-[0_12px_40px_rgba(61,37,22,0.15)] ring-1 ring-white/20">
             <h3 className="text-2xl font-bold text-[#4A3B32] mb-2">Free Explorer</h3>
-            <p className="text-3xl font-black text-[#8B4513] mb-8 drop-shadow-sm">Free</p>
+            <p className="text-3xl font-black text-primary mb-8 drop-shadow-sm">Free</p>
 
             <ul className="flex-1 space-y-4 mb-10">
               <li className="flex items-start gap-3">
-                <span className="text-[#8B4513] font-bold text-lg leading-none mt-1">✓</span>
+                <span className="text-primary font-bold text-lg leading-none mt-1">✓</span>
                 <span className="text-sm text-[#4A3B32] font-semibold">Basic Archive Access</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-[#8B4513] font-bold text-lg leading-none mt-1">✓</span>
+                <span className="text-primary font-bold text-lg leading-none mt-1">✓</span>
                 <span className="text-sm text-[#4A3B32] font-semibold">Read Issues from the Journal</span>
               </li>
             </ul>
@@ -237,24 +237,24 @@ const Pricing = () => {
           </div>
 
           {/* Card 2: Contribute Once */}
-          <div className="relative group rounded-3xl bg-[#FFFFFF]/90 p-8 shadow-[0_12px_40px_rgba(61,37,22,0.15)] backdrop-blur-xl border-2 border-[#8B4513] flex flex-col transition-all duration-300 hover:-translate-y-2 lg:-mt-4">
-            <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-[#8B4513] to-[#a78e7e] px-4 py-1.5 text-xs font-black tracking-widest text-[#FFFFFF] uppercase shadow-lg">Recommended</div>
+          <div className="relative group rounded-3xl bg-[#FFFFFF]/90 p-8 shadow-[0_12px_40px_rgba(61,37,22,0.15)] backdrop-blur-xl border-2 border-primary flex flex-col transition-all duration-300 hover:-translate-y-2 lg:-mt-4">
+            <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-primary to-[#a78e7e] px-4 py-1.5 text-xs font-black tracking-widest text-[#FFFFFF] uppercase shadow-lg">Recommended</div>
             <h3 className="text-2xl font-bold text-[#4A3B32] mb-2">Contribute Once</h3>
-            <p className="text-3xl font-black text-[#8B4513] mb-8 flex items-baseline gap-1 drop-shadow-sm">
+            <p className="text-3xl font-black text-primary mb-8 flex items-baseline gap-1 drop-shadow-sm">
               ₹3000<span className="text-sm font-bold text-[#a78e7e]">/3 years</span>
             </p>
 
             <ul className="flex-1 space-y-4 mb-10">
               <li className="flex items-start gap-3">
-                <span className="text-[#8B4513] font-bold text-lg leading-none mt-1">✓</span>
+                <span className="text-primary font-bold text-lg leading-none mt-1">✓</span>
                 <span className="text-sm text-[#4A3B32] font-bold">Full Archive Access</span>
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-[#8B4513] font-bold text-lg leading-none mt-1">✓</span>
+                <span className="text-primary font-bold text-lg leading-none mt-1">✓</span>
                 <span className="text-sm text-[#4A3B32] font-bold">Download Soft &amp; Hard Copies</span>
               </li>
                <li className="flex items-start gap-3">
-                <span className="text-[#8B4513] font-bold text-lg leading-none mt-1">✓</span>
+                <span className="text-primary font-bold text-lg leading-none mt-1">✓</span>
                 <span className="text-sm text-[#4A3B32] font-bold">Priority Early Access</span>
               </li>
             </ul>
@@ -263,7 +263,7 @@ const Pricing = () => {
               className={`w-full rounded-xl py-3.5 text-sm font-bold text-white shadow-lg transition-all ${
                 isSubscribed
                   ? 'bg-[#6A5A4A] cursor-not-allowed opacity-80'
-                  : 'bg-[#8B4513] hover:bg-[#256a5e] hover:shadow-xl'
+                  : 'bg-primary hover:bg-[#256a5e] hover:shadow-xl'
               } ${isCreatingOrder && !isSubscribed ? 'cursor-not-allowed opacity-70' : ''}`}
               onClick={handleUpgradeClick}
               disabled={isCreatingOrder || isSubscribed}
@@ -286,7 +286,7 @@ const Pricing = () => {
                   type="number"
                   min="1"
                   placeholder="500"
-                  className="w-full pl-8 pr-4 py-3.5 rounded-xl border border-white/40 bg-white/50 text-[#4A3B32] placeholder:text-[#8a7f6a] focus:outline-none focus:border-[#8B4513] focus:ring-2 focus:ring-[#8B4513]/50 transition-all font-bold shadow-inner"
+                  className="w-full pl-8 pr-4 py-3.5 rounded-xl border border-white/40 bg-white/50 text-[#4A3B32] placeholder:text-[#8a7f6a] focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all font-bold shadow-inner"
                   onChange={(e) => {
                     const rupees = parseFloat(e.target.value)
                     setDonationAmount(isNaN(rupees) ? undefined : Math.round(rupees * 100))
@@ -294,18 +294,18 @@ const Pricing = () => {
                 />
               </div>
               {donationAmount && donationAmount > 0 && (
-                <p className="text-xs text-[#8B4513] mt-2 font-bold">
+                <p className="text-xs text-primary mt-2 font-bold">
                   You will donate {formatAmount(donationAmount)}
                 </p>
               )}
               <p className="text-xs text-[#a78e7e] mt-2 font-bold flex items-center gap-1.5">
-                <svg className="w-3.5 h-3.5 text-[#8B4513]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                <svg className="w-3.5 h-3.5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 Target: ₹1,00,000 for {selectedProject}
               </p>
             </div>
 
             <button
-              className={`w-full rounded-xl border-2 border-[#8B4513] bg-transparent py-3.5 text-sm font-bold text-[#8B4513] transition-all hover:bg-[#8B4513] hover:text-[#FFFFFF] hover:shadow-lg ${isCreatingDonation ? 'cursor-not-allowed opacity-70' : ''}`}
+              className={`w-full rounded-xl border-2 border-primary bg-transparent py-3.5 text-sm font-bold text-primary transition-all hover:bg-primary hover:text-[#FFFFFF] hover:shadow-lg ${isCreatingDonation ? 'cursor-not-allowed opacity-70' : ''}`}
               onClick={handleDonation}
               disabled={isCreatingDonation}
             >
@@ -342,16 +342,16 @@ const Pricing = () => {
                   <table className="w-full text-left">
                     <thead>
                       <tr className="border-b-2 border-[#EEDDCC]">
-                        <th className="py-3 px-4 text-xs font-bold text-[#8B4513] uppercase tracking-wider">Donor</th>
-                        <th className="py-3 px-4 text-xs font-bold text-[#8B4513] uppercase tracking-wider">Amount</th>
-                        <th className="py-3 px-4 text-xs font-bold text-[#8B4513] uppercase tracking-wider hidden sm:table-cell">Date</th>
+                        <th className="py-3 px-4 text-xs font-bold text-primary uppercase tracking-wider">Donor</th>
+                        <th className="py-3 px-4 text-xs font-bold text-primary uppercase tracking-wider">Amount</th>
+                        <th className="py-3 px-4 text-xs font-bold text-primary uppercase tracking-wider hidden sm:table-cell">Date</th>
                       </tr>
                     </thead>
                     <tbody>
                       {donations.map((donation) => (
                         <tr key={donation._id} className="border-b border-[#F5F5DC] hover:bg-[#FAF9F6] transition-colors">
                           <td className="py-3 px-4 text-sm font-semibold text-[#4A3B32] capitalize">{donation.donaterName}</td>
-                          <td className="py-3 px-4 text-sm font-bold text-[#8B4513]">{formatAmount(donation.donationAmount)}</td>
+                          <td className="py-3 px-4 text-sm font-bold text-primary">{formatAmount(donation.donationAmount)}</td>
                           <td className="py-3 px-4 text-sm text-[#6A5A4A] hidden sm:table-cell">
                             {new Date(donation.donationDate).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
                           </td>
@@ -366,7 +366,7 @@ const Pricing = () => {
                     <button
                       onClick={() => setDonationPage((p) => Math.max(1, p - 1))}
                       disabled={donationPage <= 1}
-                      className="px-4 py-2 rounded-lg text-sm font-bold text-[#8B4513] border border-[#8B4513] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#8B4513] hover:text-white transition-colors"
+                      className="px-4 py-2 rounded-lg text-sm font-bold text-primary border border-primary disabled:opacity-40 disabled:cursor-not-allowed hover:bg-primary hover:text-white transition-colors"
                     >
                       Previous
                     </button>
@@ -376,7 +376,7 @@ const Pricing = () => {
                     <button
                       onClick={() => setDonationPage((p) => Math.min(totalPages, p + 1))}
                       disabled={donationPage >= totalPages}
-                      className="px-4 py-2 rounded-lg text-sm font-bold text-[#8B4513] border border-[#8B4513] disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#8B4513] hover:text-white transition-colors"
+                      className="px-4 py-2 rounded-lg text-sm font-bold text-primary border border-primary disabled:opacity-40 disabled:cursor-not-allowed hover:bg-primary hover:text-white transition-colors"
                     >
                       Next
                     </button>

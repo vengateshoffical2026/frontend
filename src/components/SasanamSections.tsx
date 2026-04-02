@@ -14,9 +14,9 @@ interface SasanamSectionsProps {
 }
 
 const sectionColors = [
-  { bg: "from-[#8B4513]/10 to-[#8B4513]/5", icon: "text-[#8B4513]", border: "border-[#8B4513]/20 hover:border-[#8B4513]/40" },
-  { bg: "from-[#6B3410]/10 to-[#6B3410]/5", icon: "text-[#6B3410]", border: "border-[#6B3410]/20 hover:border-[#6B3410]/40" },
-  { bg: "from-[#a0522d]/10 to-[#a0522d]/5", icon: "text-[#a0522d]", border: "border-[#a0522d]/20 hover:border-[#a0522d]/40" },
+  { bg: "from-primary/10 to-primary/5", icon: "text-primary", border: "border-primary/20 hover:border-primary/40" },
+  { bg: "from-primary-dark/10 to-primary-dark/5", icon: "text-primary-dark", border: "border-primary-dark/20 hover:border-primary-dark/40" },
+  { bg: "from-primary-light/10 to-primary-light/5", icon: "text-primary-light", border: "border-primary-light/20 hover:border-primary-light/40" },
   { bg: "from-[#7c5c3e]/10 to-[#7c5c3e]/5", icon: "text-[#7c5c3e]", border: "border-[#7c5c3e]/20 hover:border-[#7c5c3e]/40" },
 ];
 
@@ -57,15 +57,15 @@ const SasanamSections: React.FC<SasanamSectionsProps> = ({ data, onChangeSection
               </div>
 
               {/* Title */}
-              <h3 className="text-lg font-bold text-[#3D2516] group-hover:text-[#8B4513] transition-colors duration-200 mb-1">
+              <h3 className="text-lg font-bold text-[#3D2516] group-hover:text-primary transition-colors duration-200 mb-1">
                 {section.name}
               </h3>
 
               {/* Footer */}
               <div className="mt-auto pt-4 flex items-center justify-between">
                 <span className="text-xs font-medium text-[#8C7055]/70">Browse topics</span>
-                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white/50 group-hover:bg-[#8B4513] transition-all duration-300">
-                  <svg className="w-4 h-4 text-[#8B4513] group-hover:text-white group-hover:translate-x-0.5 transition-all duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white/50 group-hover:bg-primary transition-all duration-300">
+                  <svg className="w-4 h-4 text-primary group-hover:text-white group-hover:translate-x-0.5 transition-all duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                   </svg>
                 </div>

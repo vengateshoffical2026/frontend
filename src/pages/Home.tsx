@@ -28,7 +28,7 @@ const Home = () => {
   ];
 
   return (
-    <main className="min-h-screen bg-[#f4ecd8] font-sans selection:bg-[#8B4513]/30 selection:text-[#8B4513]">
+    <main className="min-h-screen bg-[#f4ecd8] font-sans selection:bg-primary/30 selection:text-primary">
       <PageSEO
         title="Sasanam – India's Digital Archive of Ancient Inscriptions & Epigraphs"
         description="Sasanam is India's premier digital archive of ancient inscriptions, copper plates, stone epigraphs, and historical documents from Tamil Nadu and South India. Explore Pallava, Chola, and Pandya era inscriptions."
@@ -37,7 +37,7 @@ const Home = () => {
       <div className="min-h-screen">
         {/* Donor Infinite Scroller */}
         {donors.length > 0 && (
-          <div className="w-full bg-gradient-to-r from-[#8B4513] via-[#a0522d] to-[#8B4513] py-3 overflow-hidden border-y border-[#8B4513]/20 relative z-10">
+          <div className="w-full bg-gradient-to-r from-primary via-primary-light to-primary py-3 overflow-hidden border-y border-primary/20 relative z-10">
             <div className="flex whitespace-nowrap animate-marquee hover:[animation-play-state:paused]">
               {[...donors, ...donors].map((donor, idx) => (
                 <div
@@ -71,20 +71,20 @@ const Home = () => {
                 className={`group relative overflow-hidden rounded-3xl bg-[#F5F5DC]/90 p-8 shadow-[0_8px_32px_rgba(61,37,22,0.15)] border border-white/30 sm:p-12 hover:shadow-[0_12px_48px_rgba(61,37,22,0.2)] transition-shadow duration-500 ${revealClass(heroReveal.isVisible)}`}
               >
                 {/* Decorative elements */}
-                <div className="absolute top-0 right-0 w-64 h-64 bg-[#8B4513]/5 rounded-full -translate-y-1/2 translate-x-1/2" />
+                <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2" />
                 <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#d4a574]/10 rounded-full translate-y-1/2 -translate-x-1/2" />
 
                 <div className="relative flex flex-col gap-8 lg:flex-row lg:items-center">
 
                   {/* Text side */}
                   <div className="flex flex-col lg:flex-1">
-                    <span className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-[#8B4513] mb-4 px-3 py-1.5 rounded-full bg-[#8B4513]/10 w-fit">
-                      <span className="h-1.5 w-1.5 rounded-full bg-[#8B4513] animate-pulse" />
+                    <span className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-primary mb-4 px-3 py-1.5 rounded-full bg-primary/10 w-fit">
+                      <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
                       Digital Archive
                     </span>
                     <h1 className="text-4xl font-serif font-black tracking-tight text-[#4A3B32] sm:text-5xl xl:text-6xl leading-[1.1]">
                       Unearth the Secrets<br />
-                      of the <span className="text-[#8B4513] relative">
+                      of the <span className="text-primary relative">
                         Past
                         <svg className="absolute -bottom-1 left-0 w-full" viewBox="0 0 100 8" preserveAspectRatio="none">
                           <path d="M0 7 Q25 0 50 5 Q75 2 100 7" stroke="#8B4513" strokeWidth="2" fill="none" opacity="0.3" />
@@ -99,7 +99,7 @@ const Home = () => {
                       <button
                         type="button"
                         onClick={() => navigate('/journal')}
-                        className="group/btn inline-flex items-center justify-center gap-2 rounded-full bg-[#8B4513] px-8 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#8B4513]/25 transition-all hover:-translate-y-1 hover:bg-[#a0522d] hover:shadow-xl hover:shadow-[#8B4513]/30 active:translate-y-0 active:shadow-md"
+                        className="group/btn inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-3.5 text-sm font-bold text-white shadow-lg shadow-primary/25 transition-all hover:-translate-y-1 hover:bg-primary-light hover:shadow-xl hover:shadow-primary/30 active:translate-y-0 active:shadow-md"
                       >
                         Explore the Archive
                         <svg className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
@@ -107,7 +107,7 @@ const Home = () => {
                       <button
                         type="button"
                         onClick={() => navigate('/about')}
-                        className="inline-flex items-center justify-center gap-2 rounded-full bg-white/60 border border-[#8B4513]/20 px-7 py-3.5 text-sm font-bold text-[#8B4513] transition-all hover:-translate-y-1 hover:bg-white/80 hover:shadow-md active:translate-y-0"
+                        className="inline-flex items-center justify-center gap-2 rounded-full bg-white/60 border border-primary/20 px-7 py-3.5 text-sm font-bold text-primary transition-all hover:-translate-y-1 hover:bg-white/80 hover:shadow-md active:translate-y-0"
                       >
                         Learn More
                       </button>
@@ -152,8 +152,8 @@ const Home = () => {
                 <div className="flex items-center justify-between mb-6 border-b border-[#c8bba6]/50 pb-4">
                   <h3 className="text-xl font-bold text-[#4A3B32]">Latest Contributions</h3>
                   <span className="flex h-2 w-2 relative">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#8B4513] opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[#8B4513]"></span>
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
                   </span>
                 </div>
 
@@ -189,17 +189,17 @@ const Home = () => {
                 className={`group cursor-pointer rounded-3xl bg-[#F5F5DC]/80 p-6 shadow-[0_4px_20px_rgba(61,37,22,0.1)] border border-white/20 transition-all duration-300 hover:shadow-[0_12px_40px_rgba(61,37,22,0.15)] hover:-translate-y-1 hover:border-white/40 sm:col-span-2 lg:col-span-1 ${revealClass(featuredReveal.isVisible)}`}
               >
                 <div className="flex items-center gap-2 mb-4">
-                  <span className="h-1 w-6 rounded-full bg-[#8B4513]" />
-                  <h2 className="text-xs font-black tracking-widest text-[#8B4513] uppercase">Featured Inscription</h2>
+                  <span className="h-1 w-6 rounded-full bg-primary" />
+                  <h2 className="text-xs font-black tracking-widest text-primary uppercase">Featured Inscription</h2>
                 </div>
                 <div className="flex gap-5 items-center">
                   <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-2xl border border-white/30 shadow-md">
                     <img src="/acientBooks.png" alt="Feature" loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
                   </div>
                   <div className="flex flex-col">
-                    <h3 className="text-lg font-bold leading-snug text-[#4A3B32] line-clamp-2 group-hover:text-[#8B4513] transition-colors">Copper Plate Grant of King Rajaraja Chola I</h3>
+                    <h3 className="text-lg font-bold leading-snug text-[#4A3B32] line-clamp-2 group-hover:text-primary transition-colors">Copper Plate Grant of King Rajaraja Chola I</h3>
                     <p className="mt-1.5 text-sm text-[#6A5A4A] font-medium">Discover the intricate details and history.</p>
-                    <span className="mt-3 text-xs font-bold text-[#8B4513] flex items-center gap-1 group-hover:gap-2 transition-all">
+                    <span className="mt-3 text-xs font-bold text-primary flex items-center gap-1 group-hover:gap-2 transition-all">
                       Read more
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                     </span>
@@ -213,17 +213,17 @@ const Home = () => {
                 className={`group cursor-pointer rounded-3xl bg-[#F5F5DC]/70 p-6 shadow-[0_4px_20px_rgba(61,37,22,0.1)] border border-white/20 transition-all duration-300 hover:shadow-[0_12px_40px_rgba(61,37,22,0.15)] hover:-translate-y-1 hover:border-white/40 ${revealClass(toolsReveal.isVisible)}`}
               >
                 <div className="flex items-center gap-2 mb-4">
-                  <span className="h-1 w-6 rounded-full bg-[#8B4513]" />
-                  <h2 className="text-xs font-black tracking-widest text-[#8B4513] uppercase">Decipher Tools</h2>
+                  <span className="h-1 w-6 rounded-full bg-primary" />
+                  <h2 className="text-xs font-black tracking-widest text-primary uppercase">Decipher Tools</h2>
                 </div>
                 <div className="flex flex-col gap-4">
-                  <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-[#8B4513]/10 shadow-inner">
+                  <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-primary/10 shadow-inner">
                     <img src='Search.png' alt="Search" loading="lazy" className='w-7 h-7 opacity-80 transition-transform duration-300 group-hover:scale-110' />
                   </div>
                   <div className="flex flex-col">
-                    <h3 className="text-lg font-bold leading-snug text-[#4A3B32] group-hover:text-[#8B4513] transition-colors">Advanced Symbol Matching</h3>
+                    <h3 className="text-lg font-bold leading-snug text-[#4A3B32] group-hover:text-primary transition-colors">Advanced Symbol Matching</h3>
                     <p className="mt-1 text-sm text-[#6A5A4A] font-medium">Utilize tools to cross-reference ancient texts.</p>
-                    <span className="mt-3 text-xs font-bold text-[#8B4513] flex items-center gap-1 group-hover:gap-2 transition-all">
+                    <span className="mt-3 text-xs font-bold text-primary flex items-center gap-1 group-hover:gap-2 transition-all">
                       Try now
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                     </span>
@@ -237,17 +237,17 @@ const Home = () => {
                 className={`group cursor-pointer rounded-3xl bg-[#F5F5DC]/70 p-6 shadow-[0_4px_20px_rgba(61,37,22,0.1)] border border-white/20 transition-all duration-300 hover:shadow-[0_12px_40px_rgba(61,37,22,0.15)] hover:-translate-y-1 hover:border-white/40 ${revealClass(communityReveal.isVisible)}`}
               >
                 <div className="flex items-center gap-2 mb-4">
-                  <span className="h-1 w-6 rounded-full bg-[#8B4513]" />
-                  <h2 className="text-xs font-black tracking-widest text-[#8B4513] uppercase">Community Projects</h2>
+                  <span className="h-1 w-6 rounded-full bg-primary" />
+                  <h2 className="text-xs font-black tracking-widest text-primary uppercase">Community Projects</h2>
                 </div>
                 <div className="flex flex-col gap-4">
-                  <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-[#8B4513]/10 shadow-inner">
+                  <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-primary/10 shadow-inner">
                     <img src='Search.png' alt="Community" loading="lazy" className='w-7 h-7 opacity-80 transition-transform duration-300 group-hover:scale-110' />
                   </div>
                   <div className="flex flex-col">
-                    <h3 className="text-lg font-bold leading-snug text-[#4A3B32] group-hover:text-[#8B4513] transition-colors">Join Collaborative Efforts</h3>
+                    <h3 className="text-lg font-bold leading-snug text-[#4A3B32] group-hover:text-primary transition-colors">Join Collaborative Efforts</h3>
                     <p className="mt-1 text-sm text-[#6A5A4A] font-medium">Work with historians worldwide to transcribe.</p>
-                    <span className="mt-3 text-xs font-bold text-[#8B4513] flex items-center gap-1 group-hover:gap-2 transition-all">
+                    <span className="mt-3 text-xs font-bold text-primary flex items-center gap-1 group-hover:gap-2 transition-all">
                       Join now
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                     </span>
@@ -256,7 +256,7 @@ const Home = () => {
               </article>
 
               {/* CTA Card */}
-              <article className="rounded-3xl bg-gradient-to-br from-[#8B4513] to-[#6B3410] p-6 shadow-xl text-white overflow-hidden relative">
+              <article className="rounded-3xl bg-gradient-to-br from-primary to-primary-dark p-6 shadow-xl text-white overflow-hidden relative">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
                 <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2" />
                 <div className="relative">
@@ -264,7 +264,7 @@ const Home = () => {
                   <p className="text-sm text-white/80 mb-5 leading-relaxed">Help us preserve and digitize ancient inscriptions for future generations.</p>
                   <button
                     onClick={() => navigate('/pricing')}
-                    className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-2.5 text-sm font-bold text-[#8B4513] shadow-lg hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0 transition-all"
+                    className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-2.5 text-sm font-bold text-primary shadow-lg hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0 transition-all"
                   >
                     Contribute Now
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>

@@ -85,7 +85,7 @@ const SasanamBooks: React.FC<SasanamBooksProps> = ({ data }) => {
               {Array.from({ length: freeLimit }).map((_, i) => (
                 <div
                   key={i}
-                  className={`w-3 h-3 rounded-full transition-colors ${i < downloadCount ? "bg-[#8B4513]" : "bg-[#8B4513]/15"}`}
+                  className={`w-3 h-3 rounded-full transition-colors ${i < downloadCount ? "bg-primary" : "bg-primary/15"}`}
                 />
               ))}
             </div>
@@ -97,7 +97,7 @@ const SasanamBooks: React.FC<SasanamBooksProps> = ({ data }) => {
             {remaining === 0 && (
               <button
                 onClick={() => navigate("/pricing")}
-                className="ml-1 text-xs font-bold text-white bg-[#8B4513] px-3 py-1 rounded-full hover:bg-[#a0522d] transition-colors"
+                className="ml-1 text-xs font-bold text-white bg-primary px-3 py-1 rounded-full hover:bg-primary-light transition-colors"
               >
                 Subscribe
               </button>
@@ -116,14 +116,14 @@ const SasanamBooks: React.FC<SasanamBooksProps> = ({ data }) => {
               className="group relative bg-[#fdf8f0] border border-[#e2c9a0]/80 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_12px_40px_rgba(61,37,22,0.13)] hover:border-[#c9a87a] flex flex-col"
             >
               {/* Decorative top bar */}
-              <div className="h-2 bg-gradient-to-r from-[#8B4513] via-[#a0522d] to-[#c9a87a]" />
+              <div className="h-2 bg-gradient-to-r from-primary via-primary-light to-[#c9a87a]" />
 
               {/* Card body */}
               <div className="p-6 flex-1 flex flex-col">
                 {/* Icon + PDF badge */}
                 <div className="flex items-start justify-between mb-4">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#8B4513]/12 to-[#8B4513]/5 flex items-center justify-center">
-                    <svg className="w-7 h-7 text-[#8B4513]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/12 to-primary/5 flex items-center justify-center">
+                    <svg className="w-7 h-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                     </svg>
                   </div>
@@ -135,7 +135,7 @@ const SasanamBooks: React.FC<SasanamBooksProps> = ({ data }) => {
                 </div>
 
                 {/* Title & author */}
-                <h3 className="text-lg font-bold text-[#3D2516] mb-1 line-clamp-2 leading-snug group-hover:text-[#8B4513] transition-colors">
+                <h3 className="text-lg font-bold text-[#3D2516] mb-1 line-clamp-2 leading-snug group-hover:text-primary transition-colors">
                   {book.bookName}
                 </h3>
                 <p className="text-sm text-[#8C7055] mb-2">
@@ -153,7 +153,7 @@ const SasanamBooks: React.FC<SasanamBooksProps> = ({ data }) => {
                   {hasPdf && (
                     <button
                       onClick={() => navigate(`/view/${book._id}`, { state: { bookName: book.bookName, authorName: book.authorName } })}
-                      className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border-2 border-[#8B4513]/20 text-[#8B4513] text-sm font-bold hover:bg-[#8B4513]/5 hover:border-[#8B4513]/40 active:scale-[0.97] transition-all"
+                      className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border-2 border-primary/20 text-primary text-sm font-bold hover:bg-primary/5 hover:border-primary/40 active:scale-[0.97] transition-all"
                     >
                       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -171,7 +171,7 @@ const SasanamBooks: React.FC<SasanamBooksProps> = ({ data }) => {
                           <button
                             onClick={(e) => handleDownload(e, book._id, book.bookName)}
                             disabled={downloadingId === book._id}
-                            className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#8B4513] text-white text-sm font-bold hover:bg-[#a0522d] active:scale-[0.97] disabled:opacity-50 transition-all"
+                            className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-primary text-white text-sm font-bold hover:bg-primary-light active:scale-[0.97] disabled:opacity-50 transition-all"
                           >
                             {downloadingId === book._id ? (
                               <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
