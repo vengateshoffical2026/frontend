@@ -2,7 +2,9 @@ export const API_ENDPOINTS = {
   AUTH: {
     SIGNUP: '/auth/signup',
     LOGIN: '/auth/login',
+    PROFILE: '/auth/me',
   },
+  CONTACT: '/contact',
   SUBSCRIPTION_PAYMENT: {
     CREATE_ORDER: '/subscription-payment/order',
     VERIFY_PAYMENT: '/subscription-payment/verify',
