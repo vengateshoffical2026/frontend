@@ -11,6 +11,7 @@ import Pricing from './pages/Pricing'
 import About from './pages/About'
 import Contact from './pages/Contact'
 import NewsEvents from './pages/NewsEvents'
+import Sasanam from './pages/Sasanam'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Layout from './components/Layout'
@@ -22,6 +23,7 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<Layout><Home /></Layout>} />
+        <Route path="/sasanam" element={<Layout><Sasanam /></Layout>} />
         <Route path="/journal" element={<Layout><Journal /></Layout>} />
         <Route path="/archive" element={<Layout><Archive /></Layout>} />
         <Route path="/library" element={<Layout><Library /></Layout>} />

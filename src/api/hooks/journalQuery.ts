@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { addBook, getAllSections, getBooksBySectionId } from '../controllers/journal'
+import { addBook, getAllBooks, getAllSections, getBooksBySectionId } from '../controllers/journal'
 
 export const useGetAllSections = () => {
   return useQuery({
@@ -13,6 +13,13 @@ export const useGetBooksBySectionId = (sectionId: string) => {
     queryKey: ['getBooksBySectionId', sectionId],
     queryFn: () => getBooksBySectionId(sectionId),
     enabled: !!sectionId,
+  })
+}
+
+export const useGetAllBooks = () => {
+  return useQuery({
+    queryKey: ['getAllBooks'],
+    queryFn: getAllBooks,
   })
 }
 

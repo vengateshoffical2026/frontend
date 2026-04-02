@@ -19,6 +19,8 @@ export const API_ENDPOINTS = {
   JOURNAL: {
     GET_ALL_SECTIONS: '/sasanam-section',
     GET_BOOKS_BY_SECTION_ID: '/sasanam-books',
+    GET_ALL_BOOKS: '/sasanam-books',
+    DOWNLOAD_BOOK: '/sasanam-books',
     ADD_BOOK: '/sasanam-book-details',
   },
 }

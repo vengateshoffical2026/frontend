@@ -179,6 +179,27 @@ const Header = () => {
             </NavLink>
           )}
 
+          {/* === LOGGED IN: Sasanam === */}
+          {token && (
+            <NavLink
+              to="/sasanam"
+              className={({ isActive }) =>
+                `relative px-4 py-2 rounded-lg transition-all duration-200 ${
+                  isActive
+                    ? 'text-[#8B4513] font-bold'
+                    : 'text-[#6A5A4A] hover:text-[#8B4513] hover:bg-[#8B4513]/5'
+                }`
+              }
+            >
+              {({ isActive }) => (
+                <>
+                  Sasanam
+                  {isActive && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-[#8B4513]" />}
+                </>
+              )}
+            </NavLink>
+          )}
+
           {/* === LOGGED IN: More dropdown === */}
           {token && (
             <div className="relative">
@@ -410,6 +431,23 @@ const Header = () => {
               }
             >
               Journal
+            </NavLink>
+          )}
+
+          {/* LOGGED IN: Sasanam */}
+          {token && (
+            <NavLink
+              to="/sasanam"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={({ isActive }) =>
+                `px-4 py-3 rounded-xl text-base font-bold transition-all ${
+                  isActive
+                    ? 'text-[#8B4513] bg-[#8B4513]/8 border-l-[3px] border-[#8B4513]'
+                    : 'text-[#6A5A4A] hover:text-[#8B4513] hover:bg-[#8B4513]/5'
+                }`
+              }
+            >
+              Sasanam
             </NavLink>
           )}
 
