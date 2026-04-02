@@ -1,6 +1,22 @@
 import { useScrollReveal } from "../hooks/useScrollReveal";
 import { useDonationList } from "../api/hooks/donationQuery";
 import PageSEO from "../components/PageSEO";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+
+const smoothEase = [0.16, 1, 0.3, 1]; // expo-out for buttery feel
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  visible: (i: number) => ({
+    opacity: 1, y: 0,
+    transition: { delay: i * 0.12, duration: 0.8, ease: smoothEase }
+  }),
+};
+
+const stagger = {
+  visible: { transition: { staggerChildren: 0.14 } }
+};
 
 const Home = () => {
   const heroReveal = useScrollReveal();
@@ -8,14 +24,23 @@ const Home = () => {
   const featuredReveal = useScrollReveal();
   const toolsReveal = useScrollReveal();
   const communityReveal = useScrollReveal();
+  const statsReveal = useScrollReveal();
+  const navigate = useNavigate();
 
   const { data: donationData } = useDonationList(1, 20);
   const donors = donationData?.data?.donations ?? [];
 
   const revealClass = (isVisible: boolean) =>
-    `transition-all duration-1000 ease-out ${
-      isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
+    `reveal-smooth ${
+      isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
     }`;
+
+  const statsData = [
+    { label: "Inscriptions", value: "10,000+", icon: "📜" },
+    { label: "Contributors", value: "500+", icon: "👥" },
+    { label: "Languages", value: "12+", icon: "🔤" },
+    { label: "Centuries Covered", value: "20+", icon: "🏛️" },
+  ];
 
   return (
     <main className="min-h-screen bg-[#f4ecd8] font-sans selection:bg-[#8B4513]/30 selection:text-[#8B4513]">
@@ -25,77 +50,130 @@ const Home = () => {
         path="/"
       />
       <div className="min-h-screen bg-white/30 backdrop-blur-[2px]">
-        {/* ── Donor Infinite Scroller ── */}
+        {/* Donor Infinite Scroller */}
         {donors.length > 0 && (
-        <div className="w-full bg-[#8B4513] py-3 overflow-hidden border-y border-[#8B4513]/20 relative z-10">
-          <div className="flex whitespace-nowrap animate-marquee hover:[animation-play-state:paused]">
-            {[...donors, ...donors].map((donor, idx) => (
-              <div
-                key={`${donor._id}-${idx}`}
-                className="flex items-center gap-4 mx-8 text-white/90"
-              >
-                <div className="h-2 w-2 rounded-full bg-white/40" />
-                <span className="text-xs font-black uppercase tracking-widest">
-                  {donor.donaterName}
-                </span>
-                <span className="font-serif font-black text-white px-2 py-0.5 rounded bg-white/10">
-                  ₹{donor.donationAmount}
-                </span>
-              </div>
-            ))}
+          <div className="w-full bg-gradient-to-r from-[#8B4513] via-[#a0522d] to-[#8B4513] py-3 overflow-hidden border-y border-[#8B4513]/20 relative z-10">
+            <div className="flex whitespace-nowrap animate-marquee hover:[animation-play-state:paused]">
+              {[...donors, ...donors].map((donor, idx) => (
+                <div
+                  key={`${donor._id}-${idx}`}
+                  className="flex items-center gap-4 mx-8 text-white/90"
+                >
+                  <div className="h-2 w-2 rounded-full bg-white/40 animate-pulse-soft" />
+                  <span className="text-xs font-black uppercase tracking-widest">
+                    {donor.donaterName}
+                  </span>
+                  <span className="font-serif font-black text-white px-2.5 py-0.5 rounded-lg bg-white/15 backdrop-blur-sm">
+                    ₹{donor.donationAmount}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
         )}
 
         <div className="mx-auto flex w-full max-w-[1600px] flex-col px-5 sm:px-6 lg:px-8">
-          {/* Main Hero Card is below */}
 
+          {/* Main CSS Grid layout */}
+          <section className="mt-4 mb-8 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-8 lg:items-start">
 
-          {/* ── Main CSS Grid layout ── */}
-          <section className="mt-4 mb-20 grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-8 lg:items-start">
-            
-            {/* ══ LEFT COLUMN (Takes 7/12 cols on large screens) ════════════ */}
+            {/* LEFT COLUMN */}
             <div className="flex flex-col gap-8 lg:col-span-7 xl:col-span-8">
-              
+
               {/* Hero card */}
-              <div 
+              <motion.div
                 ref={heroReveal.ref as any}
-                className={`group relative overflow-hidden rounded-3xl bg-[#F5F5DC]/80 p-8 shadow-[0_8px_32px_rgba(61,37,22,0.15)] backdrop-blur-md border border-white/20 sm:p-12 transition-all hover:bg-[#F5F5DC]/90 ${revealClass(heroReveal.isVisible)}`}
+                initial="hidden"
+                animate="visible"
+                variants={stagger}
+                className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#F5F5DC]/90 to-[#e8dcc0]/70 p-8 shadow-[0_8px_32px_rgba(61,37,22,0.15)] backdrop-blur-md border border-white/30 sm:p-12 hover:shadow-[0_12px_48px_rgba(61,37,22,0.2)] transition-shadow duration-500"
               >
+                {/* Decorative elements */}
+                <div className="absolute top-0 right-0 w-64 h-64 bg-[#8B4513]/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+                <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#d4a574]/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl" />
+
                 <div className="relative flex flex-col gap-8 lg:flex-row lg:items-center">
-                  
+
                   {/* Text side */}
                   <div className="flex flex-col lg:flex-1">
-                    <h1 className="text-4xl font-serif font-black tracking-tight text-[#4A3B32] sm:text-5xl xl:text-6xl leading-tight">
-                      Unearth the Secrets<br />
-                      of the <span className="text-[#8B4513]">Past</span>
-                    </h1>
-                    <p className="mt-6 text-lg font-medium text-[#6A5A4A] max-w-lg leading-relaxed">
-                      Explore our vast archive of ancient inscriptions and contribute to deciphering history through a beautifully curated modern lens.
-                    </p>
-                    
-                    <button
-                      type="button"
-                      className="mt-10 inline-flex w-fit items-center justify-center gap-2 rounded-full bg-[#8B4513] px-8 py-3.5 text-sm font-bold text-white shadow-lg transition-all hover:-translate-y-1 hover:bg-[#a0522d] hover:shadow-xl"
+                    <motion.div variants={fadeUp} custom={0}>
+                      <span className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-[#8B4513] mb-4 px-3 py-1.5 rounded-full bg-[#8B4513]/10 w-fit">
+                        <span className="h-1.5 w-1.5 rounded-full bg-[#8B4513] animate-pulse" />
+                        Digital Archive
+                      </span>
+                    </motion.div>
+                    <motion.h1
+                      variants={fadeUp} custom={1}
+                      className="text-4xl font-serif font-black tracking-tight text-[#4A3B32] sm:text-5xl xl:text-6xl leading-[1.1]"
                     >
-                      Explore the Archive
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
-                    </button>
+                      Unearth the Secrets<br />
+                      of the <span className="text-[#8B4513] relative">
+                        Past
+                        <svg className="absolute -bottom-1 left-0 w-full" viewBox="0 0 100 8" preserveAspectRatio="none">
+                          <path d="M0 7 Q25 0 50 5 Q75 2 100 7" stroke="#8B4513" strokeWidth="2" fill="none" opacity="0.3" />
+                        </svg>
+                      </span>
+                    </motion.h1>
+                    <motion.p
+                      variants={fadeUp} custom={2}
+                      className="mt-6 text-lg font-medium text-[#6A5A4A] max-w-lg leading-relaxed"
+                    >
+                      Explore our vast archive of ancient inscriptions and contribute to deciphering history through a beautifully curated modern lens.
+                    </motion.p>
+
+                    <motion.div variants={fadeUp} custom={3} className="flex flex-wrap gap-3 mt-10">
+                      <button
+                        type="button"
+                        onClick={() => navigate('/journal')}
+                        className="group/btn inline-flex items-center justify-center gap-2 rounded-full bg-[#8B4513] px-8 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#8B4513]/25 transition-all hover:-translate-y-1 hover:bg-[#a0522d] hover:shadow-xl hover:shadow-[#8B4513]/30 active:translate-y-0 active:shadow-md"
+                      >
+                        Explore the Archive
+                        <svg className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => navigate('/about')}
+                        className="inline-flex items-center justify-center gap-2 rounded-full bg-white/60 border border-[#8B4513]/20 px-7 py-3.5 text-sm font-bold text-[#8B4513] backdrop-blur-sm transition-all hover:-translate-y-1 hover:bg-white/80 hover:shadow-md active:translate-y-0"
+                      >
+                        Learn More
+                      </button>
+                    </motion.div>
                   </div>
 
                   {/* Image side */}
-                  <div className="h-64 overflow-hidden rounded-2xl border border-white/30 lg:h-80 w-full lg:w-[40%] flex-shrink-0">
+                  <motion.div
+                    variants={fadeUp} custom={2}
+                    className="h-64 overflow-hidden rounded-2xl border border-white/30 lg:h-80 w-full lg:w-[40%] flex-shrink-0 shadow-lg"
+                  >
                     <img
                       src="/acientBooks.png"
                       alt="Ancient inscription"
                       className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
-                  </div>
+                  </motion.div>
                 </div>
+              </motion.div>
+
+              {/* Stats Bar */}
+              <div
+                ref={statsReveal.ref as any}
+                className={`grid grid-cols-2 sm:grid-cols-4 gap-4 ${revealClass(statsReveal.isVisible)}`}
+              >
+                {statsData.map((stat, i) => (
+                  <div
+                    key={stat.label}
+                    className="group rounded-2xl bg-[#F5F5DC]/70 p-5 text-center shadow-[0_4px_20px_rgba(61,37,22,0.08)] backdrop-blur-md border border-white/20 hover:shadow-[0_8px_30px_rgba(61,37,22,0.12)] hover:-translate-y-1 transition-all duration-500"
+                    style={{ transitionDelay: `${i * 100}ms` }}
+                  >
+                    <div className="text-2xl mb-2 transition-transform duration-300 group-hover:scale-125">{stat.icon}</div>
+                    <p className="text-xl font-black text-[#4A3B32]">{stat.value}</p>
+                    <p className="text-xs font-bold text-[#6A5A4A]/70 uppercase tracking-wider mt-1">{stat.label}</p>
+                  </div>
+                ))}
               </div>
 
               {/* Latest Contributions bar */}
-              <article 
+              <article
                 ref={contributionsReveal.ref as any}
                 className={`rounded-3xl bg-[#F5F5DC]/70 p-6 shadow-[0_4px_20px_rgba(61,37,22,0.1)] backdrop-blur-md border border-white/20 sm:p-8 ${revealClass(contributionsReveal.isVisible)}`}
               >
@@ -107,99 +185,120 @@ const Home = () => {
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
-                  
-                  {/* Contributor 1 */}
-                  <div className="group flex items-start gap-4 rounded-2xl bg-white/20 p-4 transition-colors hover:bg-white/30 border border-white/20">
-                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-[#b8a88a]/50 text-[#4A3B32] ring-1 ring-[#8a7f6a]/30">
-                      👤
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                  {[
+                    { name: 'Ravi M.', desc: 'Transcribed a Pallava Script from the 8th Century', gradient: 'from-amber-500 to-orange-600' },
+                    { name: 'Anita D.', desc: 'Identified a new structural symbol', gradient: 'from-emerald-500 to-teal-600' },
+                    { name: "Project 'Chola'", desc: 'Reached 50% translation completion', gradient: 'from-blue-500 to-indigo-600' },
+                  ].map((contributor, i) => (
+                    <div
+                      key={i}
+                      className={`group flex items-start gap-4 rounded-2xl bg-white/25 p-4 transition-all duration-300 hover:bg-white/40 hover:-translate-y-0.5 hover:shadow-md border border-white/20 cursor-pointer ${i === 2 ? 'sm:col-span-2 xl:col-span-1' : ''}`}
+                    >
+                      <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${contributor.gradient} text-white text-sm font-black shadow-md transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3`}>
+                        {contributor.name.charAt(0)}
+                      </div>
+                      <p className="text-sm font-medium text-[#6A5A4A] leading-tight">
+                        <span className="font-bold text-[#301a1a] block mb-1">{contributor.name}</span>
+                        {contributor.desc}
+                      </p>
                     </div>
-                    <p className="text-sm font-medium text-[#6A5A4A] leading-tight">
-                      <span className="font-bold text-[#301a1a] block mb-1">Ravi M.</span>
-                      Transcribed a Pallava Script from the 8th Century
-                    </p>
-                  </div>
-
-                  {/* Contributor 2 */}
-                  <div className="group flex items-start gap-4 rounded-2xl bg-white/20 p-4 transition-colors hover:bg-white/30 border border-white/20">
-                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-[#b8a88a]/50 text-[#4A3B32] ring-1 ring-[#8a7f6a]/30">
-                      👤
-                    </div>
-                    <p className="text-sm font-medium text-[#6A5A4A] leading-tight">
-                      <span className="font-bold text-[#301a1a] block mb-1">Anita D.</span>
-                      Identified a new structural symbol
-                    </p>
-                  </div>
-
-                  {/* Contributor 3 */}
-                  <div className="group flex items-start sm:col-span-2 xl:col-span-1 gap-4 rounded-2xl bg-white/20 p-4 transition-colors hover:bg-white/30 border border-white/20">
-                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-[#b8a88a]/50 text-[#4A3B32] ring-1 ring-[#8a7f6a]/30">
-                      👤
-                    </div>
-                    <p className="text-sm font-medium text-[#6A5A4A] leading-tight">
-                      <span className="font-bold text-[#301a1a] block mb-1">Project 'Chola'</span>
-                      Reached 50% translation completion
-                    </p>
-                  </div>
-
+                  ))}
                 </div>
               </article>
             </div>
 
-            {/* ══ RIGHT COLUMN (Takes 5/12 cols on large screens) ════════════ */}
+            {/* RIGHT COLUMN */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 lg:col-span-5 xl:col-span-4 gap-6 relative">
-              
+
               {/* Featured Inscription */}
-              <article 
+              <article
                 ref={featuredReveal.ref as any}
-                className={`group cursor-pointer rounded-3xl bg-[#F5F5DC]/70 p-6 shadow-[0_4px_20px_rgba(61,37,22,0.1)] backdrop-blur-md border border-white/20 transition-all hover:bg-[#F5F5DC]/90 hover:-translate-y-1 hover:border-white/40 sm:col-span-2 lg:col-span-1 ${revealClass(featuredReveal.isVisible)}`}
+                className={`group cursor-pointer rounded-3xl bg-gradient-to-br from-[#F5F5DC]/80 to-[#e8dcc0]/60 p-6 shadow-[0_4px_20px_rgba(61,37,22,0.1)] backdrop-blur-md border border-white/20 transition-all duration-500 hover:shadow-[0_12px_40px_rgba(61,37,22,0.15)] hover:-translate-y-2 hover:border-white/40 sm:col-span-2 lg:col-span-1 ${revealClass(featuredReveal.isVisible)}`}
               >
-                <h2 className="text-xs font-black tracking-widest text-[#8B4513] uppercase mb-4">Featured Inscription</h2>
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="h-1 w-6 rounded-full bg-[#8B4513]" />
+                  <h2 className="text-xs font-black tracking-widest text-[#8B4513] uppercase">Featured Inscription</h2>
+                </div>
                 <div className="flex gap-5 items-center">
-                  <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-2xl border border-white/30">
-                    <img src="/acientBooks.png" alt="Feature" className="h-full w-full object-cover transition-transform group-hover:scale-110" />
+                  <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-2xl border border-white/30 shadow-md">
+                    <img src="/acientBooks.png" alt="Feature" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
                   </div>
                   <div className="flex flex-col">
-                    <h3 className="text-lg font-bold leading-snug text-[#4A3B32] line-clamp-2">Copper Plate Grant of King Rajaraja Chola I</h3>
-                    <p className="mt-1 text-sm text-[#6A5A4A] font-medium">Discover the intricate details and history.</p>
+                    <h3 className="text-lg font-bold leading-snug text-[#4A3B32] line-clamp-2 group-hover:text-[#8B4513] transition-colors">Copper Plate Grant of King Rajaraja Chola I</h3>
+                    <p className="mt-1.5 text-sm text-[#6A5A4A] font-medium">Discover the intricate details and history.</p>
+                    <span className="mt-3 text-xs font-bold text-[#8B4513] flex items-center gap-1 group-hover:gap-2 transition-all">
+                      Read more
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                    </span>
                   </div>
                 </div>
               </article>
 
               {/* Decipher Tools */}
-              <article 
+              <article
                 ref={toolsReveal.ref as any}
-                className={`group cursor-pointer rounded-3xl bg-[#F5F5DC]/70 p-6 shadow-[0_4px_20px_rgba(61,37,22,0.1)] backdrop-blur-md border border-white/20 transition-all hover:bg-[#F5F5DC]/90 hover:-translate-y-1 hover:border-white/40 ${revealClass(toolsReveal.isVisible)}`}
+                className={`group cursor-pointer rounded-3xl bg-[#F5F5DC]/70 p-6 shadow-[0_4px_20px_rgba(61,37,22,0.1)] backdrop-blur-md border border-white/20 transition-all duration-500 hover:shadow-[0_12px_40px_rgba(61,37,22,0.15)] hover:-translate-y-2 hover:border-white/40 ${revealClass(toolsReveal.isVisible)}`}
               >
-                <h2 className="text-xs font-black tracking-widest text-[#8B4513] uppercase mb-4">Decipher Tools</h2>
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="h-1 w-6 rounded-full bg-[#8B4513]" />
+                  <h2 className="text-xs font-black tracking-widest text-[#8B4513] uppercase">Decipher Tools</h2>
+                </div>
                 <div className="flex flex-col gap-4">
-                  <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-2xl bg-white/40 shadow-inner">
-                    <img src='Search.png' alt="Search" className='w-8 h-8 opacity-80' />
+                  <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#8B4513]/15 to-[#8B4513]/5 shadow-inner group-hover:from-[#8B4513]/20 group-hover:to-[#8B4513]/10 transition-all">
+                    <img src='Search.png' alt="Search" className='w-7 h-7 opacity-80 transition-transform duration-300 group-hover:scale-110' />
                   </div>
                   <div className="flex flex-col">
-                    <h3 className="text-lg font-bold leading-snug text-[#4A3B32]">Advanced Symbol Matching</h3>
+                    <h3 className="text-lg font-bold leading-snug text-[#4A3B32] group-hover:text-[#8B4513] transition-colors">Advanced Symbol Matching</h3>
                     <p className="mt-1 text-sm text-[#6A5A4A] font-medium">Utilize tools to cross-reference ancient texts.</p>
+                    <span className="mt-3 text-xs font-bold text-[#8B4513] flex items-center gap-1 group-hover:gap-2 transition-all">
+                      Try now
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                    </span>
                   </div>
                 </div>
               </article>
 
               {/* Community Projects */}
-              <article 
+              <article
                 ref={communityReveal.ref as any}
-                className={`group cursor-pointer rounded-3xl bg-[#F5F5DC]/70 p-6 shadow-[0_4px_20px_rgba(61,37,22,0.1)] backdrop-blur-md border border-white/20 transition-all hover:bg-[#F5F5DC]/90 hover:-translate-y-1 hover:border-white/40 ${revealClass(communityReveal.isVisible)}`}
+                className={`group cursor-pointer rounded-3xl bg-[#F5F5DC]/70 p-6 shadow-[0_4px_20px_rgba(61,37,22,0.1)] backdrop-blur-md border border-white/20 transition-all duration-500 hover:shadow-[0_12px_40px_rgba(61,37,22,0.15)] hover:-translate-y-2 hover:border-white/40 ${revealClass(communityReveal.isVisible)}`}
               >
-                <h2 className="text-xs font-black tracking-widest text-[#8B4513] uppercase mb-4">Community Projects</h2>
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="h-1 w-6 rounded-full bg-[#8B4513]" />
+                  <h2 className="text-xs font-black tracking-widest text-[#8B4513] uppercase">Community Projects</h2>
+                </div>
                 <div className="flex flex-col gap-4">
-                  <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-2xl bg-white/40 shadow-inner">
-                    <img src='Search.png' alt="Community" className='w-8 h-8 opacity-80' />
+                  <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#8B4513]/15 to-[#8B4513]/5 shadow-inner group-hover:from-[#8B4513]/20 group-hover:to-[#8B4513]/10 transition-all">
+                    <img src='Search.png' alt="Community" className='w-7 h-7 opacity-80 transition-transform duration-300 group-hover:scale-110' />
                   </div>
                   <div className="flex flex-col">
-                    <h3 className="text-lg font-bold leading-snug text-[#4A3B32]">Join Collaborative Efforts</h3>
+                    <h3 className="text-lg font-bold leading-snug text-[#4A3B32] group-hover:text-[#8B4513] transition-colors">Join Collaborative Efforts</h3>
                     <p className="mt-1 text-sm text-[#6A5A4A] font-medium">Work with historians worldwide to transcribe.</p>
+                    <span className="mt-3 text-xs font-bold text-[#8B4513] flex items-center gap-1 group-hover:gap-2 transition-all">
+                      Join now
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                    </span>
                   </div>
                 </div>
               </article>
 
+              {/* CTA Card */}
+              <article className="rounded-3xl bg-gradient-to-br from-[#8B4513] to-[#6B3410] p-6 shadow-xl text-white overflow-hidden relative">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
+                <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2" />
+                <div className="relative">
+                  <h3 className="text-lg font-bold mb-2">Support Our Mission</h3>
+                  <p className="text-sm text-white/80 mb-5 leading-relaxed">Help us preserve and digitize ancient inscriptions for future generations.</p>
+                  <button
+                    onClick={() => navigate('/pricing')}
+                    className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-2.5 text-sm font-bold text-[#8B4513] shadow-lg hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0 transition-all"
+                  >
+                    Contribute Now
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+                  </button>
+                </div>
+              </article>
             </div>
           </section>
         </div>

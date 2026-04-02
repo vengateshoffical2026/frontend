@@ -39,10 +39,10 @@ const NewsEvents = () => {
       {/* Page Header */}
       <div
         ref={headerReveal.ref as any}
-        className={`text-center mb-16 transition-all duration-1000 ease-out ${
+        className={`text-center mb-16 reveal-smooth ${
           headerReveal.isVisible
             ? "opacity-100 translate-y-0"
-            : "opacity-0 translate-y-12"
+            : "opacity-0 translate-y-8"
         }`}
       >
         <h1 className="text-4xl sm:text-5xl xl:text-6xl font-serif font-black text-[#4A3B32] tracking-tight">

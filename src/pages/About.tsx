@@ -18,7 +18,7 @@ const About = () => {
   const totalAuthorPages = Math.ceil(totalAuthors / 12)
 
   const revealClass = (isVisible: boolean) =>
-    `transition-all duration-1000 ease-out ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`
+    `reveal-smooth ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`
 
   const defaultAvatar = (name: string) => {
     const initials = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2)

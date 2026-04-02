@@ -1,6 +1,5 @@
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useState, useEffect, useRef } from 'react'
-import { newsEventsData } from '../data/newsEvents'
 
 const Header = () => {
   const token: string | null = localStorage.getItem('token')
@@ -12,8 +11,6 @@ const Header = () => {
   const navigate = useNavigate()
   const userMenuRef = useRef<HTMLDivElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
-
-  const hasNewNews = newsEventsData.some(item => item.isNew)
 
   const getUserData = () => {
     try {
@@ -61,22 +58,11 @@ const Header = () => {
     window.location.reload()
   }
 
-  // Main nav links (always visible)
-  const mainNav = [
-    { to: '/', label: 'Home' },
-    { to: '/about', label: 'About' },
-  ]
-
-  // Explore dropdown - only when logged in
-  const exploreItems = [
-    { to: '/journal', label: 'Journal' },
+  // More dropdown items (only shown when logged in)
+  const moreItems = [
     { to: '/archive', label: 'Archive' },
     { to: '/library', label: 'Library' },
-  ]
-
-  // More dropdown
-  const moreItems = [
-    { to: '/news-events', label: 'News & Events', badge: hasNewNews },
+    { to: '/news-events', label: 'News & Events' },
     { to: '/community', label: 'Community' },
     { to: '/contact', label: 'Contact' },
     { to: '/pricing', label: 'Subscribe' },
@@ -112,12 +98,49 @@ const Header = () => {
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center gap-1 text-sm font-semibold" ref={dropdownRef}>
 
-          {/* Main links */}
-          {mainNav.map((item) => (
+          {/* Home - always visible */}
+          <NavLink
+            to="/"
+            end
+            className={({ isActive }) =>
+              `relative px-4 py-2 rounded-lg transition-all duration-200 ${
+                isActive
+                  ? 'text-[#8B4513] font-bold'
+                  : 'text-[#6A5A4A] hover:text-[#8B4513] hover:bg-[#8B4513]/5'
+              }`
+            }
+          >
+            {({ isActive }) => (
+              <>
+                Home
+                {isActive && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-[#8B4513]" />}
+              </>
+            )}
+          </NavLink>
+
+          {/* About - always visible */}
+          <NavLink
+            to="/about"
+            className={({ isActive }) =>
+              `relative px-4 py-2 rounded-lg transition-all duration-200 ${
+                isActive
+                  ? 'text-[#8B4513] font-bold'
+                  : 'text-[#6A5A4A] hover:text-[#8B4513] hover:bg-[#8B4513]/5'
+              }`
+            }
+          >
+            {({ isActive }) => (
+              <>
+                About
+                {isActive && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-[#8B4513]" />}
+              </>
+            )}
+          </NavLink>
+
+          {/* === LOGGED OUT: News & Events === */}
+          {!token && (
             <NavLink
-              key={item.to}
-              to={item.to}
-              end={item.to === '/'}
+              to="/news-events"
               className={({ isActive }) =>
                 `relative px-4 py-2 rounded-lg transition-all duration-200 ${
                   isActive
@@ -128,34 +151,55 @@ const Header = () => {
             >
               {({ isActive }) => (
                 <>
-                  {item.label}
+                  News & Events
                   {isActive && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-[#8B4513]" />}
                 </>
               )}
             </NavLink>
-          ))}
+          )}
 
-          {/* Explore dropdown - only when logged in */}
+          {/* === LOGGED IN: Journal === */}
+          {token && (
+            <NavLink
+              to="/journal"
+              className={({ isActive }) =>
+                `relative px-4 py-2 rounded-lg transition-all duration-200 ${
+                  isActive
+                    ? 'text-[#8B4513] font-bold'
+                    : 'text-[#6A5A4A] hover:text-[#8B4513] hover:bg-[#8B4513]/5'
+                }`
+              }
+            >
+              {({ isActive }) => (
+                <>
+                  Journal
+                  {isActive && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-[#8B4513]" />}
+                </>
+              )}
+            </NavLink>
+          )}
+
+          {/* === LOGGED IN: More dropdown === */}
           {token && (
             <div className="relative">
               <button
-                onClick={() => setOpenDropdown(openDropdown === 'explore' ? null : 'explore')}
+                onClick={() => setOpenDropdown(openDropdown === 'more' ? null : 'more')}
                 className={`relative flex items-center gap-1 px-4 py-2 rounded-lg transition-all duration-200 ${
-                  isDropdownActive(exploreItems) || openDropdown === 'explore'
+                  isDropdownActive(moreItems) || openDropdown === 'more'
                     ? 'text-[#8B4513] font-bold'
                     : 'text-[#6A5A4A] hover:text-[#8B4513] hover:bg-[#8B4513]/5'
                 }`}
               >
-                Explore
-                <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${openDropdown === 'explore' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                More
+                <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${openDropdown === 'more' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                 </svg>
-                {isDropdownActive(exploreItems) && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-[#8B4513]" />}
+                {isDropdownActive(moreItems) && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-[#8B4513]" />}
               </button>
 
-              {openDropdown === 'explore' && (
-                <div className="absolute top-full left-0 mt-2 w-48 rounded-xl bg-[#fdfaf2] shadow-[0_12px_40px_rgba(61,37,22,0.2)] border border-[#8B4513]/10 overflow-hidden py-1">
-                  {exploreItems.map((item) => (
+              {openDropdown === 'more' && (
+                <div className="absolute top-full right-0 mt-2 w-52 rounded-xl bg-[#fdfaf2] shadow-[0_12px_40px_rgba(61,37,22,0.2)] border border-[#8B4513]/10 overflow-hidden py-1">
+                  {moreItems.map((item) => (
                     <NavLink
                       key={item.to}
                       to={item.to}
@@ -180,53 +224,9 @@ const Header = () => {
             </div>
           )}
 
-          {/* More dropdown */}
-          <div className="relative">
-            <button
-              onClick={() => setOpenDropdown(openDropdown === 'more' ? null : 'more')}
-              className={`relative flex items-center gap-1 px-4 py-2 rounded-lg transition-all duration-200 ${
-                isDropdownActive(moreItems) || openDropdown === 'more'
-                  ? 'text-[#8B4513] font-bold'
-                  : 'text-[#6A5A4A] hover:text-[#8B4513] hover:bg-[#8B4513]/5'
-              }`}
-            >
-              More
-              {hasNewNews && <span className="h-1.5 w-1.5 rounded-full bg-red-500 animate-pulse" />}
-              <svg className={`w-3.5 h-3.5 transition-transform duration-200 ${openDropdown === 'more' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-              </svg>
-              {isDropdownActive(moreItems) && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-[#8B4513]" />}
-            </button>
-
-            {openDropdown === 'more' && (
-              <div className="absolute top-full right-0 mt-2 w-52 rounded-xl bg-[#fdfaf2] shadow-[0_12px_40px_rgba(61,37,22,0.2)] border border-[#8B4513]/10 overflow-hidden py-1">
-                {moreItems.map((item) => (
-                  <NavLink
-                    key={item.to}
-                    to={item.to}
-                    className={({ isActive }) =>
-                      `flex items-center gap-3 px-4 py-2.5 text-sm transition-colors ${
-                        isActive
-                          ? 'text-[#8B4513] font-bold bg-[#8B4513]/8'
-                          : 'text-[#4A3B32] hover:bg-[#8B4513]/5 hover:text-[#8B4513]'
-                      }`
-                    }
-                  >
-                    {({ isActive }) => (
-                      <>
-                        {isActive && <span className="w-1.5 h-1.5 rounded-full bg-[#8B4513] shrink-0" />}
-                        {item.label}
-                        {item.badge && <span className="ml-auto h-2 w-2 rounded-full bg-red-500 animate-pulse" />}
-                      </>
-                    )}
-                  </NavLink>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Auth */}
+          {/* === Auth section === */}
           {token ? (
+            /* LOGGED IN: User icon with dropdown */
             <div className="relative ml-3" ref={userMenuRef}>
               <button
                 onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
@@ -242,28 +242,39 @@ const Header = () => {
               </button>
 
               {isUserMenuOpen && (
-                <div className="absolute right-0 top-full mt-2 w-56 rounded-xl bg-[#fdfaf2] shadow-[0_20px_60px_rgba(61,37,22,0.25)] border border-[#8B4513]/10 overflow-hidden z-[1100]">
-                  <div className="p-3 border-b border-[#8B4513]/10 bg-[#f4ecd8]/50">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-[#8B4513]/50 mb-0.5">Signed in as</p>
-                    <p className="text-sm font-bold text-[#4A3B32] truncate">{user?.email || 'User'}</p>
+                <div className="absolute right-0 top-full mt-2 w-60 rounded-xl bg-[#fdfaf2] shadow-[0_20px_60px_rgba(61,37,22,0.25)] border border-[#8B4513]/10 overflow-hidden z-[1100]">
+                  {/* User info */}
+                  <div className="p-4 border-b border-[#8B4513]/10 bg-[#f4ecd8]/50">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="h-10 w-10 rounded-full bg-gradient-to-br from-[#8B4513] to-[#a0522d] flex items-center justify-center text-white text-sm font-black uppercase shadow-md">
+                        {displayName.charAt(0)}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-bold text-[#4A3B32] truncate capitalize">{displayName}</p>
+                        <p className="text-[11px] text-[#6A5A4A] truncate">{user?.email || 'User'}</p>
+                      </div>
+                    </div>
                     {user?.isSubscribed !== undefined && (
-                      <span className={`inline-block mt-1.5 text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full ${
+                      <span className={`inline-flex items-center gap-1.5 mt-1 text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full ${
                         user.isSubscribed ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
                       }`}>
+                        <span className={`h-1.5 w-1.5 rounded-full ${user.isSubscribed ? 'bg-emerald-500' : 'bg-amber-500'}`} />
                         {user.isSubscribed ? 'Contributor' : 'Free Explorer'}
                       </span>
                     )}
                   </div>
+
+                  {/* Menu items */}
                   <div className="p-1.5">
                     <NavLink to="/pricing" onClick={() => setIsUserMenuOpen(false)}
-                      className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-semibold text-[#4A3B32] hover:bg-[#8B4513]/5 transition-colors">
+                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-[#4A3B32] hover:bg-[#8B4513]/5 transition-colors">
                       <svg className="w-4 h-4 text-[#8B4513]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                       </svg>
                       Subscription
                     </NavLink>
                     <button onClick={handleLogout}
-                      className="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-semibold text-red-600 hover:bg-red-50 transition-colors">
+                      className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-red-600 hover:bg-red-50 transition-colors">
                       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                       </svg>
@@ -274,10 +285,17 @@ const Header = () => {
               )}
             </div>
           ) : (
-            <NavLink to="/login"
-              className="ml-3 rounded-full bg-[#8B4513] px-5 py-2 text-xs font-black text-white shadow-lg hover:bg-[#a0522d] hover:-translate-y-0.5 active:translate-y-0 uppercase tracking-widest transition-all">
-              Login
-            </NavLink>
+            /* LOGGED OUT: Login & Sign Up buttons */
+            <div className="flex items-center gap-2 ml-3">
+              <NavLink to="/login"
+                className="rounded-full border border-[#8B4513]/30 px-5 py-2 text-xs font-black text-[#8B4513] uppercase tracking-widest hover:bg-[#8B4513]/5 hover:-translate-y-0.5 active:translate-y-0 transition-all">
+                Login
+              </NavLink>
+              <NavLink to="/signup"
+                className="rounded-full bg-[#8B4513] px-5 py-2 text-xs font-black text-white shadow-lg hover:bg-[#a0522d] hover:-translate-y-0.5 active:translate-y-0 uppercase tracking-widest transition-all">
+                Sign Up
+              </NavLink>
+            </div>
           )}
         </nav>
 
@@ -308,25 +326,63 @@ const Header = () => {
       }`}>
         <div className="absolute inset-0 bg-[#f4ecd8] z-[-1]" />
 
+        {/* User info card (logged in) */}
         {token && user && (
-          <div className="mb-6 p-3.5 rounded-xl bg-white/50 border border-[#8B4513]/10 flex items-center gap-3">
-            <div className="h-10 w-10 rounded-full bg-[#8B4513] flex items-center justify-center text-white text-base font-black uppercase shadow-md shrink-0">
+          <div className="mb-6 p-4 rounded-2xl bg-white/50 border border-[#8B4513]/10 flex items-center gap-3">
+            <div className="h-11 w-11 rounded-full bg-gradient-to-br from-[#8B4513] to-[#a0522d] flex items-center justify-center text-white text-base font-black uppercase shadow-md shrink-0">
               {displayName.charAt(0)}
             </div>
-            <div className="min-w-0">
+            <div className="min-w-0 flex-1">
               <p className="text-sm font-bold text-[#4A3B32] truncate capitalize">{displayName}</p>
               <p className="text-xs text-[#6A5A4A] truncate">{user.email}</p>
+              {user?.isSubscribed !== undefined && (
+                <span className={`inline-flex items-center gap-1 mt-1 text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full ${
+                  user.isSubscribed ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
+                }`}>
+                  <span className={`h-1 w-1 rounded-full ${user.isSubscribed ? 'bg-emerald-500' : 'bg-amber-500'}`} />
+                  {user.isSubscribed ? 'Contributor' : 'Free Explorer'}
+                </span>
+              )}
             </div>
           </div>
         )}
 
         <nav className="flex flex-col gap-1">
-          {/* Main links */}
-          {mainNav.map((item) => (
+          {/* Home - always */}
+          <NavLink
+            to="/"
+            end
+            onClick={() => setIsMobileMenuOpen(false)}
+            className={({ isActive }) =>
+              `px-4 py-3 rounded-xl text-base font-bold transition-all ${
+                isActive
+                  ? 'text-[#8B4513] bg-[#8B4513]/8 border-l-[3px] border-[#8B4513]'
+                  : 'text-[#6A5A4A] hover:text-[#8B4513] hover:bg-[#8B4513]/5'
+              }`
+            }
+          >
+            Home
+          </NavLink>
+
+          {/* About - always */}
+          <NavLink
+            to="/about"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className={({ isActive }) =>
+              `px-4 py-3 rounded-xl text-base font-bold transition-all ${
+                isActive
+                  ? 'text-[#8B4513] bg-[#8B4513]/8 border-l-[3px] border-[#8B4513]'
+                  : 'text-[#6A5A4A] hover:text-[#8B4513] hover:bg-[#8B4513]/5'
+              }`
+            }
+          >
+            About
+          </NavLink>
+
+          {/* LOGGED OUT: News & Events */}
+          {!token && (
             <NavLink
-              key={item.to}
-              to={item.to}
-              end={item.to === '/'}
+              to="/news-events"
               onClick={() => setIsMobileMenuOpen(false)}
               className={({ isActive }) =>
                 `px-4 py-3 rounded-xl text-base font-bold transition-all ${
@@ -336,29 +392,46 @@ const Header = () => {
                 }`
               }
             >
-              {item.label}
+              News & Events
             </NavLink>
-          ))}
+          )}
 
-          {/* Explore accordion - only when logged in */}
+          {/* LOGGED IN: Journal */}
+          {token && (
+            <NavLink
+              to="/journal"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={({ isActive }) =>
+                `px-4 py-3 rounded-xl text-base font-bold transition-all ${
+                  isActive
+                    ? 'text-[#8B4513] bg-[#8B4513]/8 border-l-[3px] border-[#8B4513]'
+                    : 'text-[#6A5A4A] hover:text-[#8B4513] hover:bg-[#8B4513]/5'
+                }`
+              }
+            >
+              Journal
+            </NavLink>
+          )}
+
+          {/* LOGGED IN: More accordion */}
           {token && (
             <div>
               <button
-                onClick={() => setMobileExpanded(mobileExpanded === 'explore' ? null : 'explore')}
+                onClick={() => setMobileExpanded(mobileExpanded === 'more' ? null : 'more')}
                 className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-base font-bold transition-all ${
-                  isDropdownActive(exploreItems)
+                  isDropdownActive(moreItems)
                     ? 'text-[#8B4513] bg-[#8B4513]/8'
                     : 'text-[#6A5A4A] hover:text-[#8B4513] hover:bg-[#8B4513]/5'
                 }`}
               >
-                Explore
-                <svg className={`w-4 h-4 transition-transform duration-200 ${mobileExpanded === 'explore' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                More
+                <svg className={`w-4 h-4 transition-transform duration-200 ${mobileExpanded === 'more' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
-              <div className={`overflow-hidden transition-all duration-300 ${mobileExpanded === 'explore' ? 'max-h-60 opacity-100' : 'max-h-0 opacity-0'}`}>
+              <div className={`overflow-hidden transition-all duration-300 ${mobileExpanded === 'more' ? 'max-h-80 opacity-100' : 'max-h-0 opacity-0'}`}>
                 <div className="ml-4 mt-1 flex flex-col gap-0.5 border-l-2 border-[#8B4513]/15 pl-4">
-                  {exploreItems.map((item) => (
+                  {moreItems.map((item) => (
                     <NavLink
                       key={item.to}
                       to={item.to}
@@ -377,62 +450,49 @@ const Header = () => {
             </div>
           )}
 
-          {/* More accordion */}
-          <div>
-            <button
-              onClick={() => setMobileExpanded(mobileExpanded === 'more' ? null : 'more')}
-              className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-base font-bold transition-all ${
-                isDropdownActive(moreItems)
-                  ? 'text-[#8B4513] bg-[#8B4513]/8'
-                  : 'text-[#6A5A4A] hover:text-[#8B4513] hover:bg-[#8B4513]/5'
-              }`}
+          {/* LOGGED IN: Subscription link */}
+          {token && (
+            <NavLink
+              to="/pricing"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={({ isActive }) =>
+                `px-4 py-3 rounded-xl text-base font-bold transition-all ${
+                  isActive
+                    ? 'text-[#8B4513] bg-[#8B4513]/8 border-l-[3px] border-[#8B4513]'
+                    : 'text-[#6A5A4A] hover:text-[#8B4513] hover:bg-[#8B4513]/5'
+                }`
+              }
             >
-              <span className="flex items-center gap-2">
-                More
-                {hasNewNews && <span className="h-2 w-2 rounded-full bg-red-500 animate-pulse" />}
-              </span>
-              <svg className={`w-4 h-4 transition-transform duration-200 ${mobileExpanded === 'more' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-            <div className={`overflow-hidden transition-all duration-300 ${mobileExpanded === 'more' ? 'max-h-60 opacity-100' : 'max-h-0 opacity-0'}`}>
-              <div className="ml-4 mt-1 flex flex-col gap-0.5 border-l-2 border-[#8B4513]/15 pl-4">
-                {moreItems.map((item) => (
-                  <NavLink
-                    key={item.to}
-                    to={item.to}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className={({ isActive }) =>
-                      `flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all ${
-                        isActive ? 'text-[#8B4513] font-bold bg-[#8B4513]/8' : 'text-[#6A5A4A] hover:text-[#8B4513]'
-                      }`
-                    }
-                  >
-                    {item.label}
-                    {item.badge && <span className="h-1.5 w-1.5 rounded-full bg-red-500 animate-pulse" />}
-                  </NavLink>
-                ))}
-              </div>
-            </div>
-          </div>
+              Subscription
+            </NavLink>
+          )}
 
-          {/* Login / Logout */}
+          {/* Bottom auth section */}
           <div className="mt-6 pt-6 border-t border-[#8B4513]/15">
             {token ? (
               <button
                 onClick={() => { setIsMobileMenuOpen(false); handleLogout() }}
-                className="w-full rounded-xl bg-red-600 px-6 py-3.5 text-center text-white font-bold text-sm uppercase tracking-wider shadow-lg"
+                className="w-full rounded-xl bg-red-600 px-6 py-3.5 text-center text-white font-bold text-sm uppercase tracking-wider shadow-lg active:scale-[0.98] transition-transform"
               >
                 Logout
               </button>
             ) : (
-              <NavLink
-                to="/login"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="w-full inline-block rounded-xl bg-[#8B4513] px-6 py-3.5 text-center text-white font-bold text-sm uppercase tracking-wider shadow-lg"
-              >
-                Login
-              </NavLink>
+              <div className="flex flex-col gap-3">
+                <NavLink
+                  to="/login"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="w-full inline-block rounded-xl border-2 border-[#8B4513] px-6 py-3.5 text-center text-[#8B4513] font-bold text-sm uppercase tracking-wider"
+                >
+                  Login
+                </NavLink>
+                <NavLink
+                  to="/signup"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="w-full inline-block rounded-xl bg-[#8B4513] px-6 py-3.5 text-center text-white font-bold text-sm uppercase tracking-wider shadow-lg"
+                >
+                  Sign Up
+                </NavLink>
+              </div>
             )}
           </div>
         </nav>
