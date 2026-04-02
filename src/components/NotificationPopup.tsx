@@ -79,7 +79,7 @@ const NotificationPopup = () => {
     <>
       {!isMinimized && (
         <div 
-          className="fixed inset-0 bg-[#4A3B32]/60 backdrop-blur-sm z-[1999] animate-in fade-in duration-500"
+          className="fixed inset-0 bg-body/60 backdrop-blur-sm z-[1999] animate-in fade-in duration-500"
           onClick={() => setIsMinimized(true)}
         />
       )}
@@ -110,7 +110,7 @@ const NotificationPopup = () => {
             </svg>
           </button>
         ) : (
-          <div className="pointer-events-auto w-full max-w-md bg-[#fdfaf2] rounded-[2rem] shadow-[0_40px_100px_rgba(61,37,22,0.4)] border border-primary/10 overflow-hidden animate-in fade-in zoom-in slide-in-from-bottom-8 duration-500">
+          <div className="pointer-events-auto w-full max-w-md bg-card rounded-[2rem] shadow-[0_40px_100px_rgba(61,37,22,0.4)] border border-primary/10 overflow-hidden animate-in fade-in zoom-in slide-in-from-bottom-8 duration-500">
             <div className="bg-primary p-4 flex items-center justify-between text-white">
               <div className="flex items-center gap-3">
                 <div className="h-8 w-8 rounded-lg bg-white/20 flex items-center justify-center">
@@ -135,17 +135,17 @@ const NotificationPopup = () => {
                     <div className="mx-auto h-16 w-16 mb-4 rounded-full bg-primary/10 flex items-center justify-center text-primary">
                       <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
                     </div>
-                    <h3 className="text-[#4A3B32] font-black text-sm uppercase tracking-widest mb-1">Archive Entry</h3>
-                    <p className="text-xs text-[#6A5A4A] leading-relaxed">Please sign in to unlock your persistent scribe identity and save your research.</p>
+                    <h3 className="text-body font-black text-sm uppercase tracking-widest mb-1">Archive Entry</h3>
+                    <p className="text-xs text-muted leading-relaxed">Please sign in to unlock your persistent scribe identity and save your research.</p>
                   </div>
                   <form onSubmit={handleLogin} className="space-y-3">
                     <div className="space-y-1">
                       <label className="text-[9px] font-black uppercase tracking-widest text-primary/60 ml-1">Email or Mobile</label>
-                      <input type="text" placeholder="scribe@sasanam.org" className="w-full px-4 py-3 rounded-xl bg-[#f4ecd8]/40 border-2 border-[#f4ecd8] focus:border-primary/30 focus:bg-white outline-none text-sm font-semibold transition-all" value={loginValues.email} onChange={(e) => setLoginValues({ ...loginValues, email: e.target.value })} required />
+                      <input type="text" placeholder="scribe@sasanam.org" className="w-full px-4 py-3 rounded-xl bg-cream/40 border-2 border-cream focus:border-primary/30 focus:bg-white outline-none text-sm font-semibold transition-all" value={loginValues.email} onChange={(e) => setLoginValues({ ...loginValues, email: e.target.value })} required />
                     </div>
                     <div className="space-y-1">
                       <label className="text-[9px] font-black uppercase tracking-widest text-primary/60 ml-1">Secret Key</label>
-                      <input type="password" placeholder="••••••••" className="w-full px-4 py-3 rounded-xl bg-[#f4ecd8]/40 border-2 border-[#f4ecd8] focus:border-primary/30 focus:bg-white outline-none text-sm font-semibold transition-all" value={loginValues.password} onChange={(e) => setLoginValues({ ...loginValues, password: e.target.value })} required />
+                      <input type="password" placeholder="••••••••" className="w-full px-4 py-3 rounded-xl bg-cream/40 border-2 border-cream focus:border-primary/30 focus:bg-white outline-none text-sm font-semibold transition-all" value={loginValues.password} onChange={(e) => setLoginValues({ ...loginValues, password: e.target.value })} required />
                     </div>
                     <button type="submit" disabled={isSubmitting} className="w-full py-4 mt-2 bg-primary text-white text-xs font-black uppercase tracking-[0.2em] rounded-xl shadow-lg hover:bg-primary-light transition-all disabled:opacity-50 flex items-center justify-center gap-2">
                       {isSubmitting ? "Unlocking..." : "Unlock Access"}
@@ -160,7 +160,7 @@ const NotificationPopup = () => {
               ) : (
                 <div className="space-y-4">
                   <div className="mb-4">
-                    <p className="text-xs text-[#6A5A4A] font-medium leading-relaxed italic border-l-2 border-primary/20 pl-3">
+                    <p className="text-xs text-muted font-medium leading-relaxed italic border-l-2 border-primary/20 pl-3">
                       Greetings! We have unearthed {newItems.length} new records recently.
                     </p>
                   </div>
@@ -168,9 +168,9 @@ const NotificationPopup = () => {
                     <Link key={item.id} to="/news-events" onClick={() => setIsMinimized(true)} className="group flex flex-col gap-1 p-3 rounded-2xl bg-[#FAF9F6] border border-primary/5 hover:bg-white hover:border-primary/20 transition-all">
                       <div className="flex items-center gap-2">
                         <span className="text-[9px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-black uppercase tracking-tighter">{item.type}</span>
-                        <span className="text-[10px] text-[#6A5A4A] font-bold">{item.date}</span>
+                        <span className="text-[10px] text-muted font-bold">{item.date}</span>
                       </div>
-                      <h4 className="text-sm font-bold text-[#4A3B32] group-hover:text-primary transition-colors">{item.title}</h4>
+                      <h4 className="text-sm font-bold text-body group-hover:text-primary transition-colors">{item.title}</h4>
                     </Link>
                   ))}
                   <div className="flex flex-col gap-2 pt-2">

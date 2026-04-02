@@ -59,8 +59,8 @@ const SignupForm = () => {
         `w-full px-5 py-4 rounded-2xl border-2 transition-all duration-300 ${
             formik.touched[field] && formik.errors[field]
                 ? "border-red-400 bg-red-50/20 focus:ring-red-200 shadow-none"
-                : "border-[#f4ecd8] bg-[#f8f5ee] focus:border-primary/30 focus:bg-white focus:ring-primary/5 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]"
-        } text-[#4A3B32] placeholder-[#A78E7E] text-sm font-semibold focus:outline-none focus:ring-4`;
+                : "border-cream bg-[#f8f5ee] focus:border-primary/30 focus:bg-white focus:ring-primary/5 shadow-[inset_0_2px_4px_rgba(0,0,0,0.02)]"
+        } text-body placeholder-[#A78E7E] text-sm font-semibold focus:outline-none focus:ring-4`;
 
     return (
         <div className="flex min-h-[calc(100vh-80px)] items-center justify-center p-6 sm:p-12 lg:p-20 relative overflow-hidden">
@@ -68,7 +68,7 @@ const SignupForm = () => {
             <div className="absolute inset-0 opacity-[0.03] pointer-events-none grayscale contrast-150 brightness-50" 
                  style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/natural-paper.png")' }}></div>
 
-            <main className="relative z-10 w-full max-w-5xl rounded-[2.5rem] bg-[#fdfaf2] shadow-[0_25px_80px_-15px_rgba(61,37,22,0.3)] border-[0.5px] border-primary/20 flex flex-col lg:flex-row-reverse overflow-hidden group">
+            <main className="relative z-10 w-full max-w-5xl rounded-[2.5rem] bg-card shadow-[0_25px_80px_-15px_rgba(61,37,22,0.3)] border-[0.5px] border-primary/20 flex flex-col lg:flex-row-reverse overflow-hidden group">
                 
                 {/* Visual Section - Right Side */}
                 <div className="hidden lg:block lg:w-[45%] relative overflow-hidden bg-primary">
@@ -77,30 +77,30 @@ const SignupForm = () => {
                         alt="Historical Monument"
                         className="h-full w-full object-cover opacity-80 mix-blend-multiply brightness-110 transition-transform duration-1000 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#4A3B32]/90 via-[#4A3B32]/20 to-transparent"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-body/90 via-body/20 to-transparent"></div>
                     
                     <div className="absolute bottom-12 left-10 right-10 flex flex-col gap-4">
                         <div className="p-5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20">
-                            <h2 className="text-3xl font-serif text-[#fdfaf2] mb-2 leading-tight">Begin Your Journey</h2>
-                            <p className="text-[#fdfaf2]/80 font-medium text-sm leading-relaxed">Join a global community of historians, scholars, and explorers dedicated to uncovering lost history.</p>
+                            <h2 className="text-3xl font-serif text-card mb-2 leading-tight">Begin Your Journey</h2>
+                            <p className="text-card/80 font-medium text-sm leading-relaxed">Join a global community of historians, scholars, and explorers dedicated to uncovering lost history.</p>
                         </div>
                     </div>
                 </div>
 
                 {/* Content Section - Left Side */}
-                <div className="flex-1 p-8 sm:p-12 lg:p-16 flex flex-col justify-center bg-[#fdfaf2] relative">
+                <div className="flex-1 p-8 sm:p-12 lg:p-16 flex flex-col justify-center bg-card relative">
                     <div className="max-w-md mx-auto w-full">
                         <div className="mb-10 text-center lg:text-left">
                             <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-[10px] font-black tracking-[0.2em] uppercase rounded-full mb-4">Enrollment Form</span>
-                            <h1 className="text-4xl font-serif font-black text-[#4A3B32] mb-3 leading-tight tracking-tight">Become a Scribe</h1>
-                            <p className="text-[#6A5A4A] font-medium text-sm tracking-wide">Enter the lineage of those who record history.</p>
+                            <h1 className="text-4xl font-serif font-black text-body mb-3 leading-tight tracking-tight">Become a Scribe</h1>
+                            <p className="text-muted font-medium text-sm tracking-wide">Enter the lineage of those who record history.</p>
                         </div>
 
                         {submitted ? (
                             <div className="text-center py-12 bg-green-50/30 rounded-[2rem] border border-green-100">
                                 <div className="text-6xl mb-6">🖋️</div>
                                 <p className="text-primary font-serif text-2xl font-black mb-2">Registry Successful</p>
-                                <p className="text-[#6A5A4A] text-sm">Welcome to the archives.</p>
+                                <p className="text-muted text-sm">Welcome to the archives.</p>
                                 <button onClick={() => navigate("/login")} className="mt-8 text-primary font-black uppercase tracking-widest text-xs border-b-2 border-primary/30 pb-1 hover:border-primary transition-all">Proceed to Gates</button>
                             </div>
                         ) : (
@@ -141,7 +141,7 @@ const SignupForm = () => {
                                                 </svg>
                                             </div>
                                         </div>
-                                        <span className="text-xs font-semibold text-[#6A5A4A] leading-relaxed select-none">
+                                        <span className="text-xs font-semibold text-muted leading-relaxed select-none">
                                             I solemnly swear to abide by the <a href="#" className="text-primary font-black hover:underline">Vows of Preservation</a> and platform terms.
                                         </span>
                                     </label>
@@ -159,7 +159,7 @@ const SignupForm = () => {
                                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
                                 </button>
 
-                                <p className="mt-8 text-center text-sm font-medium text-[#6A5A4A]">
+                                <p className="mt-8 text-center text-sm font-medium text-muted">
                                     Already recognized?{' '}
                                     <Link to="/login" className="text-primary font-bold hover:underline decoration-2 underline-offset-4 decoration-primary/30">
                                         Log in

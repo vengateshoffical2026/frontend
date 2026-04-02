@@ -101,9 +101,9 @@ export default function PdfViewer() {
   const pageH = Math.round(pageWidth * 1.414)
 
   return (
-    <div className="fixed inset-0 z-[9999] bg-[#F7F3EC] flex flex-col select-none">
+    <div className="fixed inset-0 z-[9999] bg-bg flex flex-col select-none">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-2.5 bg-[#f4ecd8] shrink-0 border-b border-[#e2c9a0]/60 shadow-sm">
+      <div className="flex items-center justify-between px-4 py-2.5 bg-cream shrink-0 border-b border-border/60 shadow-sm">
         <div className="flex items-center gap-3 min-w-0">
           <button onClick={() => navigate(-1)} className="p-2 rounded-lg text-primary hover:bg-primary/10 transition-all shrink-0">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -111,8 +111,8 @@ export default function PdfViewer() {
             </svg>
           </button>
           <div className="min-w-0">
-            <h2 className="text-sm font-bold text-[#3D2516] truncate">{bookName || 'Document'}</h2>
-            {authorName && <p className="text-[11px] text-[#8C7055]">by {authorName}</p>}
+            <h2 className="text-sm font-bold text-heading truncate">{bookName || 'Document'}</h2>
+            {authorName && <p className="text-[11px] text-subtle">by {authorName}</p>}
           </div>
         </div>
         {numPages > 0 && (
@@ -121,10 +121,10 @@ export default function PdfViewer() {
       </div>
 
       {/* PDF area */}
-      <div ref={scrollRef} className="flex-1 overflow-y-auto pdf-area bg-[#F7F3EC]" style={{ WebkitUserSelect: 'none', userSelect: 'none' }}>
+      <div ref={scrollRef} className="flex-1 overflow-y-auto pdf-area bg-bg" style={{ WebkitUserSelect: 'none', userSelect: 'none' }}>
         {error ? (
           <div className="flex flex-col items-center justify-center h-full gap-4 px-6 text-center">
-            <p className="text-sm text-[#4A3B32]">Unable to load document</p>
+            <p className="text-sm text-body">Unable to load document</p>
             <button onClick={() => navigate(-1)} className="text-sm font-bold text-primary hover:underline">Go back</button>
           </div>
         ) : fileConfig ? (
@@ -132,7 +132,7 @@ export default function PdfViewer() {
             {!docReady && (
               <div className="flex flex-col items-center py-32 gap-3">
                 <div className="h-10 w-10 border-[3px] border-primary border-t-transparent rounded-full animate-spin" />
-                <p className="text-sm font-medium text-[#4A3B32]">Loading...</p>
+                <p className="text-sm font-medium text-body">Loading...</p>
               </div>
             )}
 
@@ -154,7 +154,7 @@ export default function PdfViewer() {
                       key={p}
                       ref={(el) => setPageRef(p, el)}
                       data-page={p}
-                      className="mb-3 rounded-xl overflow-hidden shadow-[0_2px_12px_rgba(61,37,22,0.1)] border border-[#e2c9a0]/40"
+                      className="mb-3 rounded-xl overflow-hidden shadow-[0_2px_12px_rgba(61,37,22,0.1)] border border-border/40"
                       style={!show ? { height: pageH, width: pageWidth, background: '#fdf8f0' } : undefined}
                     >
                       {show ? (
@@ -164,14 +164,14 @@ export default function PdfViewer() {
                           renderTextLayer={false}
                           renderAnnotationLayer={false}
                           loading={
-                            <div className="flex items-center justify-center bg-[#fdf8f0]" style={{ height: pageH, width: pageWidth }}>
+                            <div className="flex items-center justify-center bg-paper" style={{ height: pageH, width: pageWidth }}>
                               <div className="h-5 w-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
                             </div>
                           }
                         />
                       ) : (
-                        <div className="flex items-center justify-center bg-[#fdf8f0]" style={{ height: pageH, width: pageWidth }}>
-                          <span className="text-xs text-[#c9a87a]/50">{p}</span>
+                        <div className="flex items-center justify-center bg-paper" style={{ height: pageH, width: pageWidth }}>
+                          <span className="text-xs text-accent/50">{p}</span>
                         </div>
                       )}
                     </div>

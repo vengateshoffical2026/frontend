@@ -28,7 +28,7 @@ const Home = () => {
   ];
 
   return (
-    <main className="min-h-screen bg-[#f4ecd8] font-sans selection:bg-primary/30 selection:text-primary">
+    <main className="min-h-screen bg-cream font-sans selection:bg-primary/30 selection:text-primary">
       <PageSEO
         title="Sasanam – India's Digital Archive of Ancient Inscriptions & Epigraphs"
         description="Sasanam is India's premier digital archive of ancient inscriptions, copper plates, stone epigraphs, and historical documents from Tamil Nadu and South India. Explore Pallava, Chola, and Pandya era inscriptions."
@@ -68,7 +68,7 @@ const Home = () => {
               {/* Hero card */}
               <div
                 ref={heroReveal.ref as any}
-                className={`group relative overflow-hidden rounded-3xl bg-[#F5F5DC]/90 p-8 shadow-[0_8px_32px_rgba(61,37,22,0.15)] border border-white/30 sm:p-12 hover:shadow-[0_12px_48px_rgba(61,37,22,0.2)] transition-shadow duration-500 ${revealClass(heroReveal.isVisible)}`}
+                className={`group relative overflow-hidden rounded-3xl bg-beige/90 p-8 shadow-[0_8px_32px_rgba(61,37,22,0.15)] border border-white/30 sm:p-12 hover:shadow-[0_12px_48px_rgba(61,37,22,0.2)] transition-shadow duration-500 ${revealClass(heroReveal.isVisible)}`}
               >
                 {/* Decorative elements */}
                 <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2" />
@@ -82,7 +82,7 @@ const Home = () => {
                       <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
                       Digital Archive
                     </span>
-                    <h1 className="text-4xl font-serif font-black tracking-tight text-[#4A3B32] sm:text-5xl xl:text-6xl leading-[1.1]">
+                    <h1 className="text-4xl font-serif font-black tracking-tight text-body sm:text-5xl xl:text-6xl leading-[1.1]">
                       Unearth the Secrets<br />
                       of the <span className="text-primary relative">
                         Past
@@ -91,7 +91,7 @@ const Home = () => {
                         </svg>
                       </span>
                     </h1>
-                    <p className="mt-6 text-lg font-medium text-[#6A5A4A] max-w-lg leading-relaxed">
+                    <p className="mt-6 text-lg font-medium text-muted max-w-lg leading-relaxed">
                       Explore our vast archive of ancient inscriptions and contribute to deciphering history through a beautifully curated modern lens.
                     </p>
 
@@ -134,12 +134,12 @@ const Home = () => {
                 {statsData.map((stat, i) => (
                   <div
                     key={stat.label}
-                    className="group rounded-2xl bg-[#F5F5DC]/70 p-5 text-center shadow-[0_4px_20px_rgba(61,37,22,0.08)] border border-white/20 hover:shadow-[0_8px_30px_rgba(61,37,22,0.12)] hover:-translate-y-1 transition-all duration-300"
+                    className="group rounded-2xl bg-beige/70 p-5 text-center shadow-[0_4px_20px_rgba(61,37,22,0.08)] border border-white/20 hover:shadow-[0_8px_30px_rgba(61,37,22,0.12)] hover:-translate-y-1 transition-all duration-300"
                     style={{ transitionDelay: `${i * 80}ms` }}
                   >
                     <div className="text-2xl mb-2 transition-transform duration-300 group-hover:scale-110">{stat.icon}</div>
-                    <p className="text-xl font-black text-[#4A3B32]">{stat.value}</p>
-                    <p className="text-xs font-bold text-[#6A5A4A]/70 uppercase tracking-wider mt-1">{stat.label}</p>
+                    <p className="text-xl font-black text-body">{stat.value}</p>
+                    <p className="text-xs font-bold text-muted/70 uppercase tracking-wider mt-1">{stat.label}</p>
                   </div>
                 ))}
               </div>
@@ -147,10 +147,10 @@ const Home = () => {
               {/* Latest Contributions bar */}
               <article
                 ref={contributionsReveal.ref as any}
-                className={`rounded-3xl bg-[#F5F5DC]/70 p-6 shadow-[0_4px_20px_rgba(61,37,22,0.1)] border border-white/20 sm:p-8 ${revealClass(contributionsReveal.isVisible)}`}
+                className={`rounded-3xl bg-beige/70 p-6 shadow-[0_4px_20px_rgba(61,37,22,0.1)] border border-white/20 sm:p-8 ${revealClass(contributionsReveal.isVisible)}`}
               >
                 <div className="flex items-center justify-between mb-6 border-b border-[#c8bba6]/50 pb-4">
-                  <h3 className="text-xl font-bold text-[#4A3B32]">Latest Contributions</h3>
+                  <h3 className="text-xl font-bold text-body">Latest Contributions</h3>
                   <span className="flex h-2 w-2 relative">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
@@ -170,7 +170,7 @@ const Home = () => {
                       <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${contributor.gradient} text-white text-sm font-black shadow-md transition-transform duration-300 group-hover:scale-110`}>
                         {contributor.name.charAt(0)}
                       </div>
-                      <p className="text-sm font-medium text-[#6A5A4A] leading-tight">
+                      <p className="text-sm font-medium text-muted leading-tight">
                         <span className="font-bold text-[#301a1a] block mb-1">{contributor.name}</span>
                         {contributor.desc}
                       </p>
@@ -186,7 +186,7 @@ const Home = () => {
               {/* Featured Inscription */}
               <article
                 ref={featuredReveal.ref as any}
-                className={`group cursor-pointer rounded-3xl bg-[#F5F5DC]/80 p-6 shadow-[0_4px_20px_rgba(61,37,22,0.1)] border border-white/20 transition-all duration-300 hover:shadow-[0_12px_40px_rgba(61,37,22,0.15)] hover:-translate-y-1 hover:border-white/40 sm:col-span-2 lg:col-span-1 ${revealClass(featuredReveal.isVisible)}`}
+                className={`group cursor-pointer rounded-3xl bg-beige/80 p-6 shadow-[0_4px_20px_rgba(61,37,22,0.1)] border border-white/20 transition-all duration-300 hover:shadow-[0_12px_40px_rgba(61,37,22,0.15)] hover:-translate-y-1 hover:border-white/40 sm:col-span-2 lg:col-span-1 ${revealClass(featuredReveal.isVisible)}`}
               >
                 <div className="flex items-center gap-2 mb-4">
                   <span className="h-1 w-6 rounded-full bg-primary" />
@@ -197,8 +197,8 @@ const Home = () => {
                     <img src="/acientBooks.png" alt="Feature" loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
                   </div>
                   <div className="flex flex-col">
-                    <h3 className="text-lg font-bold leading-snug text-[#4A3B32] line-clamp-2 group-hover:text-primary transition-colors">Copper Plate Grant of King Rajaraja Chola I</h3>
-                    <p className="mt-1.5 text-sm text-[#6A5A4A] font-medium">Discover the intricate details and history.</p>
+                    <h3 className="text-lg font-bold leading-snug text-body line-clamp-2 group-hover:text-primary transition-colors">Copper Plate Grant of King Rajaraja Chola I</h3>
+                    <p className="mt-1.5 text-sm text-muted font-medium">Discover the intricate details and history.</p>
                     <span className="mt-3 text-xs font-bold text-primary flex items-center gap-1 group-hover:gap-2 transition-all">
                       Read more
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
@@ -210,7 +210,7 @@ const Home = () => {
               {/* Decipher Tools */}
               <article
                 ref={toolsReveal.ref as any}
-                className={`group cursor-pointer rounded-3xl bg-[#F5F5DC]/70 p-6 shadow-[0_4px_20px_rgba(61,37,22,0.1)] border border-white/20 transition-all duration-300 hover:shadow-[0_12px_40px_rgba(61,37,22,0.15)] hover:-translate-y-1 hover:border-white/40 ${revealClass(toolsReveal.isVisible)}`}
+                className={`group cursor-pointer rounded-3xl bg-beige/70 p-6 shadow-[0_4px_20px_rgba(61,37,22,0.1)] border border-white/20 transition-all duration-300 hover:shadow-[0_12px_40px_rgba(61,37,22,0.15)] hover:-translate-y-1 hover:border-white/40 ${revealClass(toolsReveal.isVisible)}`}
               >
                 <div className="flex items-center gap-2 mb-4">
                   <span className="h-1 w-6 rounded-full bg-primary" />
@@ -221,8 +221,8 @@ const Home = () => {
                     <img src='Search.png' alt="Search" loading="lazy" className='w-7 h-7 opacity-80 transition-transform duration-300 group-hover:scale-110' />
                   </div>
                   <div className="flex flex-col">
-                    <h3 className="text-lg font-bold leading-snug text-[#4A3B32] group-hover:text-primary transition-colors">Advanced Symbol Matching</h3>
-                    <p className="mt-1 text-sm text-[#6A5A4A] font-medium">Utilize tools to cross-reference ancient texts.</p>
+                    <h3 className="text-lg font-bold leading-snug text-body group-hover:text-primary transition-colors">Advanced Symbol Matching</h3>
+                    <p className="mt-1 text-sm text-muted font-medium">Utilize tools to cross-reference ancient texts.</p>
                     <span className="mt-3 text-xs font-bold text-primary flex items-center gap-1 group-hover:gap-2 transition-all">
                       Try now
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
@@ -234,7 +234,7 @@ const Home = () => {
               {/* Community Projects */}
               <article
                 ref={communityReveal.ref as any}
-                className={`group cursor-pointer rounded-3xl bg-[#F5F5DC]/70 p-6 shadow-[0_4px_20px_rgba(61,37,22,0.1)] border border-white/20 transition-all duration-300 hover:shadow-[0_12px_40px_rgba(61,37,22,0.15)] hover:-translate-y-1 hover:border-white/40 ${revealClass(communityReveal.isVisible)}`}
+                className={`group cursor-pointer rounded-3xl bg-beige/70 p-6 shadow-[0_4px_20px_rgba(61,37,22,0.1)] border border-white/20 transition-all duration-300 hover:shadow-[0_12px_40px_rgba(61,37,22,0.15)] hover:-translate-y-1 hover:border-white/40 ${revealClass(communityReveal.isVisible)}`}
               >
                 <div className="flex items-center gap-2 mb-4">
                   <span className="h-1 w-6 rounded-full bg-primary" />
@@ -245,8 +245,8 @@ const Home = () => {
                     <img src='Search.png' alt="Community" loading="lazy" className='w-7 h-7 opacity-80 transition-transform duration-300 group-hover:scale-110' />
                   </div>
                   <div className="flex flex-col">
-                    <h3 className="text-lg font-bold leading-snug text-[#4A3B32] group-hover:text-primary transition-colors">Join Collaborative Efforts</h3>
-                    <p className="mt-1 text-sm text-[#6A5A4A] font-medium">Work with historians worldwide to transcribe.</p>
+                    <h3 className="text-lg font-bold leading-snug text-body group-hover:text-primary transition-colors">Join Collaborative Efforts</h3>
+                    <p className="mt-1 text-sm text-muted font-medium">Work with historians worldwide to transcribe.</p>
                     <span className="mt-3 text-xs font-bold text-primary flex items-center gap-1 group-hover:gap-2 transition-all">
                       Join now
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>

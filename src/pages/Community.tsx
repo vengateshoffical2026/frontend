@@ -2,7 +2,7 @@ import PageSEO from '../components/PageSEO'
 
 const Community = () => {
   return (
-    <main className="min-h-screen bg-[#FAF9F6] font-sans text-[#4A3B32]  flex flex-col" >
+    <main className="min-h-screen bg-[#FAF9F6] font-sans text-body  flex flex-col" >
       <PageSEO
         title="Community – Collaborate on Inscriptions"
         description="Join the Sasanam community of historians, epigraphists, and enthusiasts working together to transcribe and preserve ancient South Indian inscriptions."
@@ -13,12 +13,12 @@ const Community = () => {
         
         <section className="mt-8 flex flex-col items-center justify-center flex-1 pb-16">
           <div className="grid grid-cols-1 place-items-center w-full">
-            <div className="rounded-3xl bg-[#F5F5DC]/80 p-12 shadow-[0_8px_32px_rgba(61,37,22,0.15)] backdrop-blur-xl border border-white/30 text-center max-w-md w-full transition-all duration-300 hover:-translate-y-2 hover:bg-[#F5F5DC]/90 hover:shadow-[0_12px_40px_rgba(61,37,22,0.2)]">
-              <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-[#EEDDCC]/50 text-[#a78e7e] ring-1 ring-white/50 shadow-inner">
+            <div className="rounded-3xl bg-beige/80 p-12 shadow-[0_8px_32px_rgba(61,37,22,0.15)] backdrop-blur-xl border border-white/30 text-center max-w-md w-full transition-all duration-300 hover:-translate-y-2 hover:bg-beige/90 hover:shadow-[0_12px_40px_rgba(61,37,22,0.2)]">
+              <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-[#EEDDCC]/50 text-accent ring-1 ring-white/50 shadow-inner">
                 <svg className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
               </div>
-              <h1 className="text-4xl font-extrabold tracking-tight text-[#4A3B32] mb-4 drop-shadow-sm">Community</h1>
-              <p className="text-lg text-[#6A5A4A] font-semibold">Join the discussion.<br/>Coming Soon...</p>
+              <h1 className="text-4xl font-extrabold tracking-tight text-body mb-4 drop-shadow-sm">Community</h1>
+              <p className="text-lg text-muted font-semibold">Join the discussion.<br/>Coming Soon...</p>
             </div>
           </div>
         </section>

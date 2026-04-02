@@ -80,7 +80,7 @@ const SasanamBooks: React.FC<SasanamBooksProps> = ({ data }) => {
       {/* Download status bar */}
       {token && !unlimitedAccess && (
         <div className="flex items-center justify-center mb-8">
-          <div className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-[#fdf8f0] border border-[#e2c9a0] shadow-sm">
+          <div className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-paper border border-border shadow-sm">
             <div className="flex gap-1.5">
               {Array.from({ length: freeLimit }).map((_, i) => (
                 <div
@@ -89,7 +89,7 @@ const SasanamBooks: React.FC<SasanamBooksProps> = ({ data }) => {
                 />
               ))}
             </div>
-            <span className="text-sm font-semibold text-[#4A3B32]">
+            <span className="text-sm font-semibold text-body">
               {remaining > 0
                 ? `${remaining} free download${remaining !== 1 ? "s" : ""} left`
                 : "No free downloads left"}
@@ -113,10 +113,10 @@ const SasanamBooks: React.FC<SasanamBooksProps> = ({ data }) => {
           return (
             <div
               key={book._id}
-              className="group relative bg-[#fdf8f0] border border-[#e2c9a0]/80 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_12px_40px_rgba(61,37,22,0.13)] hover:border-[#c9a87a] flex flex-col"
+              className="group relative bg-paper border border-border/80 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_12px_40px_rgba(61,37,22,0.13)] hover:border-accent flex flex-col"
             >
               {/* Decorative top bar */}
-              <div className="h-2 bg-gradient-to-r from-primary via-primary-light to-[#c9a87a]" />
+              <div className="h-2 bg-gradient-to-r from-primary via-primary-light to-accent" />
 
               {/* Card body */}
               <div className="p-6 flex-1 flex flex-col">
@@ -135,20 +135,20 @@ const SasanamBooks: React.FC<SasanamBooksProps> = ({ data }) => {
                 </div>
 
                 {/* Title & author */}
-                <h3 className="text-lg font-bold text-[#3D2516] mb-1 line-clamp-2 leading-snug group-hover:text-primary transition-colors">
+                <h3 className="text-lg font-bold text-heading mb-1 line-clamp-2 leading-snug group-hover:text-primary transition-colors">
                   {book.bookName}
                 </h3>
-                <p className="text-sm text-[#8C7055] mb-2">
-                  by <span className="font-semibold text-[#6b4f36]">{book.authorName}</span>
+                <p className="text-sm text-subtle mb-2">
+                  by <span className="font-semibold text-muted">{book.authorName}</span>
                 </p>
                 {book.description && (
-                  <p className="text-sm text-[#8C7055]/70 line-clamp-2 mb-4 leading-relaxed">{book.description}</p>
+                  <p className="text-sm text-subtle/70 line-clamp-2 mb-4 leading-relaxed">{book.description}</p>
                 )}
 
                 <div className="flex-1" />
 
                 {/* Action buttons */}
-                <div className="flex gap-2 mt-4 pt-4 border-t border-[#e2c9a0]/50">
+                <div className="flex gap-2 mt-4 pt-4 border-t border-border/50">
                   {/* View — navigates to /view/:bookId */}
                   {hasPdf && (
                     <button

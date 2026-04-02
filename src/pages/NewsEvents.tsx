@@ -45,11 +45,11 @@ const NewsEvents = () => {
             : "opacity-0 translate-y-8"
         }`}
       >
-        <h1 className="text-4xl sm:text-5xl xl:text-6xl font-serif font-black text-[#4A3B32] tracking-tight">
+        <h1 className="text-4xl sm:text-5xl xl:text-6xl font-serif font-black text-body tracking-tight">
           News & <span className="text-primary">Events</span>
         </h1>
         <div className="w-24 h-1 bg-primary/20 rounded-full mx-auto mt-6 mb-6" />
-        <p className="text-lg text-[#6A5A4A] max-w-2xl mx-auto font-medium leading-relaxed">
+        <p className="text-lg text-muted max-w-2xl mx-auto font-medium leading-relaxed">
           Stay updated with the latest discoveries, research milestones, and
           upcoming events from the Sasanam community.
         </p>
@@ -64,7 +64,7 @@ const NewsEvents = () => {
             className={`px-6 py-3 rounded-2xl text-sm font-black uppercase tracking-widest transition-all duration-300 ${
               filter === type
                 ? "bg-primary text-white shadow-xl -translate-y-0.5"
-                : "bg-white/50 text-[#a78e7e] hover:bg-white/80 hover:text-primary border border-primary/10"
+                : "bg-white/50 text-accent hover:bg-white/80 hover:text-primary border border-primary/10"
             }`}
           >
             {type === "all" ? "All" : type === "news" ? "News" : "Events"}
@@ -86,7 +86,7 @@ const NewsEvents = () => {
 
       {filteredItems.length === 0 && (
         <div className="text-center py-20">
-          <p className="text-xl text-[#a78e7e] font-bold">
+          <p className="text-xl text-accent font-bold">
             No items found for this filter.
           </p>
         </div>
@@ -109,7 +109,7 @@ const NewsEventCard = ({
   return (
     <article
       ref={reveal.ref as any}
-      className={`group relative overflow-hidden rounded-3xl bg-[#F5F5DC]/80 backdrop-blur-md border border-white/30 shadow-[0_8px_32px_rgba(61,37,22,0.1)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_16px_48px_rgba(61,37,22,0.18)] hover:border-white/50 ${
+      className={`group relative overflow-hidden rounded-3xl bg-beige/80 backdrop-blur-md border border-white/30 shadow-[0_8px_32px_rgba(61,37,22,0.1)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_16px_48px_rgba(61,37,22,0.18)] hover:border-white/50 ${
         reveal.isVisible
           ? "opacity-100 translate-y-0"
           : "opacity-0 translate-y-12"
@@ -137,7 +137,7 @@ const NewsEventCard = ({
             alt={item.title}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#F5F5DC]/90 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-beige/90 to-transparent" />
         </div>
       )}
 
@@ -149,23 +149,23 @@ const NewsEventCard = ({
             className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest ${
               item.type === "news"
                 ? "bg-primary/10 text-primary"
-                : "bg-[#4A3B32]/10 text-[#4A3B32]"
+                : "bg-body/10 text-body"
             }`}
           >
             {item.type === "news" ? "📰 News" : "📅 Event"}
           </span>
-          <span className="text-xs font-bold text-[#a78e7e]">
+          <span className="text-xs font-bold text-accent">
             {formatDate(item.date)}
           </span>
         </div>
 
         {/* Title */}
-        <h3 className="text-xl font-bold text-[#4A3B32] leading-snug mb-3 group-hover:text-primary transition-colors line-clamp-2">
+        <h3 className="text-xl font-bold text-body leading-snug mb-3 group-hover:text-primary transition-colors line-clamp-2">
           {item.title}
         </h3>
 
         {/* Description */}
-        <p className="text-sm text-[#6A5A4A] leading-relaxed line-clamp-3 font-medium">
+        <p className="text-sm text-muted leading-relaxed line-clamp-3 font-medium">
           {item.description}
         </p>
 

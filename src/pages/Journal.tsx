@@ -7,7 +7,7 @@ import PageSEO from "../components/PageSEO";
 
 /* ─── Decorative SVG ornaments ──────────────────────────────────────── */
 const OrnamentDivider = () => (
-  <svg viewBox="0 0 200 16" className="w-32 h-4 text-[#c9a87a] opacity-60" fill="none">
+  <svg viewBox="0 0 200 16" className="w-32 h-4 text-accent opacity-60" fill="none">
     <line x1="0" y1="8" x2="72" y2="8" stroke="currentColor" strokeWidth="1" />
     <circle cx="100" cy="8" r="4" stroke="currentColor" strokeWidth="1.5" />
     <circle cx="84" cy="8" r="2" stroke="currentColor" strokeWidth="1" />
@@ -17,7 +17,7 @@ const OrnamentDivider = () => (
 );
 
 const CornerGlyph = ({ className = "" }: { className?: string }) => (
-  <svg viewBox="0 0 40 40" className={`w-10 h-10 text-[#c9a87a] opacity-25 ${className}`} fill="none">
+  <svg viewBox="0 0 40 40" className={`w-10 h-10 text-accent opacity-25 ${className}`} fill="none">
     <path d="M2 2 L2 18 M2 2 L18 2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
     <path d="M10 10 L10 6 L14 6" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
     <circle cx="6" cy="6" r="1.5" fill="currentColor" />
@@ -40,7 +40,7 @@ const SectionSkeletons = () => (
     {[...Array(6)].map((_, i) => (
       <div
         key={i}
-        className="relative bg-[#fdf8f0] border border-[#e2c9a0]/70 rounded-2xl p-7 flex flex-col items-center gap-3 overflow-hidden"
+        className="relative bg-paper border border-border/70 rounded-2xl p-7 flex flex-col items-center gap-3 overflow-hidden"
         style={{ animationDelay: `${i * 80}ms` }}
       >
         <div className="w-14 h-14 rounded-full bg-[#e8d9c4]/60 animate-pulse" />
@@ -55,20 +55,20 @@ const SectionSkeletons = () => (
 
 /* ─── Empty state ────────────────────────────────────────────────────── */
 const EmptyState = () => (
-  <div className="relative rounded-3xl bg-[#fdf8f0] p-14 shadow-[0_8px_40px_rgba(61,37,22,0.1)] border border-[#e2c9a0] text-center max-w-sm w-full overflow-hidden">
+  <div className="relative rounded-3xl bg-paper p-14 shadow-[0_8px_40px_rgba(61,37,22,0.1)] border border-border text-center max-w-sm w-full overflow-hidden">
     <ParchmentTexture />
     <CornerGlyph className="absolute top-3 left-3" />
     <CornerGlyph className="absolute top-3 right-3 rotate-90" />
     <CornerGlyph className="absolute bottom-3 left-3 -rotate-90" />
     <CornerGlyph className="absolute bottom-3 right-3 rotate-180" />
-    <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#f0e6d3] text-[#b8956a] ring-1 ring-[#e2c9a0] shadow-inner">
+    <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#f0e6d3] text-accent ring-1 ring-border shadow-inner">
       <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
       </svg>
     </div>
-    <p className="text-base font-semibold text-[#5a4535] leading-relaxed">
+    <p className="text-base font-semibold text-body leading-relaxed">
       No sections found.<br />
-      <span className="text-[#a07850] font-normal text-sm italic">Inscriptions arriving soon…</span>
+      <span className="text-subtle font-normal text-sm italic">Inscriptions arriving soon…</span>
     </p>
     <div className="mt-5 flex justify-center">
       <OrnamentDivider />
@@ -89,7 +89,7 @@ const Journal = () => {
   }, [sectionsData]);
 
   return (
-    <main className="relative min-h-screen bg-[#F7F3EC] font-sans text-[#4A3B32] flex flex-col overflow-x-hidden">
+    <main className="relative min-h-screen bg-bg font-sans text-body flex flex-col overflow-x-hidden">
       <PageSEO
         title="Journal – Ancient Inscriptions Collection"
         description="Browse Sasanam's curated journal of ancient inscriptions organized by sections. Explore Pallava, Chola, Pandya era stone and copper plate inscriptions from South India."
@@ -100,7 +100,7 @@ const Journal = () => {
         {/* soft radial warm glow top-center */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-[#e8d3b0]/30 rounded-full blur-[120px]" />
         {/* subtle bottom-left shadow mass */}
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#c9a87a]/10 rounded-full blur-[100px]" />
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-accent/10 rounded-full blur-[100px]" />
         {/* noise texture overlay */}
         <ParchmentTexture />
       </div>
@@ -117,10 +117,10 @@ const Journal = () => {
                 <button
                   type="button"
                   onClick={() => setStep("sections")}
-                  className="group flex items-center gap-1.5 text-[#8C6A4A] hover:text-[#4A3B32] transition-colors duration-200 focus:outline-none"
+                  className="group flex items-center gap-1.5 text-subtle hover:text-body transition-colors duration-200 focus:outline-none"
                   aria-label="Back"
                 >
-                  <span className="flex items-center justify-center w-8 h-8 rounded-full bg-[#f0e6d3] group-hover:bg-[#e2ceb0] transition-colors duration-200 shadow-sm border border-[#e2c9a0]">
+                  <span className="flex items-center justify-center w-8 h-8 rounded-full bg-[#f0e6d3] group-hover:bg-[#e2ceb0] transition-colors duration-200 shadow-sm border border-border">
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                     </svg>
@@ -134,15 +134,15 @@ const Journal = () => {
             <div className="flex-1 flex flex-col items-center gap-2">
               {/* script-style decorative top line */}
               <div className="flex items-center gap-3">
-                <div className="h-px w-12 bg-gradient-to-r from-transparent to-[#c9a87a]/60" />
-                <span className="text-[10px] uppercase tracking-[0.3em] text-[#a07850] font-medium">
+                <div className="h-px w-12 bg-gradient-to-r from-transparent to-accent/60" />
+                <span className="text-[10px] uppercase tracking-[0.3em] text-subtle font-medium">
                   {step === "sections" ? "Browse Archive" : "Section Contents"}
                 </span>
-                <div className="h-px w-12 bg-gradient-to-l from-transparent to-[#c9a87a]/60" />
+                <div className="h-px w-12 bg-gradient-to-l from-transparent to-accent/60" />
               </div>
 
               <h1
-                className="text-4xl sm:text-5xl font-extrabold tracking-tight text-[#3D2516] leading-none"
+                className="text-4xl sm:text-5xl font-extrabold tracking-tight text-heading leading-none"
                 style={{ fontFamily: "'Palatino Linotype', Palatino, 'Book Antiqua', serif", letterSpacing: "-0.01em" }}
               >
                 Journal
@@ -157,9 +157,9 @@ const Journal = () => {
 
           {/* ── Breadcrumb trail ── */}
           {step !== "sections" && (
-            <div className="flex items-center gap-2 text-xs text-[#a07850] mb-4 mt-1 self-start ml-1">
+            <div className="flex items-center gap-2 text-xs text-subtle mb-4 mt-1 self-start ml-1">
               <span
-                className="hover:text-[#4A3B32] cursor-pointer transition-colors underline-offset-2 hover:underline"
+                className="hover:text-body cursor-pointer transition-colors underline-offset-2 hover:underline"
                 onClick={() => setStep("sections")}
               >
                 Sections
@@ -167,7 +167,7 @@ const Journal = () => {
               <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
-              <span className="text-[#6b4f36] font-medium">Books</span>
+              <span className="text-muted font-medium">Books</span>
             </div>
           )}
 
@@ -199,12 +199,12 @@ const Journal = () => {
                  <SasanamBooks data={booksData || []}/>
               ) : (
                 <div className="flex flex-col items-center mt-12 gap-3">
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#f0e6d3] text-[#b8956a] border border-[#e2c9a0]">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#f0e6d3] text-accent border border-border">
                     <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                     </svg>
                   </div>
-                  <p className="text-base font-semibold text-[#5a4535]">No books found in this section.</p>
+                  <p className="text-base font-semibold text-body">No books found in this section.</p>
                   <OrnamentDivider />
                 </div>
               )}

@@ -23,7 +23,7 @@ const About = () => {
   const defaultAvatar = (name: string) => {
     const initials = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2)
     return (
-      <div className="w-full h-full bg-gradient-to-br from-primary to-[#a78e7e] flex items-center justify-center text-white text-2xl font-black">
+      <div className="w-full h-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white text-2xl font-black">
         {initials}
       </div>
     )
@@ -47,11 +47,11 @@ const About = () => {
           ref={heroReveal.ref as any}
           className={`pt-16 pb-12 text-center ${revealClass(heroReveal.isVisible)}`}
         >
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-[#4A3B32] mb-6">
-            About <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-[#a78e7e]">Sasanam</span>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-body mb-6">
+            About <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Sasanam</span>
           </h1>
           <div className="w-24 h-1 bg-primary/20 rounded-full mx-auto mb-6" />
-          <p className="text-base sm:text-lg lg:text-xl text-[#6A5A4A] max-w-3xl mx-auto font-medium leading-relaxed">
+          <p className="text-base sm:text-lg lg:text-xl text-muted max-w-3xl mx-auto font-medium leading-relaxed">
             Dedicated to preserving and digitizing historical inscriptions and manuscripts.
             Our team of researchers, technologists, and historians work together to make ancient knowledge accessible to everyone.
           </p>
@@ -62,21 +62,21 @@ const About = () => {
           ref={teamReveal.ref as any}
           className={`py-12 ${revealClass(teamReveal.isVisible)}`}
         >
-          <h2 className="text-3xl sm:text-4xl font-bold text-[#4A3B32] text-center mb-3">Our Leadership</h2>
-          <p className="text-sm text-[#6A5A4A] text-center mb-12 font-medium">The people behind Sasanam's mission</p>
+          <h2 className="text-3xl sm:text-4xl font-bold text-body text-center mb-3">Our Leadership</h2>
+          <p className="text-sm text-muted text-center mb-12 font-medium">The people behind Sasanam's mission</p>
 
           {isTeamLoading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
               {[1, 2, 3].map((i) => (
-                <div key={i} className="rounded-3xl bg-[#F5F5DC]/60 p-8 animate-pulse">
-                  <div className="w-28 h-28 rounded-full bg-[#EEDDCC] mx-auto mb-4" />
-                  <div className="h-5 bg-[#EEDDCC] rounded w-32 mx-auto mb-2" />
-                  <div className="h-4 bg-[#EEDDCC] rounded w-20 mx-auto" />
+                <div key={i} className="rounded-3xl bg-beige/60 p-8 animate-pulse">
+                  <div className="w-28 h-28 rounded-full bg-border mx-auto mb-4" />
+                  <div className="h-5 bg-border rounded w-32 mx-auto mb-2" />
+                  <div className="h-4 bg-border rounded w-20 mx-auto" />
                 </div>
               ))}
             </div>
           ) : teamMembers.length === 0 ? (
-            <div className="text-center py-12 text-[#a78e7e] font-semibold">
+            <div className="text-center py-12 text-accent font-semibold">
               Team information coming soon.
             </div>
           ) : (
@@ -84,7 +84,7 @@ const About = () => {
               {teamMembers.map((member) => (
                 <div
                   key={member._id}
-                  className="group rounded-3xl bg-[#F5F5DC]/80 backdrop-blur-md p-8 shadow-[0_8px_32px_rgba(61,37,22,0.1)] border border-white/30 flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_12px_40px_rgba(61,37,22,0.15)]"
+                  className="group rounded-3xl bg-beige/80 backdrop-blur-md p-8 shadow-[0_8px_32px_rgba(61,37,22,0.1)] border border-white/30 flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_12px_40px_rgba(61,37,22,0.15)]"
                 >
                   <div className="w-28 h-28 rounded-full overflow-hidden mb-5 ring-4 ring-primary/20 shadow-lg">
                     {member.photo ? (
@@ -93,10 +93,10 @@ const About = () => {
                       defaultAvatar(member.name)
                     )}
                   </div>
-                  <h3 className="text-xl font-bold text-[#4A3B32] mb-1">{member.name}</h3>
+                  <h3 className="text-xl font-bold text-body mb-1">{member.name}</h3>
                   <span className="text-sm font-bold text-primary uppercase tracking-wider mb-3">{member.role}</span>
                   {member.bio && (
-                    <p className="text-sm text-[#6A5A4A] leading-relaxed mt-2">{member.bio}</p>
+                    <p className="text-sm text-muted leading-relaxed mt-2">{member.bio}</p>
                   )}
                 </div>
               ))}
@@ -109,21 +109,21 @@ const About = () => {
           ref={authorReveal.ref as any}
           className={`py-12 pb-20 ${revealClass(authorReveal.isVisible)}`}
         >
-          <h2 className="text-3xl sm:text-4xl font-bold text-[#4A3B32] text-center mb-3">Our Authors</h2>
-          <p className="text-sm text-[#6A5A4A] text-center mb-12 font-medium">Contributing scholars and their published works</p>
+          <h2 className="text-3xl sm:text-4xl font-bold text-body text-center mb-3">Our Authors</h2>
+          <p className="text-sm text-muted text-center mb-12 font-medium">Contributing scholars and their published works</p>
 
           {isAuthorLoading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="rounded-2xl bg-[#F5F5DC]/60 p-6 animate-pulse">
-                  <div className="w-20 h-20 rounded-full bg-[#EEDDCC] mx-auto mb-3" />
-                  <div className="h-4 bg-[#EEDDCC] rounded w-24 mx-auto mb-2" />
-                  <div className="h-3 bg-[#EEDDCC] rounded w-32 mx-auto" />
+                <div key={i} className="rounded-2xl bg-beige/60 p-6 animate-pulse">
+                  <div className="w-20 h-20 rounded-full bg-border mx-auto mb-3" />
+                  <div className="h-4 bg-border rounded w-24 mx-auto mb-2" />
+                  <div className="h-3 bg-border rounded w-32 mx-auto" />
                 </div>
               ))}
             </div>
           ) : authors.length === 0 ? (
-            <div className="text-center py-12 text-[#a78e7e] font-semibold">
+            <div className="text-center py-12 text-accent font-semibold">
               Author listings coming soon.
             </div>
           ) : (
@@ -141,7 +141,7 @@ const About = () => {
                         defaultAvatar(author.name)
                       )}
                     </div>
-                    <h3 className="text-base font-bold text-[#4A3B32] mb-1">{author.name}</h3>
+                    <h3 className="text-base font-bold text-body mb-1">{author.name}</h3>
                     <div className="flex items-center gap-1.5 mt-1">
                       <svg className="w-3.5 h-3.5 text-primary flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
@@ -161,7 +161,7 @@ const About = () => {
                   >
                     Previous
                   </button>
-                  <span className="text-sm font-semibold text-[#6A5A4A]">
+                  <span className="text-sm font-semibold text-muted">
                     Page {authorPage} of {totalAuthorPages}
                   </span>
                   <button

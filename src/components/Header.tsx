@@ -74,8 +74,8 @@ const Header = () => {
   return (
     <header className={`fixed top-0 left-0 right-0 z-[1000] w-full transition-all duration-500 font-sans ${
       isScrolled
-        ? 'bg-[#f4ecd8]/95 backdrop-blur-md border-b border-[#DDBB99]/40 shadow-md'
-        : 'bg-[#f4ecd8] border-b border-[#DDBB99]/60'
+        ? 'bg-cream/95 backdrop-blur-md border-b border-[#DDBB99]/40 shadow-md'
+        : 'bg-cream border-b border-[#DDBB99]/60'
     }`}>
       <div className={`relative z-[1001] flex w-full items-center justify-between px-5 sm:px-8 lg:px-14 transition-all duration-500 ${
         isScrolled ? 'h-14' : 'h-[68px]'
@@ -106,7 +106,7 @@ const Header = () => {
               `relative px-4 py-2 rounded-lg transition-all duration-200 ${
                 isActive
                   ? 'text-primary font-bold'
-                  : 'text-[#6A5A4A] hover:text-primary hover:bg-primary/5'
+                  : 'text-muted hover:text-primary hover:bg-primary/5'
               }`
             }
           >
@@ -125,7 +125,7 @@ const Header = () => {
               `relative px-4 py-2 rounded-lg transition-all duration-200 ${
                 isActive
                   ? 'text-primary font-bold'
-                  : 'text-[#6A5A4A] hover:text-primary hover:bg-primary/5'
+                  : 'text-muted hover:text-primary hover:bg-primary/5'
               }`
             }
           >
@@ -145,7 +145,7 @@ const Header = () => {
                 `relative px-4 py-2 rounded-lg transition-all duration-200 ${
                   isActive
                     ? 'text-primary font-bold'
-                    : 'text-[#6A5A4A] hover:text-primary hover:bg-primary/5'
+                    : 'text-muted hover:text-primary hover:bg-primary/5'
                 }`
               }
             >
@@ -166,7 +166,7 @@ const Header = () => {
                 `relative px-4 py-2 rounded-lg transition-all duration-200 ${
                   isActive
                     ? 'text-primary font-bold'
-                    : 'text-[#6A5A4A] hover:text-primary hover:bg-primary/5'
+                    : 'text-muted hover:text-primary hover:bg-primary/5'
                 }`
               }
             >
@@ -187,7 +187,7 @@ const Header = () => {
                 `relative px-4 py-2 rounded-lg transition-all duration-200 ${
                   isActive
                     ? 'text-primary font-bold'
-                    : 'text-[#6A5A4A] hover:text-primary hover:bg-primary/5'
+                    : 'text-muted hover:text-primary hover:bg-primary/5'
                 }`
               }
             >
@@ -208,7 +208,7 @@ const Header = () => {
                 className={`relative flex items-center gap-1 px-4 py-2 rounded-lg transition-all duration-200 ${
                   isDropdownActive(moreItems) || openDropdown === 'more'
                     ? 'text-primary font-bold'
-                    : 'text-[#6A5A4A] hover:text-primary hover:bg-primary/5'
+                    : 'text-muted hover:text-primary hover:bg-primary/5'
                 }`}
               >
                 More
@@ -219,7 +219,7 @@ const Header = () => {
               </button>
 
               {openDropdown === 'more' && (
-                <div className="absolute top-full right-0 mt-2 w-52 rounded-xl bg-[#fdfaf2] shadow-[0_12px_40px_rgba(61,37,22,0.2)] border border-primary/10 overflow-hidden py-1">
+                <div className="absolute top-full right-0 mt-2 w-52 rounded-xl bg-card shadow-[0_12px_40px_rgba(61,37,22,0.2)] border border-primary/10 overflow-hidden py-1">
                   {moreItems.map((item) => (
                     <NavLink
                       key={item.to}
@@ -228,7 +228,7 @@ const Header = () => {
                         `flex items-center gap-3 px-4 py-2.5 text-sm transition-colors ${
                           isActive
                             ? 'text-primary font-bold bg-primary/8'
-                            : 'text-[#4A3B32] hover:bg-primary/5 hover:text-primary'
+                            : 'text-body hover:bg-primary/5 hover:text-primary'
                         }`
                       }
                     >
@@ -263,16 +263,16 @@ const Header = () => {
               </button>
 
               {isUserMenuOpen && (
-                <div className="absolute right-0 top-full mt-2 w-60 rounded-xl bg-[#fdfaf2] shadow-[0_20px_60px_rgba(61,37,22,0.25)] border border-primary/10 overflow-hidden z-[1100]">
+                <div className="absolute right-0 top-full mt-2 w-60 rounded-xl bg-card shadow-[0_20px_60px_rgba(61,37,22,0.25)] border border-primary/10 overflow-hidden z-[1100]">
                   {/* User info */}
-                  <div className="p-4 border-b border-primary/10 bg-[#f4ecd8]/50">
+                  <div className="p-4 border-b border-primary/10 bg-cream/50">
                     <div className="flex items-center gap-3 mb-2">
                       <div className="h-10 w-10 rounded-full bg-gradient-to-br from-primary to-primary-light flex items-center justify-center text-white text-sm font-black uppercase shadow-md">
                         {displayName.charAt(0)}
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className="text-sm font-bold text-[#4A3B32] truncate capitalize">{displayName}</p>
-                        <p className="text-[11px] text-[#6A5A4A] truncate">{user?.email || 'User'}</p>
+                        <p className="text-sm font-bold text-body truncate capitalize">{displayName}</p>
+                        <p className="text-[11px] text-muted truncate">{user?.email || 'User'}</p>
                       </div>
                     </div>
                     {user?.isSubscribed !== undefined && (
@@ -288,7 +288,7 @@ const Header = () => {
                   {/* Menu items */}
                   <div className="p-1.5">
                     <NavLink to="/pricing" onClick={() => setIsUserMenuOpen(false)}
-                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-[#4A3B32] hover:bg-primary/5 transition-colors">
+                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-body hover:bg-primary/5 transition-colors">
                       <svg className="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                       </svg>
@@ -342,10 +342,10 @@ const Header = () => {
       </div>
 
       {/* Mobile Menu */}
-      <div className={`lg:hidden fixed inset-0 z-[1002] bg-[#f4ecd8] px-6 pt-24 pb-8 overflow-y-auto transition-all duration-400 ease-in-out transform ${
+      <div className={`lg:hidden fixed inset-0 z-[1002] bg-cream px-6 pt-24 pb-8 overflow-y-auto transition-all duration-400 ease-in-out transform ${
         isMobileMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
       }`}>
-        <div className="absolute inset-0 bg-[#f4ecd8] z-[-1]" />
+        <div className="absolute inset-0 bg-cream z-[-1]" />
 
         {/* User info card (logged in) */}
         {token && user && (
@@ -354,8 +354,8 @@ const Header = () => {
               {displayName.charAt(0)}
             </div>
             <div className="min-w-0 flex-1">
-              <p className="text-sm font-bold text-[#4A3B32] truncate capitalize">{displayName}</p>
-              <p className="text-xs text-[#6A5A4A] truncate">{user.email}</p>
+              <p className="text-sm font-bold text-body truncate capitalize">{displayName}</p>
+              <p className="text-xs text-muted truncate">{user.email}</p>
               {user?.isSubscribed !== undefined && (
                 <span className={`inline-flex items-center gap-1 mt-1 text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full ${
                   user.isSubscribed ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'
@@ -378,7 +378,7 @@ const Header = () => {
               `px-4 py-3 rounded-xl text-base font-bold transition-all ${
                 isActive
                   ? 'text-primary bg-primary/8 border-l-[3px] border-primary'
-                  : 'text-[#6A5A4A] hover:text-primary hover:bg-primary/5'
+                  : 'text-muted hover:text-primary hover:bg-primary/5'
               }`
             }
           >
@@ -393,7 +393,7 @@ const Header = () => {
               `px-4 py-3 rounded-xl text-base font-bold transition-all ${
                 isActive
                   ? 'text-primary bg-primary/8 border-l-[3px] border-primary'
-                  : 'text-[#6A5A4A] hover:text-primary hover:bg-primary/5'
+                  : 'text-muted hover:text-primary hover:bg-primary/5'
               }`
             }
           >
@@ -409,7 +409,7 @@ const Header = () => {
                 `px-4 py-3 rounded-xl text-base font-bold transition-all ${
                   isActive
                     ? 'text-primary bg-primary/8 border-l-[3px] border-primary'
-                    : 'text-[#6A5A4A] hover:text-primary hover:bg-primary/5'
+                    : 'text-muted hover:text-primary hover:bg-primary/5'
                 }`
               }
             >
@@ -426,7 +426,7 @@ const Header = () => {
                 `px-4 py-3 rounded-xl text-base font-bold transition-all ${
                   isActive
                     ? 'text-primary bg-primary/8 border-l-[3px] border-primary'
-                    : 'text-[#6A5A4A] hover:text-primary hover:bg-primary/5'
+                    : 'text-muted hover:text-primary hover:bg-primary/5'
                 }`
               }
             >
@@ -443,7 +443,7 @@ const Header = () => {
                 `px-4 py-3 rounded-xl text-base font-bold transition-all ${
                   isActive
                     ? 'text-primary bg-primary/8 border-l-[3px] border-primary'
-                    : 'text-[#6A5A4A] hover:text-primary hover:bg-primary/5'
+                    : 'text-muted hover:text-primary hover:bg-primary/5'
                 }`
               }
             >
@@ -459,7 +459,7 @@ const Header = () => {
                 className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-base font-bold transition-all ${
                   isDropdownActive(moreItems)
                     ? 'text-primary bg-primary/8'
-                    : 'text-[#6A5A4A] hover:text-primary hover:bg-primary/5'
+                    : 'text-muted hover:text-primary hover:bg-primary/5'
                 }`}
               >
                 More
@@ -476,7 +476,7 @@ const Header = () => {
                       onClick={() => setIsMobileMenuOpen(false)}
                       className={({ isActive }) =>
                         `px-3 py-2.5 rounded-lg text-sm font-semibold transition-all ${
-                          isActive ? 'text-primary font-bold bg-primary/8' : 'text-[#6A5A4A] hover:text-primary'
+                          isActive ? 'text-primary font-bold bg-primary/8' : 'text-muted hover:text-primary'
                         }`
                       }
                     >
@@ -497,7 +497,7 @@ const Header = () => {
                 `px-4 py-3 rounded-xl text-base font-bold transition-all ${
                   isActive
                     ? 'text-primary bg-primary/8 border-l-[3px] border-primary'
-                    : 'text-[#6A5A4A] hover:text-primary hover:bg-primary/5'
+                    : 'text-muted hover:text-primary hover:bg-primary/5'
                 }`
               }
             >

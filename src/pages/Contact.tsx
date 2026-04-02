@@ -22,14 +22,14 @@ const Contact = () => {
 
       <div 
         ref={reveal.ref as any}
-        className={`w-full max-w-4xl bg-[#F5F5DC]/80 backdrop-blur-md rounded-[2.5rem] p-10 sm:p-16 shadow-[0_20px_50px_rgba(139,69,19,0.15)] border border-white/40 relative z-10 ${revealClass(reveal.isVisible)}`}
+        className={`w-full max-w-4xl bg-beige/80 backdrop-blur-md rounded-[2.5rem] p-10 sm:p-16 shadow-[0_20px_50px_rgba(139,69,19,0.15)] border border-white/40 relative z-10 ${revealClass(reveal.isVisible)}`}
       >
         <div className="flex flex-col items-center text-center mb-12">
-          <h1 className="text-4xl sm:text-5xl font-serif font-black text-[#4A3B32] mb-6 uppercase tracking-widest">
+          <h1 className="text-4xl sm:text-5xl font-serif font-black text-body mb-6 uppercase tracking-widest">
             Contact <span className="text-primary">Us</span>
           </h1>
           <div className="w-24 h-1 bg-primary/20 rounded-full mb-6" />
-          <p className="text-lg text-[#6A5A4A] max-w-2xl font-medium leading-relaxed">
+          <p className="text-lg text-muted max-w-2xl font-medium leading-relaxed">
             Have questions about our archive or want to contribute to our historical preservation efforts? We'd love to hear from you.
           </p>
         </div>
@@ -42,7 +42,7 @@ const Contact = () => {
               </div>
               <div>
                 <h3 className="text-sm font-black text-primary uppercase tracking-wider mb-1">Email Us</h3>
-                <p className="text-[#4A3B32] font-bold text-lg">contact@sasanam.org</p>
+                <p className="text-body font-bold text-lg">contact@sasanam.org</p>
               </div>
             </div>
 
@@ -52,7 +52,7 @@ const Contact = () => {
               </div>
               <div>
                 <h3 className="text-sm font-black text-primary uppercase tracking-wider mb-1">Our Location</h3>
-                <p className="text-[#4A3B32] font-bold text-lg leading-snug">Chennai, Tamil Nadu<br />India</p>
+                <p className="text-body font-bold text-lg leading-snug">Chennai, Tamil Nadu<br />India</p>
               </div>
             </div>
 
@@ -75,7 +75,7 @@ const Contact = () => {
               <input 
                 type="text" 
                 placeholder="Enter your name"
-                className="w-full rounded-2xl bg-white/50 border border-primary/10 px-6 py-4 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all font-bold text-[#4A3B32] placeholder:text-[#a78e7e]/50"
+                className="w-full rounded-2xl bg-white/50 border border-primary/10 px-6 py-4 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all font-bold text-body placeholder:text-accent/50"
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -83,7 +83,7 @@ const Contact = () => {
               <input 
                 type="email" 
                 placeholder="your@email.com"
-                className="w-full rounded-2xl bg-white/50 border border-primary/10 px-6 py-4 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all font-bold text-[#4A3B32] placeholder:text-[#a78e7e]/50"
+                className="w-full rounded-2xl bg-white/50 border border-primary/10 px-6 py-4 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all font-bold text-body placeholder:text-accent/50"
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -91,7 +91,7 @@ const Contact = () => {
               <textarea 
                 rows={4}
                 placeholder="How can we help?"
-                className="w-full rounded-2xl bg-white/50 border border-primary/10 px-6 py-4 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all font-bold text-[#4A3B32] placeholder:text-[#a78e7e]/50 resize-none"
+                className="w-full rounded-2xl bg-white/50 border border-primary/10 px-6 py-4 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all font-bold text-body placeholder:text-accent/50 resize-none"
               ></textarea>
             </div>
             <button className="mt-2 w-full rounded-2xl bg-primary py-5 text-center text-white font-black uppercase tracking-[0.2em] shadow-xl hover:bg-primary-light transition-all hover:-translate-y-1 active:translate-y-0">

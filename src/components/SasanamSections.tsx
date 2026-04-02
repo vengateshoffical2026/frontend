@@ -17,17 +17,17 @@ const sectionColors = [
   { bg: "from-primary/10 to-primary/5", icon: "text-primary", border: "border-primary/20 hover:border-primary/40" },
   { bg: "from-primary-dark/10 to-primary-dark/5", icon: "text-primary-dark", border: "border-primary-dark/20 hover:border-primary-dark/40" },
   { bg: "from-primary-light/10 to-primary-light/5", icon: "text-primary-light", border: "border-primary-light/20 hover:border-primary-light/40" },
-  { bg: "from-[#7c5c3e]/10 to-[#7c5c3e]/5", icon: "text-[#7c5c3e]", border: "border-[#7c5c3e]/20 hover:border-[#7c5c3e]/40" },
+  { bg: "from-muted/10 to-muted/5", icon: "text-muted", border: "border-muted/20 hover:border-muted/40" },
 ];
 
 const SasanamSections: React.FC<SasanamSectionsProps> = ({ data, onChangeSection }) => {
   return (
     <div className="w-full font-serif">
       <div className="text-center mb-10">
-        <h2 className="text-2xl sm:text-3xl font-bold text-[#3D2516] tracking-tight">
+        <h2 className="text-2xl sm:text-3xl font-bold text-heading tracking-tight">
           Archaeological Sections
         </h2>
-        <p className="text-sm text-[#8C7055] mt-2">
+        <p className="text-sm text-subtle mt-2">
           Explore {data.length} curated section{data.length !== 1 ? "s" : ""} of ancient inscriptions
         </p>
       </div>
@@ -57,13 +57,13 @@ const SasanamSections: React.FC<SasanamSectionsProps> = ({ data, onChangeSection
               </div>
 
               {/* Title */}
-              <h3 className="text-lg font-bold text-[#3D2516] group-hover:text-primary transition-colors duration-200 mb-1">
+              <h3 className="text-lg font-bold text-heading group-hover:text-primary transition-colors duration-200 mb-1">
                 {section.name}
               </h3>
 
               {/* Footer */}
               <div className="mt-auto pt-4 flex items-center justify-between">
-                <span className="text-xs font-medium text-[#8C7055]/70">Browse topics</span>
+                <span className="text-xs font-medium text-subtle/70">Browse topics</span>
                 <div className="flex items-center justify-center w-8 h-8 rounded-full bg-white/50 group-hover:bg-primary transition-all duration-300">
                   <svg className="w-4 h-4 text-primary group-hover:text-white group-hover:translate-x-0.5 transition-all duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />

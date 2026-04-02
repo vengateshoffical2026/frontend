@@ -69,7 +69,7 @@ const Sasanam = () => {
   }
 
   return (
-    <main className="min-h-screen font-sans text-[#4A3B32]">
+    <main className="min-h-screen font-sans text-body">
       <PageSEO
         title="Sasanam Books – Ancient Inscription Archive"
         description="Browse and download Sasanam's curated collection of ancient inscription books."
@@ -87,10 +87,10 @@ const Sasanam = () => {
             </svg>
             Digital Library
           </span>
-          <h1 className="text-4xl sm:text-5xl font-serif font-black tracking-tight text-[#4A3B32] mb-4">
+          <h1 className="text-4xl sm:text-5xl font-serif font-black tracking-tight text-body mb-4">
             Sasanam <span className="text-primary">Books</span>
           </h1>
-          <p className="text-base text-[#6A5A4A] max-w-xl mx-auto">
+          <p className="text-base text-muted max-w-xl mx-auto">
             Browse our collection of ancient inscription books.
             {token && unlimitedAccess && ' You have unlimited download access.'}
             {token && !unlimitedAccess && ` ${remaining} of ${freeLimit} free downloads remaining.`}
@@ -108,7 +108,7 @@ const Sasanam = () => {
               ) : (
                 <>
                   {/* Download counter bar */}
-                  <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-[#f4ecd8] border border-[#e2c9a0]">
+                  <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-cream border border-border">
                     <div className="flex gap-1">
                       {Array.from({ length: freeLimit }).map((_, i) => (
                         <div
@@ -117,7 +117,7 @@ const Sasanam = () => {
                         />
                       ))}
                     </div>
-                    <span className="text-xs font-bold text-[#6A5A4A]">
+                    <span className="text-xs font-bold text-muted">
                       {remaining > 0 ? `${remaining} free left` : 'No free downloads left'}
                     </span>
                   </div>
@@ -146,11 +146,11 @@ const Sasanam = () => {
         {isLoading && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
             {[...Array(8)].map((_, i) => (
-              <div key={i} className="bg-[#F5F5DC]/60 border border-[#e2c9a0]/40 rounded-2xl p-6 animate-pulse">
-                <div className="w-12 h-12 rounded-xl bg-[#e2c9a0]/40 mb-4" />
-                <div className="w-3/4 h-4 rounded bg-[#e2c9a0]/40 mb-2" />
-                <div className="w-1/2 h-3 rounded bg-[#e2c9a0]/30 mb-4" />
-                <div className="w-full h-10 rounded-xl bg-[#e2c9a0]/30" />
+              <div key={i} className="bg-beige/60 border border-border/40 rounded-2xl p-6 animate-pulse">
+                <div className="w-12 h-12 rounded-xl bg-border/40 mb-4" />
+                <div className="w-3/4 h-4 rounded bg-border/40 mb-2" />
+                <div className="w-1/2 h-3 rounded bg-border/30 mb-4" />
+                <div className="w-full h-10 rounded-xl bg-border/30" />
               </div>
             ))}
           </div>
@@ -164,7 +164,7 @@ const Sasanam = () => {
               return (
                 <div
                   key={book._id}
-                  className="group relative bg-[#F5F5DC]/80 border border-[#e2c9a0] rounded-2xl flex flex-col transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(61,37,22,0.13)] overflow-hidden"
+                  className="group relative bg-beige/80 border border-border rounded-2xl flex flex-col transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(61,37,22,0.13)] overflow-hidden"
                 >
                   {/* Card body — clickable to view */}
                   <button
@@ -184,9 +184,9 @@ const Sasanam = () => {
                       )}
                     </div>
 
-                    <h3 className="text-sm font-bold text-[#4A3B32] mb-1 line-clamp-2 group-hover:text-primary transition-colors leading-snug">{book.bookName}</h3>
-                    <p className="text-[11px] text-[#6A5A4A] mb-1">by <span className="font-semibold">{book.authorName}</span></p>
-                    {book.description && <p className="text-[11px] text-[#6A5A4A]/60 line-clamp-2 mt-1">{book.description}</p>}
+                    <h3 className="text-sm font-bold text-body mb-1 line-clamp-2 group-hover:text-primary transition-colors leading-snug">{book.bookName}</h3>
+                    <p className="text-[11px] text-muted mb-1">by <span className="font-semibold">{book.authorName}</span></p>
+                    {book.description && <p className="text-[11px] text-muted/60 line-clamp-2 mt-1">{book.description}</p>}
 
                     <span className="mt-auto pt-3 text-[11px] font-bold text-primary/60 group-hover:text-primary flex items-center gap-1 transition-colors">
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -199,8 +199,8 @@ const Sasanam = () => {
 
                   {/* Footer: Download action */}
                   {hasPdf && (
-                    <div className="px-5 py-3 border-t border-[#e2c9a0]/40 bg-[#f4ecd8]/30 flex items-center justify-between">
-                      <span className="text-[10px] font-medium text-[#6A5A4A]">{book.pdfFile}</span>
+                    <div className="px-5 py-3 border-t border-border/40 bg-cream/30 flex items-center justify-between">
+                      <span className="text-[10px] font-medium text-muted">{book.pdfFile}</span>
                       {token ? (
                         canDownloadNow ? (
                           <button
@@ -258,8 +258,8 @@ const Sasanam = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
               </svg>
             </div>
-            <p className="text-base font-semibold text-[#4A3B32]">No books available yet</p>
-            <p className="text-sm text-[#6A5A4A] mt-1">Books will appear here once added.</p>
+            <p className="text-base font-semibold text-body">No books available yet</p>
+            <p className="text-sm text-muted mt-1">Books will appear here once added.</p>
           </div>
         )}
       </div>
