@@ -1,40 +1,100 @@
-import { useState } from 'react'
 import { useScrollReveal } from '../hooks/useScrollReveal'
 import { useTeamMembers, useAuthors } from '../api/hooks/aboutQuery'
 import PageSEO from '../components/PageSEO'
 
 const API = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000'
-const imgUrl = (photo: string, w = 360) => {
+const imgUrl = (photo: string, w = 640) => {
   if (!photo) return ''
-  if (photo.startsWith('http')) return photo // legacy URL
+  if (photo.startsWith('http')) return photo
   return `${API}/uploads/${photo}?w=${w}`
 }
+
+const initials = (name: string) =>
+  name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2)
+
+/* ── Person Card ── */
+const PersonCard = ({ photo, name, subtitle, large }: { photo?: string; name: string; subtitle: string; large?: boolean }) => (
+  <div className={`shrink-0 ${large ? 'w-56' : 'w-48'} rounded-2xl bg-paper border border-border/50 flex flex-col items-center text-center transition-all duration-300 hover:shadow-[0_8px_32px_rgba(61,37,22,0.12)] hover:border-primary/25 overflow-hidden`}>
+    {/* Photo area */}
+    <div className={`w-full ${large ? 'h-52' : 'h-44'} bg-cream/50 flex items-center justify-center overflow-hidden`}>
+      {photo ? (
+        <img src={imgUrl(photo, 640)} alt={name} className="w-full h-full object-cover" loading="lazy" />
+      ) : (
+        <div className="w-full h-full bg-gradient-to-br from-primary/15 to-accent/10 flex items-center justify-center">
+          <span className={`${large ? 'text-4xl' : 'text-3xl'} font-black text-primary/40`}>{initials(name)}</span>
+        </div>
+      )}
+    </div>
+    {/* Info */}
+    <div className={`w-full ${large ? 'px-4 py-4' : 'px-3 py-3'}`}>
+      <h3 className={`${large ? 'text-base' : 'text-sm'} font-bold text-body leading-tight mb-1 line-clamp-2`}>{name}</h3>
+      <p className="text-xs font-semibold text-primary line-clamp-1">{subtitle}</p>
+    </div>
+  </div>
+)
+
+/* ── Marquee ── */
+const MarqueeRow = ({ items, reverse = false, speed = 30, large }: { items: any[]; reverse?: boolean; speed?: number; large?: boolean }) => {
+  if (items.length === 0) return null
+  const duration = Math.max(items.length * speed, 20)
+
+  return (
+    <div className="relative overflow-hidden">
+      <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-cream to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-cream to-transparent z-10 pointer-events-none" />
+      <div
+        className="flex gap-5 hover:[animation-play-state:paused]"
+        style={{
+          animation: `${reverse ? 'scroll-right' : 'scroll-left'} ${duration}s linear infinite`,
+          width: 'max-content',
+        }}
+      >
+        {[...items, ...items].map((item, i) => (
+          <PersonCard
+            key={`${item._id}-${i}`}
+            photo={item.photo}
+            name={item.name}
+            subtitle={item.role || item.bookName || ''}
+            large={large}
+          />
+        ))}
+      </div>
+    </div>
+  )
+}
+
+/* ── Static grid for small lists (< 6 people) ── */
+const StaticGrid = ({ items, large }: { items: any[]; large?: boolean }) => (
+  <div className="flex flex-wrap justify-center gap-5 px-5">
+    {items.map((item: any) => (
+      <PersonCard
+        key={item._id}
+        photo={item.photo}
+        name={item.name}
+        subtitle={item.role || item.bookName || ''}
+        large={large}
+      />
+    ))}
+  </div>
+)
 
 const About = () => {
   const heroReveal = useScrollReveal()
   const teamReveal = useScrollReveal()
   const authorReveal = useScrollReveal()
-  const [authorPage, setAuthorPage] = useState(1)
 
   const { data: teamData, isLoading: isTeamLoading } = useTeamMembers()
-  const { data: authorData, isLoading: isAuthorLoading } = useAuthors(authorPage, 12)
+  const { data: authorData, isLoading: isAuthorLoading } = useAuthors(1, 200)
 
-  const teamMembers = teamData?.data || []
-  const authors = authorData?.data?.authors || []
-  const totalAuthors = authorData?.data?.total || 0
-  const totalAuthorPages = Math.ceil(totalAuthors / 12)
+  const allTeam = teamData?.data || []
+  const allAuthors = authorData?.data?.authors || []
+
+  // Split into two rows for marquee
+  const authorRow1 = allAuthors.filter((_: any, i: number) => i % 2 === 0)
+  const authorRow2 = allAuthors.filter((_: any, i: number) => i % 2 === 1)
 
   const revealClass = (isVisible: boolean) =>
     `reveal-smooth ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`
-
-  const defaultAvatar = (name: string) => {
-    const initials = name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2)
-    return (
-      <div className="w-full h-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white text-2xl font-black">
-        {initials}
-      </div>
-    )
-  }
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -43,144 +103,98 @@ const About = () => {
         description="Learn about Sasanam, the team behind India's digital archive of ancient inscriptions, and the authors who contributed to preserving South Indian epigraphic heritage."
         path="/about"
       />
-      {/* Background decoration */}
+
+      <style>{`
+        @keyframes scroll-left {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        @keyframes scroll-right {
+          0% { transform: translateX(-50%); }
+          100% { transform: translateX(0); }
+        }
+      `}</style>
+
+      {/* Background */}
       <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-[500px] h-[500px] bg-primary/5 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-primary/5 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-6 lg:px-8">
-
-        {/* Hero Section */}
+      <div className="relative z-10">
+        {/* Hero */}
         <section
           ref={heroReveal.ref as any}
-          className={`pt-16 pb-12 text-center ${revealClass(heroReveal.isVisible)}`}
+          className={`pt-16 pb-10 text-center px-5 ${revealClass(heroReveal.isVisible)}`}
         >
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-body mb-6">
             About <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">Sasanam</span>
           </h1>
           <div className="w-24 h-1 bg-primary/20 rounded-full mx-auto mb-6" />
-          <p className="text-base sm:text-lg lg:text-xl text-muted max-w-3xl mx-auto font-medium leading-relaxed">
+          <p className="text-base sm:text-lg text-muted max-w-3xl mx-auto font-medium leading-relaxed">
             Dedicated to preserving and digitizing historical inscriptions and manuscripts.
             Our team of researchers, technologists, and historians work together to make ancient knowledge accessible to everyone.
           </p>
         </section>
 
-        {/* Team Section */}
+        {/* ═══ Leadership ═══ */}
         <section
           ref={teamReveal.ref as any}
-          className={`py-12 ${revealClass(teamReveal.isVisible)}`}
+          className={`py-10 ${revealClass(teamReveal.isVisible)}`}
         >
-          <h2 className="text-3xl sm:text-4xl font-bold text-body text-center mb-3">Our Leadership</h2>
-          <p className="text-sm text-muted text-center mb-12 font-medium">The people behind Sasanam's mission</p>
+          <div className="text-center mb-8 px-5">
+            <h2 className="text-2xl sm:text-3xl font-bold text-body">Our Leadership</h2>
+            <p className="text-sm text-muted mt-1">The people behind Sasanam's mission</p>
+          </div>
 
           {isTeamLoading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="rounded-3xl bg-beige/60 p-8 animate-pulse">
-                  <div className="w-28 h-28 rounded-full bg-border mx-auto mb-4" />
-                  <div className="h-5 bg-border rounded w-32 mx-auto mb-2" />
-                  <div className="h-4 bg-border rounded w-20 mx-auto" />
+            <div className="flex justify-center gap-5 px-5">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="w-56 rounded-2xl bg-paper animate-pulse overflow-hidden">
+                  <div className="w-full h-52 bg-border/30" />
+                  <div className="p-4"><div className="h-4 bg-border/40 rounded w-24 mx-auto mb-2" /><div className="h-3 bg-border/30 rounded w-16 mx-auto" /></div>
                 </div>
               ))}
             </div>
-          ) : teamMembers.length === 0 ? (
-            <div className="text-center py-12 text-accent font-semibold">
-              Team information coming soon.
-            </div>
+          ) : allTeam.length === 0 ? (
+            <div className="text-center py-12 text-muted">Team information coming soon.</div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {teamMembers.map((member) => (
-                <div
-                  key={member._id}
-                  className="group rounded-3xl bg-beige/80 backdrop-blur-md p-8 shadow-[0_8px_32px_rgba(61,37,22,0.1)] border border-white/30 flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_12px_40px_rgba(61,37,22,0.15)]"
-                >
-                  <div className="w-28 h-28 rounded-full overflow-hidden mb-5 ring-4 ring-primary/20 shadow-lg">
-                    {member.photo ? (
-                      <img src={imgUrl(member.photo, 360)} alt={member.name} className="w-full h-full object-cover" />
-                    ) : (
-                      defaultAvatar(member.name)
-                    )}
-                  </div>
-                  <h3 className="text-xl font-bold text-body mb-1">{member.name}</h3>
-                  <span className="text-sm font-bold text-primary uppercase tracking-wider mb-3">{member.role}</span>
-                  {member.bio && (
-                    <p className="text-sm text-muted leading-relaxed mt-2">{member.bio}</p>
-                  )}
-                </div>
-              ))}
-            </div>
+            <StaticGrid items={allTeam} large />
           )}
         </section>
 
-        {/* Authors Section */}
+        {/* ═══ Authors ═══ */}
         <section
           ref={authorReveal.ref as any}
-          className={`py-12 pb-20 ${revealClass(authorReveal.isVisible)}`}
+          className={`py-10 pb-20 ${revealClass(authorReveal.isVisible)}`}
         >
-          <h2 className="text-3xl sm:text-4xl font-bold text-body text-center mb-3">Our Authors</h2>
-          <p className="text-sm text-muted text-center mb-12 font-medium">Contributing scholars and their published works</p>
+          <div className="text-center mb-8 px-5">
+            <h2 className="text-2xl sm:text-3xl font-bold text-body">Our Authors</h2>
+            <p className="text-sm text-muted mt-1">
+              {allAuthors.length > 0 ? `${allAuthors.length} contributing scholar${allAuthors.length !== 1 ? 's' : ''} and their published works` : 'Contributing scholars and their published works'}
+            </p>
+          </div>
 
           {isAuthorLoading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="rounded-2xl bg-beige/60 p-6 animate-pulse">
-                  <div className="w-20 h-20 rounded-full bg-border mx-auto mb-3" />
-                  <div className="h-4 bg-border rounded w-24 mx-auto mb-2" />
-                  <div className="h-3 bg-border rounded w-32 mx-auto" />
+            <div className="space-y-5">
+              {[0, 1].map((row) => (
+                <div key={row} className="flex gap-5 overflow-hidden">
+                  {Array.from({ length: 8 }).map((_, i) => (
+                    <div key={i} className="shrink-0 w-48 rounded-2xl bg-paper animate-pulse overflow-hidden">
+                      <div className="w-full h-44 bg-border/30" />
+                      <div className="p-3"><div className="h-3 bg-border/40 rounded w-20 mx-auto mb-1.5" /><div className="h-2.5 bg-border/30 rounded w-24 mx-auto" /></div>
+                    </div>
+                  ))}
                 </div>
               ))}
             </div>
-          ) : authors.length === 0 ? (
-            <div className="text-center py-12 text-accent font-semibold">
-              Author listings coming soon.
-            </div>
+          ) : allAuthors.length === 0 ? (
+            <div className="text-center py-12 text-muted">Author listings coming soon.</div>
+          ) : allAuthors.length <= 8 ? (
+            <StaticGrid items={allAuthors} />
           ) : (
-            <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {authors.map((author) => (
-                  <div
-                    key={author._id}
-                    className="group rounded-2xl bg-[#FFFFFF]/90 backdrop-blur-md p-6 shadow-[0_4px_20px_rgba(61,37,22,0.08)] border border-white/40 flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(61,37,22,0.12)]"
-                  >
-                    <div className="w-20 h-20 rounded-full overflow-hidden mb-4 ring-3 ring-primary/15 shadow-md">
-                      {author.photo ? (
-                        <img src={imgUrl(author.photo, 360)} alt={author.name} className="w-full h-full object-cover" />
-                      ) : (
-                        defaultAvatar(author.name)
-                      )}
-                    </div>
-                    <h3 className="text-base font-bold text-body mb-1">{author.name}</h3>
-                    <div className="flex items-center gap-1.5 mt-1">
-                      <svg className="w-3.5 h-3.5 text-primary flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                      </svg>
-                      <span className="text-xs font-semibold text-primary">{author.bookName}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {totalAuthorPages > 1 && (
-                <div className="flex justify-center items-center gap-3 mt-8">
-                  <button
-                    onClick={() => setAuthorPage((p) => Math.max(1, p - 1))}
-                    disabled={authorPage <= 1}
-                    className="px-4 py-2 rounded-lg text-sm font-bold text-primary border border-primary disabled:opacity-40 disabled:cursor-not-allowed hover:bg-primary hover:text-white transition-colors"
-                  >
-                    Previous
-                  </button>
-                  <span className="text-sm font-semibold text-muted">
-                    Page {authorPage} of {totalAuthorPages}
-                  </span>
-                  <button
-                    onClick={() => setAuthorPage((p) => Math.min(totalAuthorPages, p + 1))}
-                    disabled={authorPage >= totalAuthorPages}
-                    className="px-4 py-2 rounded-lg text-sm font-bold text-primary border border-primary disabled:opacity-40 disabled:cursor-not-allowed hover:bg-primary hover:text-white transition-colors"
-                  >
-                    Next
-                  </button>
-                </div>
-              )}
-            </>
+            <div className="space-y-5">
+              <MarqueeRow items={authorRow1} speed={30} />
+              <MarqueeRow items={authorRow2} reverse speed={30} />
+            </div>
           )}
         </section>
       </div>
