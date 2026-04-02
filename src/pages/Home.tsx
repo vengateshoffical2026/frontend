@@ -1,22 +1,7 @@
 import { useScrollReveal } from "../hooks/useScrollReveal";
 import { useDonationList } from "../api/hooks/donationQuery";
 import PageSEO from "../components/PageSEO";
-import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-
-const smoothEase = [0.16, 1, 0.3, 1]; // expo-out for buttery feel
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (i: number) => ({
-    opacity: 1, y: 0,
-    transition: { delay: i * 0.12, duration: 0.8, ease: smoothEase }
-  }),
-};
-
-const stagger = {
-  visible: { transition: { staggerChildren: 0.14 } }
-};
 
 const Home = () => {
   const heroReveal = useScrollReveal();
@@ -49,7 +34,7 @@ const Home = () => {
         description="Sasanam is India's premier digital archive of ancient inscriptions, copper plates, stone epigraphs, and historical documents from Tamil Nadu and South India. Explore Pallava, Chola, and Pandya era inscriptions."
         path="/"
       />
-      <div className="min-h-screen bg-white/30 backdrop-blur-[2px]">
+      <div className="min-h-screen">
         {/* Donor Infinite Scroller */}
         {donors.length > 0 && (
           <div className="w-full bg-gradient-to-r from-[#8B4513] via-[#a0522d] to-[#8B4513] py-3 overflow-hidden border-y border-[#8B4513]/20 relative z-10">
@@ -59,11 +44,11 @@ const Home = () => {
                   key={`${donor._id}-${idx}`}
                   className="flex items-center gap-4 mx-8 text-white/90"
                 >
-                  <div className="h-2 w-2 rounded-full bg-white/40 animate-pulse-soft" />
+                  <div className="h-2 w-2 rounded-full bg-white/40" />
                   <span className="text-xs font-black uppercase tracking-widest">
                     {donor.donaterName}
                   </span>
-                  <span className="font-serif font-black text-white px-2.5 py-0.5 rounded-lg bg-white/15 backdrop-blur-sm">
+                  <span className="font-serif font-black text-white px-2.5 py-0.5 rounded-lg bg-white/15">
                     ₹{donor.donationAmount}
                   </span>
                 </div>
@@ -81,31 +66,23 @@ const Home = () => {
             <div className="flex flex-col gap-8 lg:col-span-7 xl:col-span-8">
 
               {/* Hero card */}
-              <motion.div
+              <div
                 ref={heroReveal.ref as any}
-                initial="hidden"
-                animate="visible"
-                variants={stagger}
-                className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#F5F5DC]/90 to-[#e8dcc0]/70 p-8 shadow-[0_8px_32px_rgba(61,37,22,0.15)] backdrop-blur-md border border-white/30 sm:p-12 hover:shadow-[0_12px_48px_rgba(61,37,22,0.2)] transition-shadow duration-500"
+                className={`group relative overflow-hidden rounded-3xl bg-[#F5F5DC]/90 p-8 shadow-[0_8px_32px_rgba(61,37,22,0.15)] border border-white/30 sm:p-12 hover:shadow-[0_12px_48px_rgba(61,37,22,0.2)] transition-shadow duration-500 ${revealClass(heroReveal.isVisible)}`}
               >
                 {/* Decorative elements */}
-                <div className="absolute top-0 right-0 w-64 h-64 bg-[#8B4513]/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
-                <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#d4a574]/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-2xl" />
+                <div className="absolute top-0 right-0 w-64 h-64 bg-[#8B4513]/5 rounded-full -translate-y-1/2 translate-x-1/2" />
+                <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#d4a574]/10 rounded-full translate-y-1/2 -translate-x-1/2" />
 
                 <div className="relative flex flex-col gap-8 lg:flex-row lg:items-center">
 
                   {/* Text side */}
                   <div className="flex flex-col lg:flex-1">
-                    <motion.div variants={fadeUp} custom={0}>
-                      <span className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-[#8B4513] mb-4 px-3 py-1.5 rounded-full bg-[#8B4513]/10 w-fit">
-                        <span className="h-1.5 w-1.5 rounded-full bg-[#8B4513] animate-pulse" />
-                        Digital Archive
-                      </span>
-                    </motion.div>
-                    <motion.h1
-                      variants={fadeUp} custom={1}
-                      className="text-4xl font-serif font-black tracking-tight text-[#4A3B32] sm:text-5xl xl:text-6xl leading-[1.1]"
-                    >
+                    <span className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-[#8B4513] mb-4 px-3 py-1.5 rounded-full bg-[#8B4513]/10 w-fit">
+                      <span className="h-1.5 w-1.5 rounded-full bg-[#8B4513] animate-pulse" />
+                      Digital Archive
+                    </span>
+                    <h1 className="text-4xl font-serif font-black tracking-tight text-[#4A3B32] sm:text-5xl xl:text-6xl leading-[1.1]">
                       Unearth the Secrets<br />
                       of the <span className="text-[#8B4513] relative">
                         Past
@@ -113,15 +90,12 @@ const Home = () => {
                           <path d="M0 7 Q25 0 50 5 Q75 2 100 7" stroke="#8B4513" strokeWidth="2" fill="none" opacity="0.3" />
                         </svg>
                       </span>
-                    </motion.h1>
-                    <motion.p
-                      variants={fadeUp} custom={2}
-                      className="mt-6 text-lg font-medium text-[#6A5A4A] max-w-lg leading-relaxed"
-                    >
+                    </h1>
+                    <p className="mt-6 text-lg font-medium text-[#6A5A4A] max-w-lg leading-relaxed">
                       Explore our vast archive of ancient inscriptions and contribute to deciphering history through a beautifully curated modern lens.
-                    </motion.p>
+                    </p>
 
-                    <motion.div variants={fadeUp} custom={3} className="flex flex-wrap gap-3 mt-10">
+                    <div className="flex flex-wrap gap-3 mt-10">
                       <button
                         type="button"
                         onClick={() => navigate('/journal')}
@@ -133,26 +107,24 @@ const Home = () => {
                       <button
                         type="button"
                         onClick={() => navigate('/about')}
-                        className="inline-flex items-center justify-center gap-2 rounded-full bg-white/60 border border-[#8B4513]/20 px-7 py-3.5 text-sm font-bold text-[#8B4513] backdrop-blur-sm transition-all hover:-translate-y-1 hover:bg-white/80 hover:shadow-md active:translate-y-0"
+                        className="inline-flex items-center justify-center gap-2 rounded-full bg-white/60 border border-[#8B4513]/20 px-7 py-3.5 text-sm font-bold text-[#8B4513] transition-all hover:-translate-y-1 hover:bg-white/80 hover:shadow-md active:translate-y-0"
                       >
                         Learn More
                       </button>
-                    </motion.div>
+                    </div>
                   </div>
 
                   {/* Image side */}
-                  <motion.div
-                    variants={fadeUp} custom={2}
-                    className="h-64 overflow-hidden rounded-2xl border border-white/30 lg:h-80 w-full lg:w-[40%] flex-shrink-0 shadow-lg"
-                  >
+                  <div className="h-64 overflow-hidden rounded-2xl border border-white/30 lg:h-80 w-full lg:w-[40%] flex-shrink-0 shadow-lg">
                     <img
                       src="/acientBooks.png"
                       alt="Ancient inscription"
+                      loading="eager"
                       className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
-                  </motion.div>
+                  </div>
                 </div>
-              </motion.div>
+              </div>
 
               {/* Stats Bar */}
               <div
@@ -162,10 +134,10 @@ const Home = () => {
                 {statsData.map((stat, i) => (
                   <div
                     key={stat.label}
-                    className="group rounded-2xl bg-[#F5F5DC]/70 p-5 text-center shadow-[0_4px_20px_rgba(61,37,22,0.08)] backdrop-blur-md border border-white/20 hover:shadow-[0_8px_30px_rgba(61,37,22,0.12)] hover:-translate-y-1 transition-all duration-500"
-                    style={{ transitionDelay: `${i * 100}ms` }}
+                    className="group rounded-2xl bg-[#F5F5DC]/70 p-5 text-center shadow-[0_4px_20px_rgba(61,37,22,0.08)] border border-white/20 hover:shadow-[0_8px_30px_rgba(61,37,22,0.12)] hover:-translate-y-1 transition-all duration-300"
+                    style={{ transitionDelay: `${i * 80}ms` }}
                   >
-                    <div className="text-2xl mb-2 transition-transform duration-300 group-hover:scale-125">{stat.icon}</div>
+                    <div className="text-2xl mb-2 transition-transform duration-300 group-hover:scale-110">{stat.icon}</div>
                     <p className="text-xl font-black text-[#4A3B32]">{stat.value}</p>
                     <p className="text-xs font-bold text-[#6A5A4A]/70 uppercase tracking-wider mt-1">{stat.label}</p>
                   </div>
@@ -175,7 +147,7 @@ const Home = () => {
               {/* Latest Contributions bar */}
               <article
                 ref={contributionsReveal.ref as any}
-                className={`rounded-3xl bg-[#F5F5DC]/70 p-6 shadow-[0_4px_20px_rgba(61,37,22,0.1)] backdrop-blur-md border border-white/20 sm:p-8 ${revealClass(contributionsReveal.isVisible)}`}
+                className={`rounded-3xl bg-[#F5F5DC]/70 p-6 shadow-[0_4px_20px_rgba(61,37,22,0.1)] border border-white/20 sm:p-8 ${revealClass(contributionsReveal.isVisible)}`}
               >
                 <div className="flex items-center justify-between mb-6 border-b border-[#c8bba6]/50 pb-4">
                   <h3 className="text-xl font-bold text-[#4A3B32]">Latest Contributions</h3>
@@ -195,7 +167,7 @@ const Home = () => {
                       key={i}
                       className={`group flex items-start gap-4 rounded-2xl bg-white/25 p-4 transition-all duration-300 hover:bg-white/40 hover:-translate-y-0.5 hover:shadow-md border border-white/20 cursor-pointer ${i === 2 ? 'sm:col-span-2 xl:col-span-1' : ''}`}
                     >
-                      <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${contributor.gradient} text-white text-sm font-black shadow-md transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3`}>
+                      <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br ${contributor.gradient} text-white text-sm font-black shadow-md transition-transform duration-300 group-hover:scale-110`}>
                         {contributor.name.charAt(0)}
                       </div>
                       <p className="text-sm font-medium text-[#6A5A4A] leading-tight">
@@ -214,7 +186,7 @@ const Home = () => {
               {/* Featured Inscription */}
               <article
                 ref={featuredReveal.ref as any}
-                className={`group cursor-pointer rounded-3xl bg-gradient-to-br from-[#F5F5DC]/80 to-[#e8dcc0]/60 p-6 shadow-[0_4px_20px_rgba(61,37,22,0.1)] backdrop-blur-md border border-white/20 transition-all duration-500 hover:shadow-[0_12px_40px_rgba(61,37,22,0.15)] hover:-translate-y-2 hover:border-white/40 sm:col-span-2 lg:col-span-1 ${revealClass(featuredReveal.isVisible)}`}
+                className={`group cursor-pointer rounded-3xl bg-[#F5F5DC]/80 p-6 shadow-[0_4px_20px_rgba(61,37,22,0.1)] border border-white/20 transition-all duration-300 hover:shadow-[0_12px_40px_rgba(61,37,22,0.15)] hover:-translate-y-1 hover:border-white/40 sm:col-span-2 lg:col-span-1 ${revealClass(featuredReveal.isVisible)}`}
               >
                 <div className="flex items-center gap-2 mb-4">
                   <span className="h-1 w-6 rounded-full bg-[#8B4513]" />
@@ -222,7 +194,7 @@ const Home = () => {
                 </div>
                 <div className="flex gap-5 items-center">
                   <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-2xl border border-white/30 shadow-md">
-                    <img src="/acientBooks.png" alt="Feature" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                    <img src="/acientBooks.png" alt="Feature" loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
                   </div>
                   <div className="flex flex-col">
                     <h3 className="text-lg font-bold leading-snug text-[#4A3B32] line-clamp-2 group-hover:text-[#8B4513] transition-colors">Copper Plate Grant of King Rajaraja Chola I</h3>
@@ -238,15 +210,15 @@ const Home = () => {
               {/* Decipher Tools */}
               <article
                 ref={toolsReveal.ref as any}
-                className={`group cursor-pointer rounded-3xl bg-[#F5F5DC]/70 p-6 shadow-[0_4px_20px_rgba(61,37,22,0.1)] backdrop-blur-md border border-white/20 transition-all duration-500 hover:shadow-[0_12px_40px_rgba(61,37,22,0.15)] hover:-translate-y-2 hover:border-white/40 ${revealClass(toolsReveal.isVisible)}`}
+                className={`group cursor-pointer rounded-3xl bg-[#F5F5DC]/70 p-6 shadow-[0_4px_20px_rgba(61,37,22,0.1)] border border-white/20 transition-all duration-300 hover:shadow-[0_12px_40px_rgba(61,37,22,0.15)] hover:-translate-y-1 hover:border-white/40 ${revealClass(toolsReveal.isVisible)}`}
               >
                 <div className="flex items-center gap-2 mb-4">
                   <span className="h-1 w-6 rounded-full bg-[#8B4513]" />
                   <h2 className="text-xs font-black tracking-widest text-[#8B4513] uppercase">Decipher Tools</h2>
                 </div>
                 <div className="flex flex-col gap-4">
-                  <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#8B4513]/15 to-[#8B4513]/5 shadow-inner group-hover:from-[#8B4513]/20 group-hover:to-[#8B4513]/10 transition-all">
-                    <img src='Search.png' alt="Search" className='w-7 h-7 opacity-80 transition-transform duration-300 group-hover:scale-110' />
+                  <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-[#8B4513]/10 shadow-inner">
+                    <img src='Search.png' alt="Search" loading="lazy" className='w-7 h-7 opacity-80 transition-transform duration-300 group-hover:scale-110' />
                   </div>
                   <div className="flex flex-col">
                     <h3 className="text-lg font-bold leading-snug text-[#4A3B32] group-hover:text-[#8B4513] transition-colors">Advanced Symbol Matching</h3>
@@ -262,15 +234,15 @@ const Home = () => {
               {/* Community Projects */}
               <article
                 ref={communityReveal.ref as any}
-                className={`group cursor-pointer rounded-3xl bg-[#F5F5DC]/70 p-6 shadow-[0_4px_20px_rgba(61,37,22,0.1)] backdrop-blur-md border border-white/20 transition-all duration-500 hover:shadow-[0_12px_40px_rgba(61,37,22,0.15)] hover:-translate-y-2 hover:border-white/40 ${revealClass(communityReveal.isVisible)}`}
+                className={`group cursor-pointer rounded-3xl bg-[#F5F5DC]/70 p-6 shadow-[0_4px_20px_rgba(61,37,22,0.1)] border border-white/20 transition-all duration-300 hover:shadow-[0_12px_40px_rgba(61,37,22,0.15)] hover:-translate-y-1 hover:border-white/40 ${revealClass(communityReveal.isVisible)}`}
               >
                 <div className="flex items-center gap-2 mb-4">
                   <span className="h-1 w-6 rounded-full bg-[#8B4513]" />
                   <h2 className="text-xs font-black tracking-widest text-[#8B4513] uppercase">Community Projects</h2>
                 </div>
                 <div className="flex flex-col gap-4">
-                  <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#8B4513]/15 to-[#8B4513]/5 shadow-inner group-hover:from-[#8B4513]/20 group-hover:to-[#8B4513]/10 transition-all">
-                    <img src='Search.png' alt="Community" className='w-7 h-7 opacity-80 transition-transform duration-300 group-hover:scale-110' />
+                  <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-[#8B4513]/10 shadow-inner">
+                    <img src='Search.png' alt="Community" loading="lazy" className='w-7 h-7 opacity-80 transition-transform duration-300 group-hover:scale-110' />
                   </div>
                   <div className="flex flex-col">
                     <h3 className="text-lg font-bold leading-snug text-[#4A3B32] group-hover:text-[#8B4513] transition-colors">Join Collaborative Efforts</h3>
