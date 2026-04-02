@@ -3,6 +3,13 @@ import { useScrollReveal } from '../hooks/useScrollReveal'
 import { useTeamMembers, useAuthors } from '../api/hooks/aboutQuery'
 import PageSEO from '../components/PageSEO'
 
+const API = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000'
+const imgUrl = (photo: string, w = 360) => {
+  if (!photo) return ''
+  if (photo.startsWith('http')) return photo // legacy URL
+  return `${API}/uploads/${photo}?w=${w}`
+}
+
 const About = () => {
   const heroReveal = useScrollReveal()
   const teamReveal = useScrollReveal()
@@ -88,7 +95,7 @@ const About = () => {
                 >
                   <div className="w-28 h-28 rounded-full overflow-hidden mb-5 ring-4 ring-primary/20 shadow-lg">
                     {member.photo ? (
-                      <img src={member.photo} alt={member.name} className="w-full h-full object-cover" />
+                      <img src={imgUrl(member.photo, 360)} alt={member.name} className="w-full h-full object-cover" />
                     ) : (
                       defaultAvatar(member.name)
                     )}
@@ -136,7 +143,7 @@ const About = () => {
                   >
                     <div className="w-20 h-20 rounded-full overflow-hidden mb-4 ring-3 ring-primary/15 shadow-md">
                       {author.photo ? (
-                        <img src={author.photo} alt={author.name} className="w-full h-full object-cover" />
+                        <img src={imgUrl(author.photo, 360)} alt={author.name} className="w-full h-full object-cover" />
                       ) : (
                         defaultAvatar(author.name)
                       )}
