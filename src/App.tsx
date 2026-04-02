@@ -1,4 +1,13 @@
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useLocation } from 'react-router-dom'
+import { useEffect } from 'react'
+
+function ScrollToTop() {
+  const { pathname } = useLocation()
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior })
+  }, [pathname])
+  return null
+}
 import Home from './pages/Home'
 import Upload from './pages/Upload'
 import Login from './pages/Login'
@@ -23,6 +32,7 @@ function App() {
 
   return (
     <>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Layout><Home /></Layout>} />
         <Route path="/sasanam" element={<Layout><Sasanam /></Layout>} />
