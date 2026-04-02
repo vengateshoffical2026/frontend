@@ -323,7 +323,15 @@ const Pricing = () => {
             </p>
 
             {isDonationListLoading ? (
-              <div className="text-center py-8 text-[#a78e7e] font-semibold">Loading donations...</div>
+              <div className="space-y-3 p-4">
+                {[...Array(5)].map((_, i) => (
+                  <div key={i} className="flex items-center gap-4 animate-pulse">
+                    <div className="h-4 w-32 rounded bg-[#e2c9a0]/40" />
+                    <div className="h-4 w-20 rounded bg-[#e2c9a0]/30" />
+                    <div className="h-4 w-24 rounded bg-[#e2c9a0]/30 ml-auto" />
+                  </div>
+                ))}
+              </div>
             ) : donations.length === 0 ? (
               <div className="text-center py-8 text-[#a78e7e] font-semibold">
                 No donations yet. Be the first to contribute!
