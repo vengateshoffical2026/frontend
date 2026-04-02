@@ -1,52 +1,75 @@
 import { useState } from 'react'
-import { useGetAllBooks } from '../api/hooks/journalQuery'
+import { useGetAllBooks, useDownloadStatus } from '../api/hooks/journalQuery'
 import { downloadBook } from '../api/controllers/journal'
 import apiClient from '../api/interceptors/axiosInstance'
 import { toast } from 'react-toastify'
 import PageSEO from '../components/PageSEO'
 import { useNavigate } from 'react-router-dom'
+import { useQueryClient } from '@tanstack/react-query'
 
 const Sasanam = () => {
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const token = localStorage.getItem('token')
   const [downloadingId, setDownloadingId] = useState<string | null>(null)
   const [viewingBook, setViewingBook] = useState<any>(null)
+  const [viewMode, setViewMode] = useState<'pdf' | 'html' | 'none'>('none')
   const [bookContent, setBookContent] = useState<string | null>(null)
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null)
   const [contentLoading, setContentLoading] = useState(false)
 
-  const getUserData = () => {
-    try {
-      const d = localStorage.getItem('user')
-      if (d) return JSON.parse(d)
-    } catch {}
-    return null
-  }
-  const user = getUserData()
-  const isSubscribed = user?.isSubscribed === true
-  const canDownloadAccess = user?.canDownload === true
-  const hasDownloadAccess = isSubscribed || canDownloadAccess
-
   const { data: books, isLoading } = useGetAllBooks()
+  const { data: dlStatus } = useDownloadStatus()
   const allBooks: any[] = books || []
+
+  const unlimitedAccess = dlStatus?.unlimitedAccess ?? false
+  const remaining = dlStatus?.remaining ?? 4
+  const freeLimit = dlStatus?.freeLimit ?? 4
+  const downloadCount = dlStatus?.downloadCount ?? 0
+  const canDownloadNow = unlimitedAccess || remaining > 0
 
   // View book content
   const handleView = async (book: any) => {
     setViewingBook(book)
     setBookContent(null)
+    setPdfUrl(null)
+    setViewMode('none')
     setContentLoading(true)
+
+    // Try HTML content first
     try {
       const res = await apiClient.get(`/sasanam-book-details/${book._id}`)
       const details = res.data?.data
       if (details && details.bookDetails) {
         setBookContent(details.bookDetails)
-      } else {
-        setBookContent('<p style="text-align:center;color:#6A5A4A;padding:40px;">No content available for this book yet.</p>')
+        setViewMode('html')
+        setContentLoading(false)
+        return
       }
-    } catch {
-      setBookContent('<p style="text-align:center;color:#6A5A4A;padding:40px;">No content available for this book yet.</p>')
-    } finally {
-      setContentLoading(false)
+    } catch {}
+
+    // Fallback: show PDF
+    if (book.pdfFile) {
+      try {
+        const res = await apiClient.get(`/sasanam-books/${book._id}/view`, { responseType: 'blob' })
+        const blob = new Blob([res.data], { type: 'application/pdf' })
+        const url = URL.createObjectURL(blob)
+        setPdfUrl(url)
+        setViewMode('pdf')
+      } catch {
+        setViewMode('none')
+      }
     }
+
+    setContentLoading(false)
+  }
+
+  const closeViewer = () => {
+    setViewingBook(null)
+    setBookContent(null)
+    if (pdfUrl) URL.revokeObjectURL(pdfUrl)
+    setPdfUrl(null)
+    setViewMode('none')
   }
 
   // Download PDF
@@ -57,8 +80,8 @@ const Sasanam = () => {
       navigate('/login')
       return
     }
-    if (!hasDownloadAccess) {
-      toast.error('Subscribe to download books')
+    if (!canDownloadNow) {
+      toast.error('You have used all free downloads. Subscribe for more!')
       navigate('/pricing')
       return
     }
@@ -76,8 +99,14 @@ const Sasanam = () => {
       document.body.removeChild(link)
       window.URL.revokeObjectURL(url)
       toast.success('Download started')
+      // Refresh download status
+      queryClient.invalidateQueries({ queryKey: ['downloadStatus'] })
     } catch (err: any) {
-      if (err?.response?.status === 403) {
+      if (err?.response?.data?.error === 'free_limit_reached') {
+        toast.error('Free download limit reached. Subscribe for unlimited downloads!')
+        queryClient.invalidateQueries({ queryKey: ['downloadStatus'] })
+        navigate('/pricing')
+      } else if (err?.response?.status === 403) {
         toast.error('Subscribe to download books')
       } else if (err?.response?.status === 404) {
         toast.error('PDF not available for this book')
@@ -97,71 +126,53 @@ const Sasanam = () => {
         path="/sasanam"
       />
 
-      {/* ── Book Viewer Modal ── */}
+      {/* ── Fullscreen Book Viewer ── */}
       {viewingBook && (
-        <div className="fixed inset-0 z-[2000] flex items-start justify-center pt-4 pb-4 px-4 overflow-y-auto">
-          <div className="fixed inset-0 bg-black/50" onClick={() => { setViewingBook(null); setBookContent(null) }} />
-          <div className="relative bg-[#fdfaf2] rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden">
-            {/* Modal header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-[#e2c9a0]/50 bg-[#f4ecd8]/50 shrink-0">
-              <div className="min-w-0 flex-1 mr-4">
-                <h2 className="text-lg font-bold text-[#4A3B32] truncate">{viewingBook.bookName}</h2>
-                <p className="text-xs text-[#6A5A4A]">by {viewingBook.authorName}</p>
-              </div>
-              <div className="flex items-center gap-2 shrink-0">
-                {/* Download icon in modal */}
-                {viewingBook.pdfFile && (
-                  hasDownloadAccess ? (
-                    <button
-                      onClick={(e) => handleDownload(e, viewingBook._id, viewingBook.bookName)}
-                      disabled={downloadingId === viewingBook._id}
-                      className="p-2 rounded-lg bg-[#8B4513] text-white hover:bg-[#a0522d] transition-all"
-                      title="Download PDF"
-                    >
-                      {downloadingId === viewingBook._id ? (
-                        <div className="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      ) : (
-                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17v3a2 2 0 002 2h14a2 2 0 002-2v-3" />
-                        </svg>
-                      )}
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => { toast.error('Subscribe to download'); navigate('/pricing') }}
-                      className="p-2 rounded-lg bg-gray-200 text-gray-400 hover:bg-gray-300 transition-all"
-                      title="Subscribe to download"
-                    >
-                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                      </svg>
-                    </button>
-                  )
-                )}
-                {/* Close button */}
-                <button
-                  onClick={() => { setViewingBook(null); setBookContent(null) }}
-                  className="p-2 rounded-lg text-[#6A5A4A] hover:bg-[#8B4513]/10 transition-all"
-                >
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
+        <div className="fixed inset-0 z-[9999] bg-[#1a1a1a] flex flex-col">
+          {/* Header bar */}
+          <div className="flex items-center justify-between px-4 py-2 bg-[#2a2218] shrink-0">
+            <div className="flex items-center gap-3 min-w-0">
+              <button onClick={closeViewer} className="p-2 rounded-lg text-[#e2c9a0] hover:bg-white/10 transition-all shrink-0">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+              </button>
+              <div className="min-w-0">
+                <h2 className="text-sm font-bold text-[#fdfaf2] truncate">{viewingBook.bookName}</h2>
+                <p className="text-[11px] text-[#c9a87a]">by {viewingBook.authorName}</p>
               </div>
             </div>
-            {/* Modal content */}
-            <div className="flex-1 overflow-y-auto p-6">
-              {contentLoading ? (
-                <div className="flex items-center justify-center h-40">
-                  <div className="h-8 w-8 border-3 border-[#8B4513] border-t-transparent rounded-full animate-spin" />
+          </div>
+          {/* Content */}
+          <div className="flex-1 overflow-hidden">
+            {contentLoading ? (
+              <div className="flex flex-col items-center justify-center h-full gap-3">
+                <div className="h-10 w-10 border-3 border-[#c9a87a] border-t-transparent rounded-full animate-spin" />
+                <p className="text-sm text-[#c9a87a]">Loading document...</p>
+              </div>
+            ) : viewMode === 'pdf' && pdfUrl ? (
+              <iframe
+                src={`${pdfUrl}#toolbar=0&navpanes=0&scrollbar=1`}
+                className="w-full h-full border-0"
+                title={viewingBook.bookName}
+              />
+            ) : viewMode === 'html' && bookContent ? (
+              <div className="overflow-y-auto h-full bg-[#fdfaf2]">
+                <div className="max-w-4xl mx-auto p-6 sm:p-10">
+                  <div className="prose prose-stone max-w-none text-[#4A3B32] leading-relaxed" dangerouslySetInnerHTML={{ __html: bookContent }} />
                 </div>
-              ) : bookContent ? (
-                <div
-                  className="prose prose-stone max-w-none text-[#4A3B32] leading-relaxed"
-                  dangerouslySetInnerHTML={{ __html: bookContent }}
-                />
-              ) : null}
-            </div>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center h-full gap-4 text-center px-6">
+                <div className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center">
+                  <svg className="w-8 h-8 text-[#c9a87a]/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                  </svg>
+                </div>
+                <p className="text-base font-semibold text-[#fdfaf2]">No content available yet</p>
+                <p className="text-sm text-[#c9a87a]">This book's content will be available soon.</p>
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -180,22 +191,47 @@ const Sasanam = () => {
             Sasanam <span className="text-[#8B4513]">Books</span>
           </h1>
           <p className="text-base text-[#6A5A4A] max-w-xl mx-auto">
-            Browse our collection of ancient inscription books. {hasDownloadAccess ? 'You have full download access.' : 'Subscribe to unlock downloads.'}
+            Browse our collection of ancient inscription books.
+            {token && unlimitedAccess && ' You have unlimited download access.'}
+            {token && !unlimitedAccess && ` ${remaining} of ${freeLimit} free downloads remaining.`}
+            {!token && ' Login to start downloading.'}
           </p>
 
           {/* Status badge */}
-          <div className="mt-4">
+          <div className="mt-4 flex flex-col items-center gap-2">
             {token ? (
-              hasDownloadAccess ? (
+              unlimitedAccess ? (
                 <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full bg-emerald-100 text-emerald-700">
                   <span className="h-2 w-2 rounded-full bg-emerald-500" />
-                  Full Access
+                  Subscribed – Unlimited Downloads
                 </span>
               ) : (
-                <button onClick={() => navigate('/pricing')} className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-full bg-[#8B4513] text-white hover:-translate-y-0.5 hover:shadow-lg transition-all">
-                  Subscribe to Download
-                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
-                </button>
+                <>
+                  {/* Download counter bar */}
+                  <div className="flex items-center gap-3 px-4 py-2 rounded-xl bg-[#f4ecd8] border border-[#e2c9a0]">
+                    <div className="flex gap-1">
+                      {Array.from({ length: freeLimit }).map((_, i) => (
+                        <div
+                          key={i}
+                          className={`w-3 h-3 rounded-full transition-colors ${i < downloadCount ? 'bg-[#8B4513]' : 'bg-[#8B4513]/15'}`}
+                        />
+                      ))}
+                    </div>
+                    <span className="text-xs font-bold text-[#6A5A4A]">
+                      {remaining > 0 ? `${remaining} free left` : 'No free downloads left'}
+                    </span>
+                  </div>
+                  {remaining === 0 ? (
+                    <button onClick={() => navigate('/pricing')} className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-full bg-[#8B4513] text-white hover:-translate-y-0.5 hover:shadow-lg transition-all">
+                      Subscribe to Download More
+                      <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                    </button>
+                  ) : (
+                    <button onClick={() => navigate('/pricing')} className="text-[11px] font-semibold text-[#8B4513] hover:underline">
+                      Want unlimited? Subscribe now
+                    </button>
+                  )}
+                </>
               )
             ) : (
               <div className="flex items-center justify-center gap-3">
@@ -235,7 +271,6 @@ const Sasanam = () => {
                     onClick={() => handleView(book)}
                     className="text-left p-5 pb-3 flex-1 flex flex-col cursor-pointer"
                   >
-                    {/* Top row: icon + download badge */}
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-[#8B4513]/10 shrink-0">
                         <svg className="w-6 h-6 text-[#8B4513]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -253,7 +288,6 @@ const Sasanam = () => {
                     <p className="text-[11px] text-[#6A5A4A] mb-1">by <span className="font-semibold">{book.authorName}</span></p>
                     {book.description && <p className="text-[11px] text-[#6A5A4A]/60 line-clamp-2 mt-1">{book.description}</p>}
 
-                    {/* View hint */}
                     <span className="mt-auto pt-3 text-[11px] font-bold text-[#8B4513]/60 group-hover:text-[#8B4513] flex items-center gap-1 transition-colors">
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -267,32 +301,45 @@ const Sasanam = () => {
                   {hasPdf && (
                     <div className="px-5 py-3 border-t border-[#e2c9a0]/40 bg-[#f4ecd8]/30 flex items-center justify-between">
                       <span className="text-[10px] font-medium text-[#6A5A4A]">{book.pdfFile}</span>
-                      {hasDownloadAccess ? (
-                        <button
-                          onClick={(e) => handleDownload(e, book._id, book.bookName)}
-                          disabled={downloadingId === book._id}
-                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#8B4513] text-white text-[10px] font-bold uppercase tracking-wider hover:bg-[#a0522d] active:scale-95 disabled:opacity-50 transition-all"
-                          title="Download PDF"
-                        >
-                          {downloadingId === book._id ? (
-                            <div className="h-3.5 w-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                          ) : (
-                            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17v3a2 2 0 002 2h14a2 2 0 002-2v-3" />
+                      {token ? (
+                        canDownloadNow ? (
+                          <button
+                            onClick={(e) => handleDownload(e, book._id, book.bookName)}
+                            disabled={downloadingId === book._id}
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#8B4513] text-white text-[10px] font-bold uppercase tracking-wider hover:bg-[#a0522d] active:scale-95 disabled:opacity-50 transition-all"
+                            title="Download PDF"
+                          >
+                            {downloadingId === book._id ? (
+                              <div className="h-3.5 w-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                            ) : (
+                              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17v3a2 2 0 002 2h14a2 2 0 002-2v-3" />
+                              </svg>
+                            )}
+                            Download
+                          </button>
+                        ) : (
+                          <button
+                            onClick={(e) => { e.stopPropagation(); navigate('/pricing') }}
+                            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-100 text-amber-700 text-[10px] font-bold uppercase tracking-wider hover:bg-amber-200 transition-all"
+                            title="Subscribe to download more"
+                          >
+                            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                             </svg>
-                          )}
-                          Download
-                        </button>
+                            Subscribe
+                          </button>
+                        )
                       ) : (
                         <button
-                          onClick={(e) => { e.stopPropagation(); token ? navigate('/pricing') : navigate('/login') }}
+                          onClick={(e) => { e.stopPropagation(); navigate('/login') }}
                           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-gray-200 text-gray-500 text-[10px] font-bold uppercase tracking-wider hover:bg-gray-300 transition-all"
-                          title={token ? 'Subscribe to download' : 'Login to download'}
+                          title="Login to download"
                         >
                           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                           </svg>
-                          Locked
+                          Login
                         </button>
                       )}
                     </div>

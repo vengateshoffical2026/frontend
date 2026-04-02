@@ -21,6 +21,7 @@ export const API_ENDPOINTS = {
     GET_BOOKS_BY_SECTION_ID: '/sasanam-books',
     GET_ALL_BOOKS: '/sasanam-books',
     DOWNLOAD_BOOK: '/sasanam-books',
+    DOWNLOAD_STATUS: '/sasanam-books/download-status/me',
     ADD_BOOK: '/sasanam-book-details',
   },
 }

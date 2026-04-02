@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { addBook, getAllBooks, getAllSections, getBooksBySectionId } from '../controllers/journal'
+import { addBook, getAllBooks, getAllSections, getBooksBySectionId, getDownloadStatus } from '../controllers/journal'
 
 export const useGetAllSections = () => {
   return useQuery({
@@ -20,6 +20,15 @@ export const useGetAllBooks = () => {
   return useQuery({
     queryKey: ['getAllBooks'],
     queryFn: getAllBooks,
+  })
+}
+
+export const useDownloadStatus = () => {
+  const token = localStorage.getItem('token')
+  return useQuery({
+    queryKey: ['downloadStatus'],
+    queryFn: getDownloadStatus,
+    enabled: !!token,
   })
 }
 

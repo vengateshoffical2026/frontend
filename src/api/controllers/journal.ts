@@ -8,12 +8,12 @@ export const getAllSections = async () => {
 
 export const getBooksBySectionId = async (sectionId: string) => {
   const response = await apiClient.get(`${API_ENDPOINTS.JOURNAL.GET_BOOKS_BY_SECTION_ID}/${sectionId}`)
-  return response.data?.data?.data
+  return response.data?.data
 }
 
 export const getAllBooks = async () => {
   const response = await apiClient.get(API_ENDPOINTS.JOURNAL.GET_ALL_BOOKS)
-  return response.data?.data?.data
+  return response.data?.data?.books
 }
 
 export const downloadBook = async (bookId: string) => {
@@ -21,6 +21,11 @@ export const downloadBook = async (bookId: string) => {
     responseType: 'blob',
   })
   return response
+}
+
+export const getDownloadStatus = async () => {
+  const response = await apiClient.get(API_ENDPOINTS.JOURNAL.DOWNLOAD_STATUS)
+  return response.data?.data
 }
 
 export const addBook = async (data: FormData) => {
