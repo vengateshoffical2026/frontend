@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.sasanam.in/sitemap.xml
+Sitemap: https://sasanam.in/sitemap.xml
