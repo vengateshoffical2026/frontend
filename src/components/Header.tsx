@@ -145,6 +145,25 @@ const Header = () => {
             )}
           </NavLink>
 
+          {/* Blog - always visible for SEO */}
+          <NavLink
+            to="/blog"
+            className={({ isActive }) =>
+              `relative px-4 py-2 rounded-lg transition-all duration-200 ${
+                isActive
+                  ? 'text-primary font-bold'
+                  : 'text-muted hover:text-primary hover:bg-primary/5'
+              }`
+            }
+          >
+            {({ isActive }) => (
+              <>
+                Blog
+                {isActive && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-primary" />}
+              </>
+            )}
+          </NavLink>
+
           {/* === LOGGED OUT: News & Events === */}
           {!token && (
             <NavLink
@@ -426,6 +445,21 @@ const Header = () => {
             }
           >
             About
+          </NavLink>
+
+          {/* Blog - always visible */}
+          <NavLink
+            to="/blog"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className={({ isActive }) =>
+              `px-4 py-3 rounded-xl text-base font-bold transition-all ${
+                isActive
+                  ? 'text-primary bg-primary/8 border-l-[3px] border-primary'
+                  : 'text-muted hover:text-primary hover:bg-primary/5'
+              }`
+            }
+          >
+            Blog
           </NavLink>
 
           {/* LOGGED OUT: News & Events */}

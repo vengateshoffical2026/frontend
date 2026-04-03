@@ -18,6 +18,10 @@ export const API_ENDPOINTS = {
     TEAM: '/about/team',
     AUTHORS: '/about/authors',
   },
+  BLOG: {
+    GET_ALL: '/blog',
+    GET_BY_SLUG: '/blog',
+  },
   JOURNAL: {
     GET_ALL_SECTIONS: '/sasanam-section',
     GET_BOOKS_BY_SECTION_ID: '/sasanam-books',

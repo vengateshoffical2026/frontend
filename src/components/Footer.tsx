@@ -39,6 +39,7 @@ const Footer = () => {
                 { to: '/library', label: 'Library' },
                 { to: '/pricing', label: 'Subscribe' },
                 { to: '/community', label: 'Community' },
+                { to: '/blog', label: 'Blog' },
                 { to: '/news-events', label: 'News & Events' },
                 { to: '/about', label: 'About' },
                 { to: '/contact', label: 'Contact' },
