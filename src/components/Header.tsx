@@ -299,6 +299,13 @@ const Header = () => {
 
                   {/* Menu items */}
                   <div className="p-1.5">
+                    <NavLink to="/profile" onClick={() => setIsUserMenuOpen(false)}
+                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-body hover:bg-primary/5 transition-colors">
+                      <svg className="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                      My Profile
+                    </NavLink>
                     <NavLink to="/pricing" onClick={() => setIsUserMenuOpen(false)}
                       className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-body hover:bg-primary/5 transition-colors">
                       <svg className="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -505,7 +512,7 @@ const Header = () => {
             </div>
           )}
 
-          {/* LOGGED IN: Subscription link */}
+          {/* LOGGED IN: Subscription + Profile links */}
           {token && (
             <NavLink
               to="/pricing"
@@ -519,6 +526,21 @@ const Header = () => {
               }
             >
               Subscription
+            </NavLink>
+          )}
+          {token && (
+            <NavLink
+              to="/profile"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={({ isActive }) =>
+                `px-4 py-3 rounded-xl text-base font-bold transition-all ${
+                  isActive
+                    ? 'text-primary bg-primary/8 border-l-[3px] border-primary'
+                    : 'text-muted hover:text-primary hover:bg-primary/5'
+                }`
+              }
+            >
+              My Profile
             </NavLink>
           )}
 

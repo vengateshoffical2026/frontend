@@ -23,6 +23,9 @@ import NewsEvents from './pages/NewsEvents'
 import Sasanam from './pages/Sasanam'
 import PdfViewer from './pages/PdfViewer'
 import Profile from './pages/Profile'
+import AuthCallback from './pages/AuthCallback'
+import ForgotPassword from './pages/ForgotPassword'
+import ResetPassword from './pages/ResetPassword'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Layout from './components/Layout'
@@ -46,6 +49,9 @@ function App() {
         <Route path="/news-events" element={<Layout><NewsEvents /></Layout>} />
         <Route path="/login" element={<Layout hideFooter><Login /></Layout>} />
         <Route path="/signup" element={<Layout hideFooter><Signup /></Layout>} />
+        <Route path="/forgot-password" element={<Layout hideFooter><ForgotPassword /></Layout>} />
+        <Route path="/reset-password" element={<Layout hideFooter><ResetPassword /></Layout>} />
+        <Route path="/auth/callback" element={<Layout hideFooter><AuthCallback /></Layout>} />
         <Route path="/upload" element={<Layout><Upload /></Layout>} />
         <Route path="/profile" element={<Layout><Profile /></Layout>} />
         <Route path="/view/:bookId" element={<PdfViewer />} />
