@@ -10,9 +10,16 @@ export default defineConfig({
     cssMinify: 'lightningcss',
     rollupOptions: {
       output: {
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'ui-vendor': ['framer-motion', 'react-toastify'],
+        manualChunks(id) {
+          if (id.includes('node_modules/react-dom') || id.includes('node_modules/react/') || id.includes('node_modules/react-router') || id.includes('node_modules/scheduler')) {
+            return 'react-vendor'
+          }
+          if (id.includes('node_modules/@tanstack')) {
+            return 'query-vendor'
+          }
+          if (id.includes('node_modules/axios')) {
+            return 'axios-vendor'
+          }
         },
       },
     },

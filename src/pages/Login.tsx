@@ -134,7 +134,7 @@ useEffect(()=>{
                                     <span className="text-xs font-bold text-muted group-hover:text-body transition-colors">Keep me authenticated</span>
                                 </label>
 
-                                <a href="#" className="text-xs font-black text-primary hover:opacity-70 transition-opacity uppercase tracking-tighter">Forgotten pass?</a>
+                                <Link to="/forgot-password" className="text-xs font-black text-primary hover:opacity-70 transition-opacity uppercase tracking-tighter">Forgotten pass?</Link>
                             </div>
 
                             <button

@@ -1,8 +1,11 @@
 import { Route, Routes, useLocation } from 'react-router-dom'
 import { useEffect, lazy, Suspense } from 'react'
-import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Layout from './components/Layout'
+
+const ToastContainer = lazy(() =>
+  import('react-toastify').then(m => ({ default: m.ToastContainer }))
+)
 
 // Eagerly load Home for fastest LCP
 import Home from './pages/Home'
@@ -60,10 +63,12 @@ function App() {
           <Route path="/view/:bookId" element={<PdfViewer />} />
         </Routes>
       </Suspense>
-      <ToastContainer
-        autoClose={2000}
-        hideProgressBar={true}
-      />
+      <Suspense fallback={null}>
+        <ToastContainer
+          autoClose={2000}
+          hideProgressBar={true}
+        />
+      </Suspense>
     </>
   )
 }

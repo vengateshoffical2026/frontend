@@ -85,7 +85,7 @@ const Header = () => {
       }`}>
 
         {/* Logo */}
-        <NavLink to="/" className="flex items-center gap-3 hover:opacity-80 transition-all group shrink-0">
+        <NavLink to="/" aria-label="Sasanam Home" className="flex items-center gap-3 hover:opacity-80 transition-all group shrink-0">
           <div className={`relative flex items-center justify-center overflow-hidden rounded-lg bg-white/60 ring-1 ring-primary/10 transition-all duration-500 shadow-inner ${
             isScrolled ? 'h-8 w-8 p-1' : 'h-11 w-11 p-1.5'
           }`}>
@@ -216,6 +216,8 @@ const Header = () => {
           {token && (
             <div className="relative">
               <button
+                aria-label="More navigation links"
+                aria-expanded={openDropdown === 'more'}
                 onClick={() => setOpenDropdown(openDropdown === 'more' ? null : 'more')}
                 className={`relative flex items-center gap-1 px-4 py-2 rounded-lg transition-all duration-200 ${
                   isDropdownActive(moreItems) || openDropdown === 'more'
@@ -262,6 +264,8 @@ const Header = () => {
             /* LOGGED IN: User icon with dropdown */
             <div className="relative ml-3" ref={userMenuRef}>
               <button
+                aria-label="User menu"
+                aria-expanded={isUserMenuOpen}
                 onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                 className="flex items-center gap-2 rounded-full bg-primary pl-1 pr-3 py-1 text-white transition-all hover:bg-primary-light active:scale-95"
               >
