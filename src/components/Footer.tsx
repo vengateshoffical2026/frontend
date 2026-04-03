@@ -70,13 +70,13 @@ const Footer = () => {
           <div className="flex flex-col gap-4">
             <h3 className="text-xs font-black uppercase tracking-[0.2em] text-white/50 mb-2">Connect</h3>
             <a
-              href="mailto:contact@sasanam.org"
+              href="mailto:contact@sasanam.in"
               className="text-sm font-medium text-white/70 hover:text-white transition-colors flex items-center gap-2 mb-3"
             >
               <svg className="w-4 h-4 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
-              contact@sasanam.org
+              contact@sasanam.in
             </a>
             <div className="flex items-center gap-3">
               {[

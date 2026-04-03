@@ -141,7 +141,7 @@ const NotificationPopup = () => {
                   <form onSubmit={handleLogin} className="space-y-3">
                     <div className="space-y-1">
                       <label className="text-2xs font-black uppercase tracking-widest text-primary/60 ml-1">Email or Mobile</label>
-                      <input type="text" placeholder="scribe@sasanam.org" className="w-full px-4 py-3 rounded-xl bg-cream/40 border-2 border-cream focus:border-primary/30 focus:bg-white outline-none text-sm font-semibold transition-all" value={loginValues.email} onChange={(e) => setLoginValues({ ...loginValues, email: e.target.value })} required />
+                      <input type="text" placeholder="scribe@sasanam.in" className="w-full px-4 py-3 rounded-xl bg-cream/40 border-2 border-cream focus:border-primary/30 focus:bg-white outline-none text-sm font-semibold transition-all" value={loginValues.email} onChange={(e) => setLoginValues({ ...loginValues, email: e.target.value })} required />
                     </div>
                     <div className="space-y-1">
                       <label className="text-2xs font-black uppercase tracking-widest text-primary/60 ml-1">Secret Key</label>
