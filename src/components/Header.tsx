@@ -89,7 +89,7 @@ const Header = () => {
           <div className={`relative flex items-center justify-center overflow-hidden rounded-lg bg-white/60 ring-1 ring-primary/10 transition-all duration-500 shadow-inner ${
             isScrolled ? 'h-8 w-8 p-1' : 'h-11 w-11 p-1.5'
           }`}>
-            <img src="/logo.jpeg" alt="Sasanam" className="h-full w-full object-contain mix-blend-multiply" />
+            <img src="/logo.webp" alt="Sasanam" width={44} height={44} className="h-full w-full object-contain mix-blend-multiply" />
           </div>
           <div className="flex gap-[2px]">
   {['சா','ச','ன','ம்'].map((char, i) => (

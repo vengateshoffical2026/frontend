@@ -73,8 +73,11 @@ const SignupForm = () => {
                 {/* Visual Section - Right Side */}
                 <div className="hidden lg:block lg:w-[45%] relative overflow-hidden bg-primary">
                     <img
-                        src="/auth-bg.png"
+                        src="/auth-bg.webp"
                         alt="Historical Monument"
+                        loading="lazy"
+                        width={450}
+                        height={600}
                         className="h-full w-full object-cover opacity-80 mix-blend-multiply brightness-110 transition-transform duration-1000 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-body/90 via-body/20 to-transparent"></div>

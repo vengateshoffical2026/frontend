@@ -117,9 +117,12 @@ const Home = () => {
                   {/* Image side */}
                   <div className="h-64 overflow-hidden rounded-2xl border border-white/30 lg:h-80 w-full lg:w-[40%] flex-shrink-0 shadow-lg">
                     <img
-                      src="/acientBooks.png"
+                      src="/acientBooks.webp"
                       alt="Ancient inscription"
                       loading="eager"
+                      fetchPriority="high"
+                      width={600}
+                      height={400}
                       className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                   </div>
@@ -194,7 +197,7 @@ const Home = () => {
                 </div>
                 <div className="flex gap-5 items-center">
                   <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-2xl border border-white/30 shadow-md">
-                    <img src="/acientBooks.png" alt="Feature" loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                    <img src="/acientBooks.webp" alt="Feature" loading="lazy" width={80} height={80} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" />
                   </div>
                   <div className="flex flex-col">
                     <h3 className="text-lg font-bold leading-snug text-body line-clamp-2 group-hover:text-primary transition-colors">Copper Plate Grant of King Rajaraja Chola I</h3>
@@ -218,7 +221,7 @@ const Home = () => {
                 </div>
                 <div className="flex flex-col gap-4">
                   <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-primary/10 shadow-inner">
-                    <img src='Search.png' alt="Search" loading="lazy" className='w-7 h-7 opacity-80 transition-transform duration-300 group-hover:scale-110' />
+                    <img src='/Search.webp' alt="Search" loading="lazy" width={28} height={28} className='w-7 h-7 opacity-80 transition-transform duration-300 group-hover:scale-110' />
                   </div>
                   <div className="flex flex-col">
                     <h3 className="text-lg font-bold leading-snug text-body group-hover:text-primary transition-colors">Advanced Symbol Matching</h3>
@@ -242,7 +245,7 @@ const Home = () => {
                 </div>
                 <div className="flex flex-col gap-4">
                   <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-primary/10 shadow-inner">
-                    <img src='Search.png' alt="Community" loading="lazy" className='w-7 h-7 opacity-80 transition-transform duration-300 group-hover:scale-110' />
+                    <img src='/Search.webp' alt="Community" loading="lazy" width={28} height={28} className='w-7 h-7 opacity-80 transition-transform duration-300 group-hover:scale-110' />
                   </div>
                   <div className="flex flex-col">
                     <h3 className="text-lg font-bold leading-snug text-body group-hover:text-primary transition-colors">Join Collaborative Efforts</h3>

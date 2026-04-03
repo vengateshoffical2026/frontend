@@ -1,5 +1,30 @@
 import { Route, Routes, useLocation } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useEffect, lazy, Suspense } from 'react'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import Layout from './components/Layout'
+
+// Eagerly load Home for fastest LCP
+import Home from './pages/Home'
+
+// Lazy load all other routes
+const Upload = lazy(() => import('./pages/Upload'))
+const Login = lazy(() => import('./pages/Login'))
+const Signup = lazy(() => import('./pages/Signup'))
+const Journal = lazy(() => import('./pages/Journal'))
+const Archive = lazy(() => import('./pages/Archive'))
+const Library = lazy(() => import('./pages/Library'))
+const Community = lazy(() => import('./pages/Community'))
+const Pricing = lazy(() => import('./pages/Pricing'))
+const About = lazy(() => import('./pages/About'))
+const Contact = lazy(() => import('./pages/Contact'))
+const NewsEvents = lazy(() => import('./pages/NewsEvents'))
+const Sasanam = lazy(() => import('./pages/Sasanam'))
+const PdfViewer = lazy(() => import('./pages/PdfViewer'))
+const Profile = lazy(() => import('./pages/Profile'))
+const AuthCallback = lazy(() => import('./pages/AuthCallback'))
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword'))
+const ResetPassword = lazy(() => import('./pages/ResetPassword'))
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -8,55 +33,34 @@ function ScrollToTop() {
   }, [pathname])
   return null
 }
-import Home from './pages/Home'
-import Upload from './pages/Upload'
-import Login from './pages/Login'
-import Signup from './pages/Signup'
-import Journal from './pages/Journal'
-import Archive from './pages/Archive'
-import Library from './pages/Library'
-import Community from './pages/Community'
-import Pricing from './pages/Pricing'
-import About from './pages/About'
-import Contact from './pages/Contact'
-import NewsEvents from './pages/NewsEvents'
-import Sasanam from './pages/Sasanam'
-import PdfViewer from './pages/PdfViewer'
-import Profile from './pages/Profile'
-import AuthCallback from './pages/AuthCallback'
-import ForgotPassword from './pages/ForgotPassword'
-import ResetPassword from './pages/ResetPassword'
-import { ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-import Layout from './components/Layout'
-
 
 function App() {
-
   return (
     <>
       <ScrollToTop />
-      <Routes>
-        <Route path="/" element={<Layout><Home /></Layout>} />
-        <Route path="/sasanam" element={<Layout><Sasanam /></Layout>} />
-        <Route path="/journal" element={<Layout><Journal /></Layout>} />
-        <Route path="/archive" element={<Layout><Archive /></Layout>} />
-        <Route path="/library" element={<Layout><Library /></Layout>} />
-        <Route path="/community" element={<Layout><Community /></Layout>} />
-        <Route path="/pricing" element={<Layout><Pricing /></Layout>} />
-        <Route path="/about" element={<Layout><About /></Layout>} />
-        <Route path="/contact" element={<Layout><Contact /></Layout>} />
-        <Route path="/news-events" element={<Layout><NewsEvents /></Layout>} />
-        <Route path="/login" element={<Layout hideFooter><Login /></Layout>} />
-        <Route path="/signup" element={<Layout hideFooter><Signup /></Layout>} />
-        <Route path="/forgot-password" element={<Layout hideFooter><ForgotPassword /></Layout>} />
-        <Route path="/reset-password" element={<Layout hideFooter><ResetPassword /></Layout>} />
-        <Route path="/auth/callback" element={<Layout hideFooter><AuthCallback /></Layout>} />
-        <Route path="/upload" element={<Layout><Upload /></Layout>} />
-        <Route path="/profile" element={<Layout><Profile /></Layout>} />
-        <Route path="/view/:bookId" element={<PdfViewer />} />
-      </Routes>
-      <ToastContainer 
+      <Suspense fallback={<div className="min-h-screen bg-cream" />}>
+        <Routes>
+          <Route path="/" element={<Layout><Home /></Layout>} />
+          <Route path="/sasanam" element={<Layout><Sasanam /></Layout>} />
+          <Route path="/journal" element={<Layout><Journal /></Layout>} />
+          <Route path="/archive" element={<Layout><Archive /></Layout>} />
+          <Route path="/library" element={<Layout><Library /></Layout>} />
+          <Route path="/community" element={<Layout><Community /></Layout>} />
+          <Route path="/pricing" element={<Layout><Pricing /></Layout>} />
+          <Route path="/about" element={<Layout><About /></Layout>} />
+          <Route path="/contact" element={<Layout><Contact /></Layout>} />
+          <Route path="/news-events" element={<Layout><NewsEvents /></Layout>} />
+          <Route path="/login" element={<Layout hideFooter><Login /></Layout>} />
+          <Route path="/signup" element={<Layout hideFooter><Signup /></Layout>} />
+          <Route path="/forgot-password" element={<Layout hideFooter><ForgotPassword /></Layout>} />
+          <Route path="/reset-password" element={<Layout hideFooter><ResetPassword /></Layout>} />
+          <Route path="/auth/callback" element={<Layout hideFooter><AuthCallback /></Layout>} />
+          <Route path="/upload" element={<Layout><Upload /></Layout>} />
+          <Route path="/profile" element={<Layout><Profile /></Layout>} />
+          <Route path="/view/:bookId" element={<PdfViewer />} />
+        </Routes>
+      </Suspense>
+      <ToastContainer
         autoClose={2000}
         hideProgressBar={true}
       />

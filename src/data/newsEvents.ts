@@ -17,7 +17,7 @@ export const newsEventsData: NewsEventItem[] = [
     date: "2026-03-20",
     type: "news",
     isNew: true,
-    image: "/acientBooks.png",
+    image: "/acientBooks.webp",
   },
   {
     id: 2,
@@ -27,7 +27,7 @@ export const newsEventsData: NewsEventItem[] = [
     date: "2026-04-15",
     type: "event",
     isNew: true,
-    image: "/acientBooks.png",
+    image: "/acientBooks.webp",
   },
   {
     id: 3,
@@ -64,6 +64,6 @@ export const newsEventsData: NewsEventItem[] = [
     date: "2026-04-20",
     type: "event",
     isNew: false,
-    image: "/acientBooks.png",
+    image: "/acientBooks.webp",
   },
 ];
