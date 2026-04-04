@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { newsEventsData } from "../data/newsEvents";
+import { useGetPublicNews } from "../api/hooks/newsQuery";
 import { loginAPI } from "../api/controllers/authcontroller";
 import { toast } from "react-toastify";
 
@@ -13,7 +13,12 @@ const NotificationPopup = () => {
   const token = localStorage.getItem("token");
   const location = useLocation();
 
-  const newItems = newsEventsData.filter((i) => i.isNew);
+  const { data } = useGetPublicNews();
+  const allNews = data?.news || [];
+  // Consider items created within last 7 days as "new"
+  const newItems = allNews.filter(
+    (i: any) => new Date(i.createdAt) > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+  );
   const hasNew = newItems.length > 0;
 
   // Initial Logic: Show news if available, or login if guest
@@ -78,14 +83,14 @@ const NotificationPopup = () => {
   return (
     <>
       {!isMinimized && (
-        <div 
+        <div
           className="fixed inset-0 bg-body/60 backdrop-blur-sm z-[1999] animate-in fade-in duration-500"
           onClick={() => setIsMinimized(true)}
         />
       )}
       <div className={`fixed z-[2000] transition-all duration-500 ease-out flex flex-col items-center justify-center pointer-events-none ${
-        isMinimized 
-          ? "top-24 right-6 items-end" 
+        isMinimized
+          ? "top-24 right-6 items-end"
           : "inset-0 items-center justify-center p-4"
       }`}>
         {isMinimized ? (
@@ -136,7 +141,7 @@ const NotificationPopup = () => {
                       <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
                     </div>
                     <h3 className="text-body font-black text-sm uppercase tracking-widest mb-1">Archive Entry</h3>
-                    <p className="text-xs text-muted leading-relaxed">Please sign in to unlock your persistent scribe identity and save your research.</p>
+                    <p className="text-xs text-muted leading-relaxed italic border-l-2 border-primary/20 pl-3">Please sign in to unlock your persistent scribe identity and save your research.</p>
                   </div>
                   <form onSubmit={handleLogin} className="space-y-3">
                     <div className="space-y-1">
@@ -164,11 +169,11 @@ const NotificationPopup = () => {
                       Greetings! We have unearthed {newItems.length} new records recently.
                     </p>
                   </div>
-                  {newItems.map((item) => (
-                    <Link key={item.id} to="/news-events" onClick={() => setIsMinimized(true)} className="group flex flex-col gap-1 p-3 rounded-2xl bg-[#FAF9F6] border border-primary/5 hover:bg-white hover:border-primary/20 transition-all">
+                  {newItems.map((item: any) => (
+                    <Link key={item._id} to="/news-events" onClick={() => setIsMinimized(true)} className="group flex flex-col gap-1 p-3 rounded-2xl bg-[#FAF9F6] border border-primary/5 hover:bg-white hover:border-primary/20 transition-all">
                       <div className="flex items-center gap-2">
-                        <span className="text-2xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-black uppercase tracking-tighter">{item.type}</span>
-                        <span className="text-2xs text-muted font-bold">{item.date}</span>
+                        <span className="text-2xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-black uppercase tracking-tighter">{item.category}</span>
+                        <span className="text-2xs text-muted font-bold">{new Date(item.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
                       </div>
                       <h4 className="text-sm font-bold text-body group-hover:text-primary transition-colors">{item.title}</h4>
                     </Link>

@@ -1,22 +1,29 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useScrollReveal } from "../hooks/useScrollReveal";
-import { newsEventsData, type NewsEventItem } from "../data/newsEvents";
+import { useGetPublicNews } from "../api/hooks/newsQuery";
 import PageSEO from "../components/PageSEO";
 
+const API = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
+
 type FilterType = "all" | "news" | "event";
+
+const imgUrl = (photo: string) => {
+  if (!photo) return "";
+  if (photo.startsWith("http")) return photo;
+  return `${API}/uploads/${photo}?w=640`;
+};
 
 const NewsEvents = () => {
   const headerReveal = useScrollReveal();
   const [filter, setFilter] = useState<FilterType>("all");
+  const { data, isLoading } = useGetPublicNews();
 
-  useEffect(() => {
-    // Toast notification removed based on user preference
-  }, []);
+  const newsItems = data?.news || [];
 
   const filteredItems =
     filter === "all"
-      ? newsEventsData
-      : newsEventsData.filter((item) => item.type === filter);
+      ? newsItems
+      : newsItems.filter((item: any) => item.category === filter);
 
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
@@ -72,19 +79,44 @@ const NewsEvents = () => {
         ))}
       </div>
 
-      {/* Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-        {filteredItems.map((item) => (
-          <NewsEventCard
-            key={item.id}
-            item={item}
-            formatDate={formatDate}
-            isUpcoming={isUpcoming}
-          />
-        ))}
-      </div>
+      {/* Loading Skeleton */}
+      {isLoading && (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+          {[...Array(6)].map((_, i) => (
+            <div
+              key={i}
+              className="relative overflow-hidden rounded-3xl bg-beige/80 border border-white/30 shadow-sm"
+            >
+              <div className="h-48 bg-[#e8d9c4]/60 animate-pulse" />
+              <div className="p-8 space-y-3">
+                <div className="flex gap-3">
+                  <div className="w-16 h-6 rounded-lg bg-[#e8d9c4]/50 animate-pulse" />
+                  <div className="w-24 h-6 rounded-lg bg-[#e8d9c4]/40 animate-pulse" />
+                </div>
+                <div className="w-3/4 h-5 rounded-full bg-[#e8d9c4]/60 animate-pulse" />
+                <div className="w-full h-3 rounded-full bg-[#e8d9c4]/40 animate-pulse" />
+                <div className="w-2/3 h-3 rounded-full bg-[#e8d9c4]/40 animate-pulse" />
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
-      {filteredItems.length === 0 && (
+      {/* Cards Grid */}
+      {!isLoading && (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+          {filteredItems.map((item: any) => (
+            <NewsEventCard
+              key={item._id}
+              item={item}
+              formatDate={formatDate}
+              isUpcoming={isUpcoming}
+            />
+          ))}
+        </div>
+      )}
+
+      {!isLoading && filteredItems.length === 0 && (
         <div className="text-center py-20">
           <p className="text-xl text-accent font-bold">
             No items found for this filter.
@@ -100,11 +132,15 @@ const NewsEventCard = ({
   formatDate,
   isUpcoming,
 }: {
-  item: NewsEventItem;
+  item: any;
   formatDate: (d: string) => string;
   isUpcoming: (d: string) => boolean;
 }) => {
   const reveal = useScrollReveal();
+  const isEvent = item.category === "event";
+  const isNew =
+    new Date(item.createdAt) >
+    new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
 
   return (
     <article
@@ -117,12 +153,12 @@ const NewsEventCard = ({
     >
       {/* Badges */}
       <div className="absolute top-5 right-5 z-10 flex gap-2">
-        {item.isNew && (
+        {isNew && (
           <span className="px-3 py-1.5 rounded-full bg-primary text-white text-2xs font-black uppercase tracking-widest shadow-lg animate-pulse">
             New
           </span>
         )}
-        {item.type === "event" && isUpcoming(item.date) && (
+        {isEvent && isUpcoming(item.createdAt) && (
           <span className="px-3 py-1.5 rounded-full bg-white text-primary text-2xs font-black uppercase tracking-widest shadow-md ring-1 ring-primary/20">
             Upcoming
           </span>
@@ -130,10 +166,10 @@ const NewsEventCard = ({
       </div>
 
       {/* Image */}
-      {item.image && (
+      {item.imageUrl && (
         <div className="h-48 overflow-hidden relative">
           <img
-            src={item.image}
+            src={imgUrl(item.imageUrl)}
             alt={item.title}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
           />
@@ -142,20 +178,20 @@ const NewsEventCard = ({
       )}
 
       {/* Content */}
-      <div className={`p-8 ${item.image ? "-mt-8 relative z-[1]" : ""}`}>
+      <div className={`p-8 ${item.imageUrl ? "-mt-8 relative z-[1]" : ""}`}>
         {/* Type & Date */}
         <div className="flex items-center gap-3 mb-4">
           <span
             className={`px-3 py-1 rounded-lg text-2xs font-black uppercase tracking-widest ${
-              item.type === "news"
+              !isEvent
                 ? "bg-primary/10 text-primary"
                 : "bg-body/10 text-body"
             }`}
           >
-            {item.type === "news" ? "📰 News" : "📅 Event"}
+            {!isEvent ? "News" : "Event"}
           </span>
           <span className="text-xs font-bold text-accent">
-            {formatDate(item.date)}
+            {formatDate(item.createdAt)}
           </span>
         </div>
 
@@ -166,7 +202,7 @@ const NewsEventCard = ({
 
         {/* Description */}
         <p className="text-sm text-muted leading-relaxed line-clamp-3 font-medium">
-          {item.description}
+          {item.content}
         </p>
 
         {/* Read More */}

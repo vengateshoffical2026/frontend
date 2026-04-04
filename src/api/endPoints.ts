@@ -30,4 +30,8 @@ export const API_ENDPOINTS = {
     DOWNLOAD_STATUS: '/sasanam-books/download-status/me',
     ADD_BOOK: '/sasanam-book-details',
   },
+  LIBRARY: '/library',
+  ARCHIVE: '/archive',
+  COMMUNITY: '/community',
+  NEWS: '/news',
 }
