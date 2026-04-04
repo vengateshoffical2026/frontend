@@ -104,6 +104,10 @@ const Pricing = () => {
         }
       }
       const rzp = new window.Razorpay(options)
+      rzp.on('payment.failed', function (response: any) {
+        console.error('Payment failed:', response.error)
+        toast.error(response.error?.description || 'Payment failed - please try again')
+      })
       rzp.open()
     } catch (error) {
       console.error('Create order error:', error)
@@ -174,6 +178,10 @@ const Pricing = () => {
         }
       }
       const rzp = new window.Razorpay(options)
+      rzp.on('payment.failed', function (response: any) {
+        console.error('Donation payment failed:', response.error)
+        toast.error(response.error?.description || 'Payment failed - please try again')
+      })
       rzp.open()
     } catch (error) {
       console.error('Donation order creation failed:', error)
