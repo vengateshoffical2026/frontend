@@ -141,7 +141,8 @@ const Archive = () => {
           ) : items && items.length > 0 ? (
             <div className="w-full space-y-6">
               {items.map((item: any, idx: number) => {
-                const images: string[] = item.images || []
+                // Backward compat: old items have imageUrl (string), new items have images (array)
+                const images: string[] = item.images && item.images.length > 0 ? item.images : (item.imageUrl ? [item.imageUrl] : [])
                 const hasImages = images.length > 0
                 return (
                   <article
