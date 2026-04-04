@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import PageSEO from '../components/PageSEO'
 import { useGetArchiveItems } from '../api/hooks/archiveQuery'
 
@@ -63,8 +64,41 @@ const EmptyState = () => (
   </div>
 )
 
+/* Lightbox for viewing images */
+const Lightbox = ({ images, startIndex, onClose }: { images: string[]; startIndex: number; onClose: () => void }) => {
+  const [current, setCurrent] = useState(startIndex)
+  return (
+    <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4" onClick={onClose}>
+      <div className="relative max-w-4xl w-full max-h-[85vh]" onClick={(e) => e.stopPropagation()}>
+        <img src={imgUrl(images[current])} alt="" className="w-full h-full object-contain rounded-lg" />
+        {/* Close */}
+        <button onClick={onClose} className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-white text-body flex items-center justify-center shadow-lg hover:bg-gray-100">
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+        </button>
+        {/* Nav */}
+        {images.length > 1 && (
+          <>
+            <button onClick={() => setCurrent((c) => (c - 1 + images.length) % images.length)}
+              className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 text-body flex items-center justify-center shadow-lg hover:bg-white">
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+            </button>
+            <button onClick={() => setCurrent((c) => (c + 1) % images.length)}
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 text-body flex items-center justify-center shadow-lg hover:bg-white">
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+            </button>
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-black/60 text-white text-xs font-bold">
+              {current + 1} / {images.length}
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  )
+}
+
 const Archive = () => {
   const { data: items, isLoading } = useGetArchiveItems()
+  const [lightbox, setLightbox] = useState<{ images: string[]; index: number } | null>(null)
 
   return (
     <main className="relative min-h-screen bg-bg font-sans text-body flex flex-col overflow-x-hidden">
@@ -106,30 +140,61 @@ const Archive = () => {
             <CardSkeletons />
           ) : items && items.length > 0 ? (
             <div className="w-full space-y-6">
-              {items.map((item: any, idx: number) => (
-                <article
-                  key={item._id}
-                  className="group relative bg-paper border border-border/70 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300"
-                  style={{ animationDelay: `${idx * 60}ms` }}
-                >
-                  <div className="flex flex-col sm:flex-row">
-                    {item.imageUrl && (
-                      <div className="w-full sm:w-56 md:w-64 h-48 sm:h-auto flex-shrink-0 overflow-hidden">
-                        <img src={imgUrl(item.imageUrl)} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              {items.map((item: any, idx: number) => {
+                const images: string[] = item.images || []
+                const hasImages = images.length > 0
+                return (
+                  <article
+                    key={item._id}
+                    className="group relative bg-paper border border-border/70 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300"
+                    style={{ animationDelay: `${idx * 60}ms` }}
+                  >
+                    {/* Main content row */}
+                    <div className="flex flex-col sm:flex-row">
+                      {hasImages && (
+                        <div
+                          className="w-full sm:w-56 md:w-64 h-48 sm:h-auto flex-shrink-0 overflow-hidden cursor-pointer relative"
+                          onClick={() => setLightbox({ images, index: 0 })}
+                        >
+                          <img src={imgUrl(images[0])} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                          {images.length > 1 && (
+                            <div className="absolute bottom-2 right-2 px-2 py-1 rounded-full bg-black/60 text-white text-2xs font-bold flex items-center gap-1">
+                              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14" /></svg>
+                              {images.length}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                      <div className="flex-1 p-6 sm:p-8">
+                        {item.period && (
+                          <span className="inline-block px-3 py-1 rounded-full text-2xs font-bold uppercase tracking-wider bg-primary/10 text-primary mb-3">
+                            {item.period}
+                          </span>
+                        )}
+                        <h2 className="text-xl font-bold text-heading leading-snug mb-3">{item.title}</h2>
+                        <p className="text-sm text-muted leading-relaxed whitespace-pre-line">{item.content}</p>
+                      </div>
+                    </div>
+
+                    {/* Image gallery strip (when more than 1 image) */}
+                    {images.length > 1 && (
+                      <div className="px-6 pb-5 pt-1">
+                        <div className="flex gap-2 overflow-x-auto pb-1">
+                          {images.map((img: string, i: number) => (
+                            <button
+                              key={i}
+                              onClick={() => setLightbox({ images, index: i })}
+                              className="flex-shrink-0 w-20 h-16 rounded-lg overflow-hidden border border-border/50 hover:border-primary/40 hover:shadow-md transition-all"
+                            >
+                              <img src={imgUrl(img)} alt="" className="w-full h-full object-cover" />
+                            </button>
+                          ))}
+                        </div>
                       </div>
                     )}
-                    <div className="flex-1 p-6 sm:p-8">
-                      {item.period && (
-                        <span className="inline-block px-3 py-1 rounded-full text-2xs font-bold uppercase tracking-wider bg-primary/10 text-primary mb-3">
-                          {item.period}
-                        </span>
-                      )}
-                      <h2 className="text-xl font-bold text-heading leading-snug mb-3">{item.title}</h2>
-                      <p className="text-sm text-muted leading-relaxed whitespace-pre-line">{item.content}</p>
-                    </div>
-                  </div>
-                </article>
-              ))}
+                  </article>
+                )
+              })}
             </div>
           ) : (
             <EmptyState />
@@ -137,6 +202,12 @@ const Archive = () => {
 
         </section>
       </div>
+
+      {/* Lightbox */}
+      {lightbox && (
+        <Lightbox images={lightbox.images} startIndex={lightbox.index} onClose={() => setLightbox(null)} />
+      )}
+
       <style>{`@keyframes shimmer { to { transform: translateX(200%); } }`}</style>
     </main>
   )
