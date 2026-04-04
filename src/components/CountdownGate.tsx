@@ -146,12 +146,12 @@ function CountdownPage({ launchDate }: { launchDate: string | null }) {
 
   // Stable particle positions — only generate once
   const particles = useMemo(() =>
-    Array.from({ length: 28 }, (_, i) => ({
+    Array.from({ length: 16 }, (_, i) => ({
       char: ANCIENT_CHARS[i % ANCIENT_CHARS.length],
-      delay: (i * 0.7) % 14,
-      duration: 14 + (i % 5) * 3,
-      x: 3 + ((i * 37) % 94),
-      size: 1.4 + (i % 4) * 0.6,
+      delay: (i * 1.2) % 18,
+      duration: 18 + (i % 5) * 4,
+      x: 4 + ((i * 41) % 92),
+      size: 0.9 + (i % 4) * 0.3,
     }))
   , [])
 
@@ -288,10 +288,10 @@ function CountdownPage({ launchDate }: { launchDate: string | null }) {
       <style>{`
         @keyframes cdFloat {
           0% { opacity: 0; transform: translateY(20px) rotate(0deg); }
-          5% { opacity: 0.2; }
-          50% { opacity: 0.22; }
-          95% { opacity: 0.15; }
-          100% { opacity: 0; transform: translateY(-100vh) rotate(15deg); }
+          5% { opacity: 0.08; }
+          50% { opacity: 0.1; }
+          95% { opacity: 0.06; }
+          100% { opacity: 0; transform: translateY(-100vh) rotate(10deg); }
         }
         @keyframes cdFadeUp {
           from { opacity: 0; transform: translateY(24px); }
