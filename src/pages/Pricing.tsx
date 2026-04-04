@@ -35,7 +35,8 @@ const Pricing = () => {
   }
   const user = getUserData()
   const token = localStorage.getItem('token')
-  const [isSubscribed, setIsSubscribed] = useState(user?.isSubscribed || false)
+  const isAdmin = ['admin', 'super_admin'].includes(user?.role)
+  const [isSubscribed, setIsSubscribed] = useState(user?.isSubscribed || isAdmin || false)
 
   const handleUpgradeClick = async () => {
     if (!token || !user) {

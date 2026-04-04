@@ -206,10 +206,8 @@ const Header = () => {
             </NavLink>
           )}
 
-          {/* === LOGGED IN: Sasanam === */}
-          {dlStatus?.isSubscribed && (
-            <>
-            {token && (
+          {/* === LOGGED IN: Sasanam (subscribers + admins) === */}
+          {token && (dlStatus?.isSubscribed || dlStatus?.unlimitedAccess || ['admin', 'super_admin'].includes(user?.role)) && (
             <NavLink
               to="/sasanam"
               className={({ isActive }) =>
@@ -227,8 +225,6 @@ const Header = () => {
                 </>
               )}
             </NavLink>
-          )}
-            </>
           )}
 
           {/* === LOGGED IN: More dropdown === */}
@@ -496,8 +492,8 @@ const Header = () => {
             </NavLink>
           )}
 
-          {/* LOGGED IN: Sasanam */}
-          {token && (
+          {/* LOGGED IN: Sasanam (subscribers + admins) */}
+          {token && (dlStatus?.isSubscribed || dlStatus?.unlimitedAccess || ['admin', 'super_admin'].includes(user?.role)) && (
             <NavLink
               to="/sasanam"
               onClick={() => setIsMobileMenuOpen(false)}
