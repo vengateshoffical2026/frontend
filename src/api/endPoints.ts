@@ -34,4 +34,5 @@ export const API_ENDPOINTS = {
   ARCHIVE: '/archive',
   COMMUNITY: '/community',
   NEWS: '/news',
+  SITE_SETTINGS: '/site-settings',
 }

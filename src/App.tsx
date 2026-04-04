@@ -2,6 +2,7 @@ import { Route, Routes, useLocation } from 'react-router-dom'
 import { useEffect, lazy, Suspense } from 'react'
 import 'react-toastify/dist/ReactToastify.css'
 import Layout from './components/Layout'
+import CountdownGate from './components/CountdownGate'
 
 const ToastContainer = lazy(() =>
   import('react-toastify').then(m => ({ default: m.ToastContainer }))
@@ -41,7 +42,7 @@ function ScrollToTop() {
 
 function App() {
   return (
-    <>
+    <CountdownGate>
       <ScrollToTop />
       <Suspense fallback={<div className="min-h-screen bg-cream" />}>
         <Routes>
@@ -73,7 +74,7 @@ function App() {
           hideProgressBar={true}
         />
       </Suspense>
-    </>
+    </CountdownGate>
   )
 }
 

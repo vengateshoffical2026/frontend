@@ -6,7 +6,8 @@ const API = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000'
 const imgUrl = (photo: string, w = 640) => {
   if (!photo) return ''
   if (photo.startsWith('http')) return photo
-  return `${API}/uploads/${photo}?w=${w}`
+  const key = photo.startsWith('uploads/') ? photo.slice(8) : photo
+  return `${API}/uploads/${key}?w=${w}`
 }
 
 const initials = (name: string) =>
