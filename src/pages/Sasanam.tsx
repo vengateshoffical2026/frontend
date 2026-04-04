@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useGetAllBooks, useDownloadStatus } from '../api/hooks/journalQuery'
+import {  useDownloadStatus, useGetAllBulkBooks } from '../api/hooks/journalQuery'
 import { downloadBook } from '../api/controllers/journal'
 import { toast } from 'react-toastify'
 import PageSEO from '../components/PageSEO'
@@ -12,7 +12,7 @@ const Sasanam = () => {
   const token = localStorage.getItem('token')
   const [downloadingId, setDownloadingId] = useState<string | null>(null)
 
-  const { data: books, isLoading } = useGetAllBooks()
+  const { data: books, isLoading } = useGetAllBulkBooks(1, 10)
   const { data: dlStatus } = useDownloadStatus()
   const allBooks: any[] = books || []
 

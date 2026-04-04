@@ -23,6 +23,7 @@ const Pricing = () => {
   const [donationAmount, setDonationAmount] = useState<number | undefined>(undefined)
   const [donationPage, setDonationPage] = useState(1)
   const { data: donationListData, isLoading: isDonationListLoading } = useDonationList(donationPage, 10)
+  const [hideState] = useState(false)
   const queryClient = useQueryClient()
   const navigate = useNavigate()
 
@@ -282,7 +283,8 @@ const Pricing = () => {
           </div>
 
           {/* Card 3: Fund a Specific Project */}
-          <div className="group rounded-3xl bg-beige/80 p-8 shadow-[0_8px_32px_rgba(61,37,22,0.1)] backdrop-blur-xl border border-white/30 flex flex-col transition-all duration-300 hover:bg-beige/90 hover:-translate-y-2 hover:shadow-[0_12px_40px_rgba(61,37,22,0.15)] ring-1 ring-white/20">
+          {hideState && (
+            <div className="group rounded-3xl bg-beige/80 p-8 shadow-[0_8px_32px_rgba(61,37,22,0.1)] backdrop-blur-xl border border-white/30 flex flex-col transition-all duration-300 hover:bg-beige/90 hover:-translate-y-2 hover:shadow-[0_12px_40px_rgba(61,37,22,0.15)] ring-1 ring-white/20">
             <h3 className="text-xl font-bold text-body mb-6">Fund a Specific Project</h3>
 
             <div className="flex-1 mb-10 flex flex-col justify-center">
@@ -321,6 +323,7 @@ const Pricing = () => {
               {isCreatingDonation ? 'Processing...' : 'Support Project'}
             </button>
           </div>
+          )}
         </section>
 
         {/* Donation List Section */}

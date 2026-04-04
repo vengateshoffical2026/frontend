@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { addBook, getAllBooks, getAllSections, getBooksBySectionId, getDownloadStatus } from '../controllers/journal'
+import { addBook, getAllBooks, getAllBulkBooks, getAllSections, getBooksBySectionId, getDownloadStatus } from '../controllers/journal'
 
 export const useGetAllSections = () => {
   return useQuery({
@@ -40,5 +40,12 @@ export const useAddBook = () => {
   return useMutation({
     mutationKey: ['addBook'],
     mutationFn: (data: FormData) => addBook(data),
+  })
+}
+
+export const useGetAllBulkBooks = (page:number,limit:number) => {
+  return useQuery({
+    queryKey: ['getAllBulkBooks'],
+    queryFn: () => getAllBulkBooks(page,limit),
   })
 }

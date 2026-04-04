@@ -32,3 +32,8 @@ export const addBook = async (data: FormData) => {
   const response = await apiClient.post(API_ENDPOINTS.JOURNAL.ADD_BOOK, data)
   return response.data
 }
+
+export const getAllBulkBooks = async (page: number, limit: number) => {
+  const response = await apiClient.get(`${API_ENDPOINTS.JOURNAL.GET_ALL_BULK_BOOKS(page, limit)}`)
+  return response.data?.data?.books
+}

@@ -21,6 +21,7 @@ const Header = () => {
     } catch {}
     return null
   }
+  
   const user = getUserData()
   const displayName = user?.fullName || user?.email?.split('@')[0] || ''
 
@@ -59,12 +60,11 @@ const Header = () => {
     navigate('/')
     window.location.reload()
   }
-
+  //  { to: '/news-events', label: 'News & Events' },
   // More dropdown items (only shown when logged in)
   const moreItems = [
     { to: '/archive', label: 'Archive' },
     { to: '/library', label: 'Library' },
-    { to: '/news-events', label: 'News & Events' },
     { to: '/community', label: 'Community' },
     { to: '/contact', label: 'Contact' },
     { to: '/pricing', label: 'Subscribe' },
@@ -117,6 +117,7 @@ const Header = () => {
                   : 'text-muted hover:text-primary hover:bg-primary/5'
               }`
             }
+
           >
             {({ isActive }) => (
               <>
@@ -165,7 +166,7 @@ const Header = () => {
           </NavLink>
 
           {/* === LOGGED OUT: News & Events === */}
-          {!token && (
+          {/* {!token && (
             <NavLink
               to="/news-events"
               className={({ isActive }) =>
@@ -183,7 +184,7 @@ const Header = () => {
                 </>
               )}
             </NavLink>
-          )}
+          )} */}
 
           {/* === LOGGED IN: Journal === */}
           {token && (
@@ -459,7 +460,7 @@ const Header = () => {
           </NavLink>
 
           {/* LOGGED OUT: News & Events */}
-          {!token && (
+          {/* {!token && (
             <NavLink
               to="/news-events"
               onClick={() => setIsMobileMenuOpen(false)}
@@ -473,7 +474,7 @@ const Header = () => {
             >
               News & Events
             </NavLink>
-          )}
+          )} */}
 
           {/* LOGGED IN: Journal */}
           {token && (
@@ -508,6 +509,7 @@ const Header = () => {
               Sasanam
             </NavLink>
           )}
+        
 
           {/* LOGGED IN: More accordion */}
           {token && (
