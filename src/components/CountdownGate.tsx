@@ -117,7 +117,7 @@ function Colon() {
 /* ─── Inscription lines ──────────────────────────────────── */
 function InscriptionLines() {
   return (
-    <div className="w-full max-w-md mx-auto my-8 flex flex-col items-center gap-2 opacity-25">
+    <div className="w-full max-w-md mx-auto my-5 flex flex-col items-center gap-1.5 opacity-25">
       {[0.6, 0.85, 1, 0.75, 0.5].map((w, i) => (
         <div
           key={i}
@@ -156,10 +156,10 @@ function CountdownPage({ launchDate }: { launchDate: string | null }) {
   , [])
 
   return (
-    <div className="min-h-screen bg-bg font-sans flex flex-col items-center justify-center relative overflow-hidden px-5">
+    <div className="min-h-screen bg-bg font-sans flex flex-col items-center justify-center relative px-5 py-10 overflow-x-hidden">
 
       {/* ── Background ── */}
-      <div className="absolute inset-0 pointer-events-none">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-[#e8d3b0]/25 rounded-full blur-[140px] animate-pulse-soft" />
         <div className="absolute bottom-[-5%] right-[-5%] w-[500px] h-[500px] bg-accent/8 rounded-full blur-[120px]" style={{ animation: 'cdDrift 20s ease-in-out infinite alternate' }} />
         <div className="absolute top-[30%] left-[-5%] w-[300px] h-[300px] bg-primary/5 rounded-full blur-[100px]" style={{ animation: 'cdDrift 25s ease-in-out infinite alternate-reverse' }} />
@@ -195,9 +195,9 @@ function CountdownPage({ launchDate }: { launchDate: string | null }) {
 
         {/* Logo */}
         <div style={{ animation: 'cdFadeUp 0.8s cubic-bezier(0.22,1,0.36,1) 0.1s both' }}>
-          <div className="relative mb-10">
+          <div className="relative mb-6">
             <div className="absolute inset-0 rounded-2xl bg-primary/15 blur-xl scale-150 animate-pulse-soft" />
-            <div className="relative h-24 w-24 rounded-2xl bg-white/60 ring-1 ring-primary/10 flex items-center justify-center shadow-[0_8px_30px_rgba(139,69,19,0.25)] overflow-hidden p-2">
+            <div className="relative h-20 w-20 rounded-2xl bg-white/60 ring-1 ring-primary/10 flex items-center justify-center shadow-[0_8px_30px_rgba(139,69,19,0.25)] overflow-hidden p-2">
               <img src="/logo.webp" alt="Sasanam" className="h-full w-full object-contain mix-blend-multiply" />
             </div>
           </div>
@@ -230,7 +230,7 @@ function CountdownPage({ launchDate }: { launchDate: string | null }) {
 
         {/* Tagline */}
         <p
-          className="text-base sm:text-lg text-muted font-medium leading-relaxed max-w-md mb-10"
+          className="text-base sm:text-lg text-muted font-medium leading-relaxed max-w-md mb-8"
           style={{ animation: 'cdFadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 1.0s both' }}
         >
           Preserving India's ancient inscriptions for future generations.
@@ -241,7 +241,7 @@ function CountdownPage({ launchDate }: { launchDate: string | null }) {
         {/* ── Countdown timer ── */}
         {launchDate && (
           <div
-            className="relative mb-12 p-5 sm:p-7 rounded-3xl bg-paper/80 backdrop-blur-sm border border-border/60 shadow-[0_12px_40px_rgba(61,37,22,0.1)]"
+            className="relative mb-8 p-5 sm:p-6 rounded-3xl bg-paper/80 backdrop-blur-sm border border-border/60 shadow-[0_12px_40px_rgba(61,37,22,0.1)]"
             style={{ animation: 'cdScaleUp 0.6s cubic-bezier(0.22,1,0.36,1) 1.2s both' }}
           >
             {/* Corner ornaments */}
@@ -279,7 +279,7 @@ function CountdownPage({ launchDate }: { launchDate: string | null }) {
           ))}
         </div>
 
-        <p className="text-xs text-muted/40 mt-10 font-medium tracking-wide" style={{ animation: 'cdFadeUp 0.5s cubic-bezier(0.22,1,0.36,1) 2.2s both' }}>
+        <p className="text-xs text-muted/40 mt-6 font-medium tracking-wide" style={{ animation: 'cdFadeUp 0.5s cubic-bezier(0.22,1,0.36,1) 2.2s both' }}>
           &copy; {new Date().getFullYear()} Sasanam. All rights reserved.
         </p>
       </div>
