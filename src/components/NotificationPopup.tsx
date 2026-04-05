@@ -132,8 +132,8 @@ const NotificationPopup = () => {
                 <button onClick={handleDismiss} className="p-1 hover:bg-white/10 rounded-lg transition-colors"><svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" /></svg></button>
               </div>
             </div>
-
-            <div className="p-6">
+            <div className="">
+            <div className="">
               {view === "login" && !token ? (
                 <div className="space-y-4">
                   <div className="text-center mb-4">
@@ -163,7 +163,8 @@ const NotificationPopup = () => {
                   </form>
                 </div>
               ) : (
-                <div className="space-y-4">
+                <div className="max-h-[600px] overflow-y-auto">
+                <div className="space-y-4 p-6">
                   <div className="mb-4">
                     <p className="text-xs text-muted font-medium leading-relaxed italic border-l-2 border-primary/20 pl-3">
                       Greetings! We have unearthed {newItems.length} new records recently.
@@ -185,7 +186,9 @@ const NotificationPopup = () => {
                     )}
                   </div>
                 </div>
+                </div>
               )}
+            </div>
             </div>
           </div>
         )}

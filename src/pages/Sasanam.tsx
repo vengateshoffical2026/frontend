@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import {  useDownloadStatus, useGetAllBulkBooks } from '../api/hooks/journalQuery'
-import { downloadBook } from '../api/controllers/journal'
+import {  downloadBulkBook } from '../api/controllers/journal'
 import { toast } from 'react-toastify'
 import PageSEO from '../components/PageSEO'
 import { useNavigate } from 'react-router-dom'
@@ -16,7 +16,7 @@ const Sasanam = () => {
   const { data: books, isLoading } = useGetAllBulkBooks(1, 10)
   const { data: dlStatus } = useDownloadStatus()
   const allBooks: any[] = books || []
-
+  console.log("Download status:", books)
   const unlimitedAccess = dlStatus?.unlimitedAccess ?? false
   const remaining = dlStatus?.remaining ?? 4
   const freeLimit = dlStatus?.freeLimit ?? 4
@@ -44,7 +44,7 @@ const Sasanam = () => {
 
     setDownloadingId(bookId)
     try {
-      const response = await downloadBook(bookId)
+      const response = await downloadBulkBook(bookId)
       const blob = new Blob([response.data], { type: 'application/pdf' })
       const url = window.URL.createObjectURL(blob)
       const link = document.createElement('a')
@@ -170,13 +170,13 @@ const Sasanam = () => {
               return (
                 <div
               key={book._id}
-              className={`${book?.coverImage ? `bg-[url(${book?.coverImage})] bg-cover bg-center` : "bg-paper"} group relative bg-paper border border-border/80 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_12px_40px_rgba(61,37,22,0.13)] hover:border-accent flex flex-col`}
+              className={`${book?.coverImage ? `bg-[url(${book?.coverImage})] bg-cover bg-center` : `bg-[url('/defaultCoverBook.png')] bg-cover bg-center`} group relative bg-paper border border-border/80 rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_12px_40px_rgba(61,37,22,0.13)] hover:border-accent flex flex-col`}
             >
               {/* Decorative top bar */}
               <div className="h-2 bg-gradient-to-r from-primary via-primary-light to-accent" />
 
-              {/* Card body */}
-              <div className="p-6 flex-1 flex flex-col">
+              {/* Card body with hover overlay for description */}
+              <div className="relative p-6 flex-1 flex flex-col">
                 {/* Icon + PDF badge */}
                 <div className="flex items-start justify-between mb-4">
                   <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/12 to-primary/5 flex items-center justify-center">
@@ -198,8 +198,14 @@ const Sasanam = () => {
                 <p className="text-sm text-subtle mb-2">
                   by <span className="font-semibold text-muted">{book.authorName}</span>
                 </p>
+
+                {/* Hover overlay for description */}
                 {book.description && (
-                  <p className="text-sm text-subtle/70 line-clamp-2 mb-4 leading-relaxed">{book.description}</p>
+                  <div className="pointer-events-none">
+                    <div className="absolute left-0 right-0 bottom-0 bg-gradient-to-t from-black/85 via-black/60 to-transparent translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out flex flex-col justify-end p-4 pt-12 min-h-[90px]">
+                      <p className="text-2xs text-white/90 leading-relaxed line-clamp-3">{book.description}</p>
+                    </div>
+                  </div>
                 )}
 
                 <div className="flex-1" />
@@ -209,7 +215,7 @@ const Sasanam = () => {
                   {/* View — navigates to /view/:bookId */}
                   {hasPdf && (
                     <button
-                      onClick={() => navigate(`/view/${book._id}`, { state: { bookName: book.bookName, authorName: book.authorName } })}
+                      onClick={() => navigate(`/view/${book._id}`, { state: { bookName: book.bookName, authorName: book.authorName, from: 'bulksBooks' } })}
                       className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border-2 border-primary/20 text-primary text-sm font-bold hover:bg-primary/5 hover:border-primary/40 active:scale-[0.97] transition-all"
                     >
                       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

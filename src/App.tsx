@@ -11,6 +11,7 @@ const ToastContainer = lazy(() =>
 
 // Eagerly load Home for fastest LCP
 import Home from './pages/Home'
+import Donation from './pages/Donation'
 
 // Lazy load all other routes
 const Upload = lazy(() => import('./pages/Upload'))
@@ -25,7 +26,7 @@ const About = lazy(() => import('./pages/About'))
 const Contact = lazy(() => import('./pages/Contact'))
 const Blog = lazy(() => import('./pages/Blog'))
 const BlogPost = lazy(() => import('./pages/BlogPost'))
-// const NewsEvents = lazy(() => import('./pages/NewsEvents'))
+const NewsEvents = lazy(() => import('./pages/NewsEvents'))
 const Sasanam = lazy(() => import('./pages/Sasanam'))
 const PdfViewer = lazy(() => import('./pages/PdfViewer'))
 const Profile = lazy(() => import('./pages/Profile'))
@@ -53,12 +54,13 @@ function App() {
           <Route path="/archive" element={<Layout><Archive /></Layout>} />
           <Route path="/library" element={<Layout><Library /></Layout>} />
           <Route path="/community" element={<Layout><Community /></Layout>} />
-          {isBusinessMode && <Route path="/pricing" element={<Layout><Pricing /></Layout>} />}
+          <Route path="/pricing" element={<Layout><Pricing /></Layout>} />
           <Route path="/about" element={<Layout><About /></Layout>} />
           <Route path="/contact" element={<Layout><Contact /></Layout>} />
           <Route path="/blog" element={<Layout><Blog /></Layout>} />
           <Route path="/blog/:slug" element={<Layout><BlogPost /></Layout>} />
-          {/* <Route path="/news-events" element={<Layout><NewsEvents /></Layout>} /> */}
+          <Route path="/news-events" element={<Layout><NewsEvents /></Layout>} />
+          <Route path='/donation' element={<Layout><Donation /></Layout>} />
           <Route path="/login" element={<Layout hideFooter><Login /></Layout>} />
           <Route path="/signup" element={<Layout hideFooter><Signup /></Layout>} />
           <Route path="/forgot-password" element={<Layout hideFooter><ForgotPassword /></Layout>} />

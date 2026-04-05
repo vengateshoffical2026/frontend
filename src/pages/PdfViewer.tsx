@@ -10,7 +10,7 @@ export default function PdfViewer() {
   const { bookId } = useParams<{ bookId: string }>()
   const navigate = useNavigate()
   const location = useLocation()
-  const state = (location.state || {}) as { bookName?: string; authorName?: string }
+  const state = (location.state || {}) as { bookName?: string; authorName?: string; from?: string }
 
   const [numPages, setNumPages] = useState(0)
   const [docReady, setDocReady] = useState(false)
@@ -24,13 +24,13 @@ export default function PdfViewer() {
 
   const bookName = state.bookName || ''
   const authorName = state.authorName || ''
-
+  const from = state.from || ''
   // Stable file config
   const fileConfig = useMemo(() => {
     if (!bookId) return null
     const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000'
     return {
-      url: `${baseURL}/sasanam-books/${bookId}/view`,
+      url: from === "normalBooks" ? `${baseURL}/sasanam-books/${bookId}/view` : `${baseURL}/sasanam-bulkbooks/view/pdf/${bookId}`,
       httpHeaders: {
         Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
       },

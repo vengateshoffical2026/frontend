@@ -61,14 +61,15 @@ const Header = () => {
     navigate('/')
     window.location.reload()
   }
-  //  { to: '/news-events', label: 'News & Events' },
+  
   // More dropdown items (only shown when logged in)
   const moreItems = [
     { to: '/archive', label: 'Archive' },
     { to: '/library', label: 'Library' },
     { to: '/community', label: 'Community' },
+    { to: '/news-events', label: 'News & Events' },
     { to: '/contact', label: 'Contact' },
-    ...(isBusinessMode ? [{ to: '/pricing', label: 'Subscribe' }] : []),
+    { to: '/pricing', label: 'Subscribe' }
   ]
 
   const isDropdownActive = (items: { to: string }[]) =>
@@ -165,9 +166,27 @@ const Header = () => {
               </>
             )}
           </NavLink>
+            {/* Donation - always visible */}
+            <NavLink
+              to="/donation"
+              className={({ isActive }) =>
+                `relative px-4 py-2 rounded-lg transition-all duration-200 ${
+                  isActive
+                    ? 'text-primary font-bold'
+                    : 'text-muted hover:text-primary hover:bg-primary/5'
+                }`
+              }
+            >
+              {({ isActive }) => (
+                <>
+                  Donation
+                  {isActive && <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-5 h-0.5 rounded-full bg-primary" />}
+                </>
+              )}
+            </NavLink>
 
           {/* === LOGGED OUT: News & Events === */}
-          {/* {!token && (
+          {!token && (
             <NavLink
               to="/news-events"
               className={({ isActive }) =>
@@ -185,7 +204,7 @@ const Header = () => {
                 </>
               )}
             </NavLink>
-          )} */}
+          )} 
 
           {/* === LOGGED IN: Journal === */}
           {token && (
@@ -327,13 +346,13 @@ const Header = () => {
                       </svg>
                       My Profile
                     </NavLink>
-                    {isBusinessMode && <NavLink to="/pricing" onClick={() => setIsUserMenuOpen(false)}
+                  <NavLink to="/pricing" onClick={() => setIsUserMenuOpen(false)}
                       className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-body hover:bg-primary/5 transition-colors">
                       <svg className="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                       </svg>
                       Subscription
-                    </NavLink>}
+                    </NavLink>
                     <button onClick={handleLogout}
                       className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-red-600 hover:bg-red-50 transition-colors">
                       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -459,9 +478,23 @@ const Header = () => {
           >
             Blog
           </NavLink>
+            {/* Donation - always visible */}
+            <NavLink
+              to="/donation"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={({ isActive }) =>
+                `px-4 py-3 rounded-xl text-base font-bold transition-all ${
+                  isActive
+                    ? 'text-primary bg-primary/8 border-l-[3px] border-primary'
+                    : 'text-muted hover:text-primary hover:bg-primary/5'
+                }`
+              }
+            >
+              Donation
+            </NavLink>
 
           {/* LOGGED OUT: News & Events */}
-          {/* {!token && (
+          {!token && (
             <NavLink
               to="/news-events"
               onClick={() => setIsMobileMenuOpen(false)}
@@ -475,7 +508,7 @@ const Header = () => {
             >
               News & Events
             </NavLink>
-          )} */}
+          )} 
 
           {/* LOGGED IN: Journal */}
           {token && (
@@ -550,7 +583,6 @@ const Header = () => {
           )}
 
           {/* LOGGED IN: Subscription + Profile links */}
-          {isBusinessMode && token && (
             <NavLink
               to="/pricing"
               onClick={() => setIsMobileMenuOpen(false)}
@@ -564,7 +596,6 @@ const Header = () => {
             >
               Subscription
             </NavLink>
-          )}
           {token && (
             <NavLink
               to="/profile"

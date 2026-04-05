@@ -30,6 +30,7 @@ export const API_ENDPOINTS = {
     DOWNLOAD_STATUS: '/sasanam-books/download-status/me',
     ADD_BOOK: '/sasanam-book-details',
     GET_ALL_BULK_BOOKS: (page: number, limit: number) => `/sasanam-bulkbooks?${page ? `page=${page}` : 'page=1'}${limit ? `&limit=${limit}` : 'limit=10'}`,
+    DOWNLOAD_BULK_BOOK: (id: string) => `/sasanam-bulkbooks/download/pdf/${id}`,
   },
   LIBRARY: '/library',
   ARCHIVE: '/archive',
