@@ -35,5 +35,12 @@ export const addBook = async (data: FormData) => {
 
 export const getAllBulkBooks = async (page: number, limit: number) => {
   const response = await apiClient.get(`${API_ENDPOINTS.JOURNAL.GET_ALL_BULK_BOOKS(page, limit)}`)
-  return response.data?.data?.books
+  return response.data?.data;
+}
+
+export const downloadBulkBook = async (id: string) => {
+  const response = await apiClient.get(`${API_ENDPOINTS.JOURNAL.DOWNLOAD_BULK_BOOK(id)}`, {
+    responseType: 'blob',
+  })
+  return response
 }
