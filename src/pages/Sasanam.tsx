@@ -249,7 +249,7 @@ const Sasanam = () => {
                             </svg>
                             Subscribe
                           </button>
-                        ) : null}
+                        ) : null
                       ) : (
                         <button
                           onClick={() => navigate("/login")}
