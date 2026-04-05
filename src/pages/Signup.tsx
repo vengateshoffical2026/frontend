@@ -46,7 +46,7 @@ const SignupForm = () => {
             }
             try {
                 const res: any = await signupAPI(payload);
-                toast.success("Account created successfully!");
+                toast.success("Account created successfully");
                 localStorage.setItem("token", res.result.token);
                 localStorage.setItem("user", JSON.stringify(res.result.user));
                 navigate("/");
