@@ -3,6 +3,7 @@ import { useEffect, lazy, Suspense } from 'react'
 import 'react-toastify/dist/ReactToastify.css'
 import Layout from './components/Layout'
 import CountdownGate from './components/CountdownGate'
+import { isBusinessMode } from './config'
 
 const ToastContainer = lazy(() =>
   import('react-toastify').then(m => ({ default: m.ToastContainer }))
@@ -52,7 +53,7 @@ function App() {
           <Route path="/archive" element={<Layout><Archive /></Layout>} />
           <Route path="/library" element={<Layout><Library /></Layout>} />
           <Route path="/community" element={<Layout><Community /></Layout>} />
-          <Route path="/pricing" element={<Layout><Pricing /></Layout>} />
+          {isBusinessMode && <Route path="/pricing" element={<Layout><Pricing /></Layout>} />}
           <Route path="/about" element={<Layout><About /></Layout>} />
           <Route path="/contact" element={<Layout><Contact /></Layout>} />
           <Route path="/blog" element={<Layout><Blog /></Layout>} />

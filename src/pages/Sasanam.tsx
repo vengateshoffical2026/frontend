@@ -5,6 +5,7 @@ import { toast } from 'react-toastify'
 import PageSEO from '../components/PageSEO'
 import { useNavigate } from 'react-router-dom'
 import { useQueryClient } from '@tanstack/react-query'
+import { isBusinessMode } from '../config'
 
 const Sasanam = () => {
   const navigate = useNavigate()
@@ -37,7 +38,7 @@ const Sasanam = () => {
     }
     if (!canDownloadNow) {
       toast.error('You have used all free downloads. Subscribe for more!')
-      navigate('/pricing')
+      if (isBusinessMode) navigate('/pricing')
       return
     }
 
@@ -60,7 +61,7 @@ const Sasanam = () => {
       if (err?.response?.data?.error === 'free_limit_reached') {
         toast.error('Free download limit reached. Subscribe for unlimited downloads!')
         queryClient.invalidateQueries({ queryKey: ['downloadStatus'] })
-        navigate('/pricing')
+        if (isBusinessMode) navigate('/pricing')
       } else if (err?.response?.status === 403) {
         toast.error('Subscribe to download books')
       } else if (err?.response?.status === 404) {
@@ -126,7 +127,7 @@ const Sasanam = () => {
                       {remaining > 0 ? `${remaining} free left` : 'No free downloads left'}
                     </span>
                   </div>
-                  {remaining === 0 ? (
+                  {isBusinessMode && (remaining === 0 ? (
                     <button onClick={() => navigate('/pricing')} className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-full bg-primary text-white hover:-translate-y-0.5 hover:shadow-lg transition-all">
                       Subscribe to Download More
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
@@ -135,7 +136,7 @@ const Sasanam = () => {
                     <button onClick={() => navigate('/pricing')} className="text-2xs font-semibold text-primary hover:underline">
                       Want unlimited? Subscribe now
                     </button>
-                  )}
+                  ))}
                 </>
               )
             ) : (
@@ -238,7 +239,7 @@ const Sasanam = () => {
                             )}
                             Download
                           </button>
-                        ) : (
+                        ) : isBusinessMode ? (
                           <button
                             onClick={() => navigate("/pricing")}
                             className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-amber-50 text-amber-700 border border-amber-200 text-sm font-bold hover:bg-amber-100 transition-all"
@@ -248,7 +249,7 @@ const Sasanam = () => {
                             </svg>
                             Subscribe
                           </button>
-                        )
+                        ) : null}
                       ) : (
                         <button
                           onClick={() => navigate("/login")}

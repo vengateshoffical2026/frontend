@@ -2,6 +2,7 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useState, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { useDownloadStatus } from '../api/hooks/journalQuery'
+import { isBusinessMode } from '../config'
 
 const Header = () => {
   const token: string | null = localStorage.getItem('token')
@@ -67,7 +68,7 @@ const Header = () => {
     { to: '/library', label: 'Library' },
     { to: '/community', label: 'Community' },
     { to: '/contact', label: 'Contact' },
-    { to: '/pricing', label: 'Subscribe' },
+    ...(isBusinessMode ? [{ to: '/pricing', label: 'Subscribe' }] : []),
   ]
 
   const isDropdownActive = (items: { to: string }[]) =>
@@ -326,13 +327,13 @@ const Header = () => {
                       </svg>
                       My Profile
                     </NavLink>
-                    <NavLink to="/pricing" onClick={() => setIsUserMenuOpen(false)}
+                    {isBusinessMode && <NavLink to="/pricing" onClick={() => setIsUserMenuOpen(false)}
                       className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-body hover:bg-primary/5 transition-colors">
                       <svg className="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                       </svg>
                       Subscription
-                    </NavLink>
+                    </NavLink>}
                     <button onClick={handleLogout}
                       className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-red-600 hover:bg-red-50 transition-colors">
                       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -549,7 +550,7 @@ const Header = () => {
           )}
 
           {/* LOGGED IN: Subscription + Profile links */}
-          {token && (
+          {isBusinessMode && token && (
             <NavLink
               to="/pricing"
               onClick={() => setIsMobileMenuOpen(false)}

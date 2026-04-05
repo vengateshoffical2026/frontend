@@ -2,6 +2,7 @@ import { useScrollReveal } from "../hooks/useScrollReveal";
 import { useDonationList } from "../api/hooks/donationQuery";
 import PageSEO from "../components/PageSEO";
 import { useNavigate } from "react-router-dom";
+import { isBusinessMode } from "../config";
 
 const Home = () => {
   const heroReveal = useScrollReveal();
@@ -36,7 +37,7 @@ const Home = () => {
       />
       <div className="min-h-screen">
         {/* Donor Infinite Scroller */}
-        {donors.length > 0 && (
+        {isBusinessMode && donors.length > 0 && (
           <div className="w-full bg-gradient-to-r from-primary via-primary-light to-primary py-3 overflow-hidden border-y border-primary/20 relative z-10">
             <div className="flex whitespace-nowrap animate-marquee hover:[animation-play-state:paused]">
               {[...donors, ...donors].map((donor, idx) => (
@@ -259,6 +260,7 @@ const Home = () => {
               </article>
 
               {/* CTA Card */}
+              {isBusinessMode && (
               <article className="rounded-3xl bg-gradient-to-br from-primary to-primary-dark p-6 shadow-xl text-white overflow-hidden relative">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
                 <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2" />
@@ -274,6 +276,7 @@ const Home = () => {
                   </button>
                 </div>
               </article>
+              )}
             </div>
           </section>
         </div>

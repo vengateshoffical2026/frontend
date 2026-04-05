@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { isBusinessMode } from '../config'
 
 const Footer = () => {
   const token = localStorage.getItem("token")
@@ -48,6 +49,10 @@ const Footer = () => {
     link?.label === "Subscribe" ||
     // link?.label === "News & Events" ||
     link?.label === "Contact"
+
+  if (!isBusinessMode && link?.label === "Subscribe") {
+    return null; // hide Subscribe link when business mode is off
+  }
 
   if (isRestricted && !token) {
     return null; // hide link if no token
