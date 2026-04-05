@@ -23,7 +23,6 @@ const Pricing = () => {
   const [donationAmount, setDonationAmount] = useState<number | undefined>(undefined)
   const [donationPage, setDonationPage] = useState(1)
   const { data: donationListData, isLoading: isDonationListLoading } = useDonationList(donationPage, 10)
-  const [hideState] = useState(false)
   const queryClient = useQueryClient()
   const navigate = useNavigate()
 

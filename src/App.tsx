@@ -3,7 +3,6 @@ import { useEffect, lazy, Suspense } from 'react'
 import 'react-toastify/dist/ReactToastify.css'
 import Layout from './components/Layout'
 import CountdownGate from './components/CountdownGate'
-import { isBusinessMode } from './config'
 
 const ToastContainer = lazy(() =>
   import('react-toastify').then(m => ({ default: m.ToastContainer }))

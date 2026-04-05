@@ -2,7 +2,6 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { useState, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { useDownloadStatus } from '../api/hooks/journalQuery'
-import { isBusinessMode } from '../config'
 
 const Header = () => {
   const token: string | null = localStorage.getItem('token')
