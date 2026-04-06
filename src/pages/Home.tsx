@@ -14,7 +14,7 @@ const Home = () => {
   const navigate = useNavigate();
 
   const { data: donationData } = useDonationList(1, 20);
-  const donors = donationData?.data?.donations ?? [];
+   const donors = donationData?.data?.donations ?? [];
 
   const revealClass = (isVisible: boolean) =>
     `reveal-smooth ${
@@ -37,7 +37,7 @@ const Home = () => {
       />
       <div className="min-h-screen">
         {/* Donor Infinite Scroller */}
-        {isBusinessMode && donors.length > 0 && (
+        { donors.length > 0 && (
           <div className="w-full bg-gradient-to-r from-primary via-primary-light to-primary py-3 overflow-hidden border-y border-primary/20 relative z-10">
             <div className="flex whitespace-nowrap animate-marquee hover:[animation-play-state:paused]">
               {[...donors, ...donors].map((donor, idx) => (

@@ -166,7 +166,8 @@ const Header = () => {
             )}
           </NavLink>
             {/* Donation - always visible */}
-            <NavLink
+            {!token && (
+              <NavLink
               to="/donation"
               className={({ isActive }) =>
                 `relative px-4 py-2 rounded-lg transition-all duration-200 ${
@@ -183,6 +184,7 @@ const Header = () => {
                 </>
               )}
             </NavLink>
+            )}
 
           {/* === LOGGED OUT: News & Events === */}
           {!token && (
@@ -478,7 +480,8 @@ const Header = () => {
             Blog
           </NavLink>
             {/* Donation - always visible */}
-            <NavLink
+            {!token && (
+              <NavLink
               to="/donation"
               onClick={() => setIsMobileMenuOpen(false)}
               className={({ isActive }) =>
@@ -491,6 +494,7 @@ const Header = () => {
             >
               Donation
             </NavLink>
+            )}
 
           {/* LOGGED OUT: News & Events */}
           {!token && (
@@ -582,7 +586,8 @@ const Header = () => {
           )}
 
           {/* LOGGED IN: Subscription + Profile links */}
-            <NavLink
+            {token && (
+              <NavLink
               to="/pricing"
               onClick={() => setIsMobileMenuOpen(false)}
               className={({ isActive }) =>
@@ -595,6 +600,7 @@ const Header = () => {
             >
               Subscription
             </NavLink>
+            )}
           {token && (
             <NavLink
               to="/profile"
