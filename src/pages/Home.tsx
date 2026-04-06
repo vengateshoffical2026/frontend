@@ -14,7 +14,7 @@ const Home = () => {
   const navigate = useNavigate();
 
   const { data: donationData } = useDonationList(1, 20);
-  const donors = donationData?.data?.donations ?? [];
+   const donors = donationData?.data?.donations ?? [];
 
   const revealClass = (isVisible: boolean) =>
     `reveal-smooth ${
