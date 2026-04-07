@@ -56,7 +56,6 @@ const NotificationPopup = () => {
       setIsVisible(false);
     }
   };
-
   const [loginValues, setLoginValues] = useState({ email: "", password: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
