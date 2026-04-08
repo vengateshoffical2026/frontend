@@ -5,12 +5,15 @@ export interface CreateDonationOrderData {
   amount: number
   currency: string
   receipt: string
+  userId?: string
 }
 
 export interface VerifyDonationPaymentData {
   razorpay_order_id: string
   razorpay_payment_id: string
   razorpay_signature: string
+  userId?: string
+  donaterName?: string
 }
 
 export const createDonationOrderAPI = async (payload: CreateDonationOrderData) => {
