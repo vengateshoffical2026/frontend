@@ -13,7 +13,7 @@ declare global {
   
 }
 
-const RAZORPAY_KEY = "rzp_test_Sb4bz4pd6XAwJz"
+const RAZORPAY_KEY = "rzp_live_Sb68Fpl6DjTErC"
 
 const Pricing = () => {
   const [selectedProject] = useState('Chola Temple Inscription')
