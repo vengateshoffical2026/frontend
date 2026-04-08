@@ -12,7 +12,7 @@ declare global {
   }
 }
 
-const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_live_SGteQC3JSxjhtP'
+const RAZORPAY_KEY = import.meta.env.RAZORPAY_KEY_ID || 'rzp_live_SGteQC3JSxjhtP'
 
 const Pricing = () => {
   const [selectedProject] = useState('Chola Temple Inscription')
