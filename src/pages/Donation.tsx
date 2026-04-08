@@ -10,7 +10,7 @@ function formatAmount(amount?: number) {
 }
 
 
-const RAZORPAY_KEY = "rzp_live_Sb68Fpl6DjTErC"
+const RAZORPAY_KEY = 'rzp_live_Sb68Fpl6DjTErC';
 // const TARGET_AMOUNT = 10000000; // ₹1,00,000 in paise
 // const CURRENT_AMOUNT = 3200000; // Example: ₹32,000 in paise
 
