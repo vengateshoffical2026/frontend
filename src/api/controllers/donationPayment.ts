@@ -4,15 +4,15 @@ import apiClient from '../interceptors/axiosInstance'
 export interface CreateDonationOrderData {
   amount: number
   currency: string
-  receipt: string,
-  userId: string  
+  receipt: string
+  userId?: string
 }
 
 export interface VerifyDonationPaymentData {
   razorpay_order_id: string
   razorpay_payment_id: string
   razorpay_signature: string
-  userId: string
+  userId?: string
   donaterName?: string
 }
 
