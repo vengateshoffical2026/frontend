@@ -10,9 +10,10 @@ declare global {
   interface Window {
     Razorpay: any
   }
+  
 }
 
-const RAZORPAY_KEY = import.meta.env.RAZORPAY_KEY_ID || 'rzp_live_SGteQC3JSxjhtP'
+const RAZORPAY_KEY = "rzp_test_Sb4bz4pd6XAwJz"
 
 const Pricing = () => {
   const [selectedProject] = useState('Chola Temple Inscription')
