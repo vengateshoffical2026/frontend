@@ -129,7 +129,8 @@ const Pricing = () => {
     const payload = {
       amount: donationAmount,
       currency: 'INR',
-      receipt: 'don_' + Date.now().toString()
+      receipt: 'don_' + Date.now().toString(),
+      userId: user._id,
     }
     try {
       const order = await createDonationOrder(payload)
@@ -156,7 +157,9 @@ const Pricing = () => {
             await verifyDonationPayment({
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_order_id: response.razorpay_order_id,
-              razorpay_signature: response.razorpay_signature
+              razorpay_signature: response.razorpay_signature,
+              userId: user._id,
+              donaterName:"",
             })
             toast.success('Thank you for your donation!')
             queryClient.invalidateQueries({ queryKey: ['donationList'] })
