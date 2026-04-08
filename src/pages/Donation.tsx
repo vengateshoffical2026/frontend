@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { createDonationOrderAPI, verifyDonationPaymentAPI } from '../api/controllers/donationPayment';
 import { useQueryClient } from '@tanstack/react-query';
@@ -9,18 +9,14 @@ function formatAmount(amount?: number) {
   return '₹' + (amount / 100).toLocaleString('en-IN', { minimumFractionDigits: 0 });
 }
 
-const PROJECTS = [
-  'Library Renovation',
-  'Scholarship Fund',
-  'Community Outreach',
-];
-const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_live_SGteQC3JSxjhtP'
+
+const RAZORPAY_KEY = "rzp_live_Sb68Fpl6DjTErC"
 // const TARGET_AMOUNT = 10000000; // ₹1,00,000 in paise
 // const CURRENT_AMOUNT = 3200000; // Example: ₹32,000 in paise
 
 const Donation: React.FC = () => {
   const [donationAmount, setDonationAmount] = useState<number | undefined>();
-  const [selectedProject, setSelectedProject] = useState<string>(PROJECTS[0]);
+  const [donaterName, setDonaterName] = useState<string>('');
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [isCreatingDonation, setIsCreatingDonation] = useState(false);
@@ -28,11 +24,6 @@ const Donation: React.FC = () => {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
   const handleDonation = async () => {
     setIsCreatingDonation(true)
-     if (!token || !user) {
-       toast.error('Please log in to donate')
-       navigate('/login')
-       return
-     }
      if (!donationAmount || donationAmount <= 0) {
        toast.error('Please enter a valid donation amount')
        return
@@ -40,7 +31,8 @@ const Donation: React.FC = () => {
      const payload = {
        amount: donationAmount,
        currency: 'INR',
-       receipt: 'don_' + Date.now().toString()
+       receipt: 'don_' + Date.now().toString(),
+       userId: user?.id,
      }
      try {
        const order = await createDonationOrderAPI(payload)
@@ -57,7 +49,7 @@ const Donation: React.FC = () => {
          currency: orderData.currency || 'INR',
          order_id: orderData.id,
          name: 'Sasanam',
-         description: `Donation for ${selectedProject}`,
+         description: `Donation made by ${donaterName || user.fullName || 'Anonymous'}`,
          handler: async function (response: any) {
            if (!response.razorpay_payment_id || !response.razorpay_order_id || !response.razorpay_signature) {
              toast.error('Payment incomplete - please contact support')
@@ -67,7 +59,9 @@ const Donation: React.FC = () => {
              await verifyDonationPaymentAPI({
                razorpay_payment_id: response.razorpay_payment_id,
                razorpay_order_id: response.razorpay_order_id,
-               razorpay_signature: response.razorpay_signature
+               razorpay_signature: response.razorpay_signature,
+                userId: user?.id,
+                donaterName: donaterName ? donaterName : ""
              })
              toast.success('Thank you for your donation!')
              queryClient.invalidateQueries({ queryKey: ['donationList'] })
@@ -101,7 +95,11 @@ const Donation: React.FC = () => {
        toast.error('Failed to create donation order')
      }
    }
-
+   useEffect(()=>{
+    if(token){
+      navigate("/");
+    }
+   })
   // Progress bar calculation
 //   const progress = Math.min(100, Math.round(((CURRENT_AMOUNT + (donationAmount || 0)) / TARGET_AMOUNT) * 100));
 
@@ -131,20 +129,23 @@ const Donation: React.FC = () => {
             <div className="text-right text-2xs text-accent font-bold mt-1">{progress}% funded</div>
           </div> */}
 
-          <div className="flex flex-col gap-4 mb-6">
-            <label className="text-sm font-bold text-body block">Select Project</label>
-            <select
-              className="w-full rounded-xl border border-white/40 bg-white/70 text-body px-4 py-3.5 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 font-bold shadow-inner"
-              value={selectedProject}
-              onChange={e => setSelectedProject(e.target.value)}
-            >
-              {PROJECTS.map((proj) => (
-                <option key={proj} value={proj}>{proj}</option>
-              ))}
-            </select>
-          </div>
 
           <div className="flex-1 mb-8 flex flex-col justify-center">
+            <label className="text-sm font-bold text-body block mb-3">
+              Donater Name
+            </label>
+            <div className="relative">
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-accent font-bold">₹</span>
+              <input
+                type="string"
+                placeholder="Enter your name (optional)"
+                className="w-full pl-8 pr-4 py-3.5 rounded-xl border border-white/40 bg-white/80 text-body placeholder:text-[#8a7f6a] focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/50 transition-all font-bold shadow-inner"
+                onChange={(e) => {
+                  setDonaterName(e.target.value);
+                }}
+                value={donaterName}
+              />
+            </div>
             <label className="text-sm font-bold text-body block mb-3">
               Donation Amount (₹)
             </label>
@@ -167,10 +168,6 @@ const Donation: React.FC = () => {
                 You will donate {formatAmount(donationAmount)}
               </p>
             )}
-            <p className="text-xs text-accent mt-2 font-bold flex items-center gap-1.5">
-              <svg className="w-3.5 h-3.5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-              Target: ₹1,00,000 for {selectedProject}
-            </p>
           </div>
 
           <button
@@ -185,11 +182,7 @@ const Donation: React.FC = () => {
               </span>
             ) : 'Support Project'}
           </button>
-
-          {/* Impact/testimonial */}
-          <div className="mt-8 bg-white/60 rounded-xl p-4 text-center shadow-inner border border-primary/10">
-            <p className="text-sm text-body italic font-serif">“Last year, over 500 students benefited from your donations. Together, we make a difference!”</p>
-          </div>
+          
         </div>
       </div>
     </div>
