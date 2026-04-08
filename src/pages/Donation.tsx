@@ -9,8 +9,12 @@ function formatAmount(amount?: number) {
   return '₹' + (amount / 100).toLocaleString('en-IN', { minimumFractionDigits: 0 });
 }
 
-
-const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_live_SGteQC3JSxjhtP'
+const PROJECTS = [
+  'Library Renovation',
+  'Scholarship Fund',
+  'Community Outreach',
+];
+const RAZORPAY_KEY = 'rzp_live_Sb68Fpl6DjTErC';
 // const TARGET_AMOUNT = 10000000; // ₹1,00,000 in paise
 // const CURRENT_AMOUNT = 3200000; // Example: ₹32,000 in paise
 
