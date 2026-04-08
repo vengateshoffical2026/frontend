@@ -10,6 +10,7 @@ declare global {
   interface Window {
     Razorpay: any
   }
+  
 }
 
 const RAZORPAY_KEY = "rzp_test_Sb4bz4pd6XAwJz"
